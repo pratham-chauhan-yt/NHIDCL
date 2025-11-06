@@ -1,0 +1,144 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Enums\TaskStatus;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use App\Models\{User, Role, Grievance};
+use Illuminate\Support\Facades\Artisan;
+use App\Models\TaskManagement\TaskDetail;
+
+class DashboardController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // Additional check after auth: verify user still exists
+        $this->middleware(function ($request, $next) {
+            $user = Auth::user();
+            if ($user && !User::find($user->id)) {
+                Auth::logout();
+
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return redirect()->route('auth.login')
+                    ->withErrors(['error' => 'Your session is no longer valid. Please log in again.']);
+            }
+
+            if (Cache::missing('daily_task_generation_ran')) {
+                Artisan::call('tasks:generate-recurring');
+                Cache::put('daily_task_generation_ran', true, now()->addDay());
+            }
+            return $next($request);
+        });
+    }
+
+    public function index(Request $request)
+    {
+        $header = TRUE;
+        $sidebar = TRUE;
+        $userId = Auth::user()->id;
+        $sections = [
+            'ref_applicant_personal_details' => DB::table('ref_applicant_personal_details')->where('ref_users_id', $userId)->exists(),
+            'nhidcl_applicant_education_details' => DB::table('nhidcl_applicant_education_details')->where('ref_users_id', $userId)->exists(),
+            'nhidcl_applicant_work_experience_details' => DB::table('nhidcl_applicant_work_experience_details')->where('ref_users_id', $userId)->exists(),
+            //'nhidcl_applicant_additional_details' => DB::table('nhidcl_applicant_additional_details')->where('ref_users_id', $userId)->exists(),
+            //'nhidcl_competitive_exams' => DB::table('nhidcl_competitive_exams')->where('ref_users_id', $userId)->exists(),
+            //'nhidcl_training_certificate' => DB::table('nhidcl_training_certificate')->where('ref_users_id', $userId)->exists(),
+            'nhidcl_disclouser_questions' => DB::table('nhidcl_disclouser_questions')->where('ref_users_id', $userId)->exists(),
+        ];
+
+        $filled = array_filter($sections);
+        $totalSections = count($sections);
+        $completed = count($filled);
+        $percentage = ($completed / $totalSections) * 100;
+
+        $statusCounts = DB::table('ref_users as u')
+        ->join('nhidcl_user_status as us', 'u.id', '=', 'us.ref_users_id')
+        ->join('ref_interview_status as ris', 'us.ref_interview_status_id', '=', 'ris.id')
+        ->select('ris.status', DB::raw('COUNT(*) as total'))
+        ->whereIn('ris.status', ['SHORTLISTED', 'REJECTED', 'SELECTED', 'RESERVED'])
+        ->groupBy('ris.status')
+        ->pluck('total', 'status'); // This gives: ['SHORTLISTED' => 10, 'REJECTED' => 5, 'SELECTED' => 7]
+        $ShortlestedUser = $statusCounts['SHORTLISTED'] ?? 0;
+        $rejectedUser    = $statusCounts['REJECTED'] ?? 0;
+        $selectedUser    = $statusCounts['SELECTED'] ?? 0;
+        $ReservedUsers   = $statusCounts['RESERVED'] ?? 0;
+
+        if(auth()->user()->hasRole('Super Admin')){
+            session(['moduleName' => 'User Management System']);
+            $userQuery = User::where('is_deleted', '!=', '1')
+            ->whereHas('roles', function ($query) {
+                $query->whereIN('name', ['HR Admin', 'HR-Recruitment']);
+            });
+            $users = $userQuery->orderBy('id', 'DESC')->get();
+            return view('dashboard.index', compact('header', 'sidebar', 'users', 'ReservedUsers', 'ShortlestedUser', 'rejectedUser', 'selectedUser', 'percentage', 'sections', 'completed', 'totalSections') + [
+            'chartData' => [
+                'Shortlisted' => $ShortlestedUser,
+                'Selected' => $selectedUser ?? 0,
+                'Rejected'    => $rejectedUser,
+            ]]);
+        }elseif(auth()->user()->hasRole(['MD-Role', 'MD-DRO', 'MD-RA'])){
+            session(['moduleName' => 'MD Task Management Portal']);
+            $statusCounts = [
+                'total' => TaskDetail::count(),
+                'completed' => TaskDetail::where('status', TaskStatus::Completed)->count(),
+                'in_progress' => TaskDetail::where('status', TaskStatus::InProgress)->count(),
+                'pending' => TaskDetail::whereNull('status')->orWhere('status', TaskStatus::Pending)->count(),
+                'priority' => DB::table('nhidcl_mdtm_task_details as t')
+                    ->join('ref_priority as p', 'p.id', '=', 't.ref_priority_id')
+                    ->select('p.priority_name')
+                    ->selectRaw("COUNT(CASE WHEN t.status = 'completed' THEN 1 END) as completed")
+                    ->selectRaw("COUNT(CASE WHEN t.status = 'in_progress' THEN 1 END) as in_progress")
+                    ->selectRaw("COUNT(CASE WHEN t.status = 'pending' OR t.status IS NULL THEN 1 END) as pending")
+                    ->groupBy('t.ref_priority_id', 'p.priority_name')
+                    ->get()
+            ];
+            return view('task-management.dashboard', compact('header', 'sidebar', 'statusCounts'));
+        }elseif (auth()->user()->hasRole(['HR Admin', 'HR', 'HR Resource Pool'])){
+            return view('resource-pool.HR.dashboard', compact('header', 'sidebar', 'ReservedUsers', 'ShortlestedUser', 'rejectedUser', 'selectedUser', 'percentage', 'sections', 'completed', 'totalSections') + [
+            'chartData' => [
+                'Shortlisted' => $ShortlestedUser,
+                'Selected' => $selectedUser ?? 0,
+                'Rejected'    => $rejectedUser,
+            ]]);
+        }elseif (auth()->user()->hasRole(['Employee'])){
+            session(['moduleName' => 'Employee Management System']);
+            $user = $request->user();
+            $baseQuery = Grievance::where(function($q) use ($user) {
+                $q->where('ref_users_id', $user->id)
+                ->orWhere('ref_assign_users_id', $user->id);
+            });
+            // Clone base query for listing
+            $grievances = (clone $baseQuery)->latest()->get();
+
+            // Counts in one go
+            $total   = (clone $baseQuery)->count();
+            $pending = (clone $baseQuery)->where('status', 'open')->count();
+            $closed  = (clone $baseQuery)->where('status', 'closed')->count();
+            return view("employee-management.home", compact("header", "sidebar", "total", "pending", "closed"));
+        }elseif (auth()->user()->hasRole(['HQ/RO Employee', 'NHIDCL Employee'])){
+            $internalCount = User::whereHas('officeType', function ($query) {
+                    $query->whereIn('name', ['HQ', 'RO', 'PMO']);
+                })->with('officeType')->count();
+            $externalCount = User::role('NHIDCL Employee')->count();
+            session(['moduleName' => 'Directory of employees and NHIDCL stakeholders']);
+            return view("directory-management.home", compact("header", "sidebar", "internalCount", "externalCount"));
+        }else{
+            session(['moduleName' => 'Resource Pool Portal']);
+            return view('resource-pool.Candidate.dashboard', compact('header', 'sidebar', 'ReservedUsers', 'ShortlestedUser', 'rejectedUser', 'selectedUser', 'percentage', 'sections', 'completed', 'totalSections') + [
+            'chartData' => [
+                'Shortlisted' => $ShortlestedUser,
+                'Selected' => $selectedUser ?? 0,
+                'Rejected'    => $rejectedUser,
+            ]]);
+        }
+        //return view('dashboard.index', compact('header', 'sidebar', 'ReservedUsers', 'ShortlestedUser', 'rejectedUser', 'selectedUser', 'percentage', 'sections', 'completed', 'totalSections'));
+    }
+
+}

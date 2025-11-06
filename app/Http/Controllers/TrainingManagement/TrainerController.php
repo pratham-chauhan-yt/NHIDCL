@@ -1,0 +1,215 @@
+<?php
+
+namespace App\Http\Controllers\TrainingManagement;
+
+use App\Models\User;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
+use Yajra\DataTables\Facades\DataTables;
+use App\Http\Requests\GrievanceRequest;
+use App\Models\Grievance;
+use App\Http\Controllers\Controller;
+
+class TrainerController extends Controller
+{
+
+    public function __construct()
+    {
+        // $this->middleware('auth');
+        // $this->middleware('module.permission:grievance-list')->only(['index']);
+        // $this->middleware('module.permission:grievance-create')->only(['create', 'store']);
+        // $this->middleware('module.permission:grievance-edit')->only(['edit', 'update']);
+        // $this->middleware('module.permission:grievance-view')->only(['show']);
+        // $this->middleware('module.permission:grievance-delete')->only(['destroy']);
+    }
+
+    public function dashboard()
+    {
+        $header = true;
+
+        $sidebar = true;
+
+        return view("trainer.dashboard", compact("header", "sidebar"));
+    }
+
+    public function index(Request $request)
+    {
+
+        $header = true;
+        $sidebar = true;
+
+        if ($request->ajax()) {
+
+            $user = auth()->user();
+
+
+            $adminIds = User::role('HR')->pluck('id');
+
+            $query = Grievance::with(['designation', 'department'])
+                ->where(function ($q) use ($adminIds) {
+                    $q->where('created_by', user_id())
+                        ->orWhereIn('created_by', $adminIds);
+                });
+
+            return DataTables::of($query)
+                ->addColumn('designation', function ($row) {
+                    return $row->designation->name ?? 'N/A';
+                })
+                ->addColumn('department', function ($row) {
+                    return $row->department->name ?? 'N/A';
+                })
+                ->editColumn('pay_scale', function ($row) {
+                    return number_format($row->pay_scale, 2);
+                })
+                ->editColumn('date', function ($row) {
+                    return  $row->date; // optional($row->date)->format('d-m-Y');
+                })
+                ->editColumn('created_at', function ($row) {
+
+                    return $row->created_at ? Carbon::parse($row->created_at)->format('d-m-Y') : null;
+                })
+                ->addColumn('action', function ($row) {
+                    return view('components.action-buttons', [
+                        'id' => $row->id,
+                        'creator_id' => $row->created_by ?? null,
+                        'buttons' => ['edit', 'delete'],
+                        'routePrefix' => 'grievance',
+                        'role' => 'Grievance',
+                        "module" => "grievance"
+                    ])->render();
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        $header = TRUE;
+        $sidebar = TRUE;
+        return view("trainer.index", compact("header", "sidebar"));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $header = true;
+        $sidebar = true;
+        $user_responders = User::select("id", "name", "email")
+            ->where(function ($query) {
+                $query->whereHas('roles', function ($subQuery) {
+                    $subQuery->whereIn('name', ['MD-DRO', 'MD-RA']);
+                });
+            })
+            //->where('is_nhidcl_employee', true)
+            ->get();
+
+
+
+        return view("trainer.create", compact("header", "sidebar", 'user_responders'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(GrievanceRequest $request)
+    {
+        try {
+
+            $inputs = $request->all();
+
+            $grievance = Grievance::create([
+                'name' => $inputs['name'],
+                'employee_no' => $inputs['employee_no'],
+                'ref_designation_id' => $inputs['ref_designation_id'],
+                'grievance_reason' => $inputs['grievance_reason'],
+                'pay_scale' => $inputs['pay_scale'],
+                'ref_department_id' => $inputs['ref_department_id'],
+                'permanent_address' => $inputs['permanent_address'],
+                'date' => $inputs['date'],
+                "created_by" => user_id(),
+                "created_at" => now()
+            ]);
+
+            Alert::success('Success', 'Grievance created successfully');
+            return redirect()->route("trainer.index");
+        } catch (Exception $e) {
+            return redirect()->route("trainer.index")->with("error", $e->getMessage());
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id) {}
+
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        try {
+            $sidebar = True;
+            $header = True;
+            $grievance = Grievance::findOrFail(decryptId($id));
+            return view('trainer.edit', compact('grievance', 'header', 'sidebar'));
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Invalid data provided.');
+            return redirect()->route('trainer.index');
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(GrievanceRequest $request, $id)
+    {
+        try {
+
+            $grievance = Grievance::findOrFail(decryptId($id));
+
+            $data = $request->validated();
+            $data['updated_by'] = user_id();
+            $data['updated_at'] = now();
+
+            $grievance->update($data);
+
+            Alert::success('Success', 'Grievance updated successfully');
+
+            return redirect()->route('trainer.index');
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Oops, something went wrong. Please try again later.');
+            return redirect()->route('trainer.index');
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+
+        try {
+
+            $grievance = Grievance::find(decryptId($id));
+
+            if (!$grievance) {
+                Alert::error('Error', 'Something went wrong, Please try again.');
+                return redirect()->route('trainer.index');
+            }
+
+            $grievance->is_deleted = true;
+
+            $grievance->delete();
+
+            Alert::success('Success', 'Grievance deleted successfully');
+
+            return redirect()->route('trainer.index');
+        } catch (\Exception $e) {
+            Alert::error('Error', $e->getMessage());
+            return redirect()->route('trainer.index');
+        }
+    }
+}

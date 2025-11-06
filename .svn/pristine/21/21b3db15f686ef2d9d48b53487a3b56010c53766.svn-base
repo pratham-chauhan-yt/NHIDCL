@@ -1,0 +1,123 @@
+
+
+<?php $__env->startSection('dashboard_content'); ?>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="parrent_dahboard_">
+                <div class="text"><?php echo e(__('User Config - View User')); ?></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="bg_chart_card mt-0">
+                    
+                    <div class="table-responsive">
+                        <table class="table align-middle table-hover custom_table_nhidcl mb-0" id="usersTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Emp. ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Roles</th>
+                                    <th>Logged In</th>
+                                    <th>Is NHIDCL Employee</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+    <script src="<?php echo e(asset('js/chart-loader.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/custom.js')); ?>"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#usersTable').DataTable({
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "All"]
+                ],
+                bDestroy: true,
+                bFilter: true,
+                processing: true,
+                serverSide: true,
+                ajax: '<?php echo e(route('user-config.view')); ?>',
+                columns: [{
+                        data: null,
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart +
+                                1; // this generates the index
+                        },
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'user_id',
+                        name: 'user_id'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data: 'roles',
+                        name: 'roles'
+                    },
+                    {
+                        data: 'is_logged',
+                        name: 'is_logged'
+                    },
+                    {
+                        data: 'is_nhidcl_employee',
+                        name: 'is_nhidcl_employee'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
+                ],
+                order: [
+                    [1, 'asc']
+                ] // Change the order index to the correct column
+            });
+        });
+    </script>
+
+    
+    <script type="text/javascript">
+        function confirmDelete(id) {
+            Swal.fire({
+                title: "<?php echo __('Are you sure?'); ?>",
+                text: "<?php echo __('You won\'t be able to revert this!'); ?>",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: "<?php echo __('Cancel'); ?>",
+                confirmButtonText: "<?php echo __('Yes, delete it!'); ?>",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form if confirmed
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\nhidcl\resources\views/user-config/view.blade.php ENDPATH**/ ?>

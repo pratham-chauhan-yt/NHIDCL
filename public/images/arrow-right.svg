@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="Group_4089" data-name="Group 4089" transform="translate(-361 -213)">
+    <circle id="Ellipse_26" data-name="Ellipse 26" cx="10" cy="10" r="10" transform="translate(361 213)" fill="#fff" opacity="0.35" style="mix-blend-mode: soft-light;isolation: isolate"/>
+    <g id="MDI_arrow-bottom-right" data-name="MDI / arrow-bottom-right" transform="translate(363 215)">
+      <g id="Boundary" transform="translate(0 0)" fill="#fff" stroke="rgba(0,0,0,0)" stroke-width="1" opacity="0">
+        <rect width="16" height="16" stroke="none"/>
+        <rect x="0.5" y="0.5" width="15" height="15" fill="none"/>
+      </g>
+      <path id="Path_arrow-bottom-right" data-name="Path / arrow-bottom-right" d="M5,10.4l.6.6,4.539-4.539V9.286H11V5H6.714v.857H9.539Z" transform="translate(0 0)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

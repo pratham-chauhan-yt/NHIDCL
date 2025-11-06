@@ -1,0 +1,1056 @@
+$(document).ready(function(){
+    const websiteMeta = document.querySelector('meta[name="website-url"]');
+    const websiteUrl = websiteMeta?.getAttribute('content');
+
+        $(document).on("click","#resourceRequisitionBtn",function(){
+
+
+            let   $job_title= $("#job_title").val();
+            let   $designation_engagement = $("#designation_engagement").val();
+            let   $engagement = $("#engagement").val();
+            let   $expert_professional= $("#expert_professional").val();
+            let   $people_of_eminence= $("#people_of_eminence").val();
+            let   $number_of_required_resources= $("#number_of_required_resources").val();
+            let   $duration_of_engagement_start= $("#duration_of_engagement_start").val();
+            let   $duration_of_engagement_end= $("#duration_of_engagement_end").val();
+            let   $job_description= $("#job_description").val();
+            let   $domain= $("#domain").val();
+            let   $discipline= $("#discipline").val();
+            let   $qualification_requirements= $("#qualification_requirements").val();
+            let   $course= $("#course").val();
+            let   $qualification_percent =$("#qualification_percent").val();
+            let   $minimum_work_experience= $("#minimum_work_experience").val();
+            let   $retired_government_personnel= $("#retired_government_personnel").val();
+            let   $comment= $("#comment").val();
+            let   $upload_for_efile_noting =$("#upload_for_efile_noting").val();
+            let   $newspaper_publication_date=$("#newspaper_publication_date").val();
+            let   $upload_newspaper_clip_txt=$("#upload_newspaper_clip_txt").val();
+
+            let today = new Date();
+            let start_date = new Date($("#start_date").val());
+            let end_date = new Date($("#end_date").val());
+
+
+
+            $(".job_title_err").text("");
+            $(".designation_engagement").text("");
+            $(".engagement_err").text("");
+            $(".expert_professional_err").text("");
+            $(".people_of_eminence_err").text("");
+            $(".number_of_required_resources_err").text("");
+            $(".duration_of_engagement_start_err").text("");
+            $(".duration_of_engagement_end_err").text("");
+            $(".job_description_err").text("");
+            $(".domain_err").text("");
+            $(".discipline_err").text("");
+            $(".qualification_requirements_err").text("");
+            $(".course_err").text("");
+            $(".qualification_percent_err").text("");
+            $(".minimum_work_experience_err").text("");
+            $(".retired_government_personnel_err").text("");
+            $(".comment_err").text("");
+            $(".upload_for_efile_noting_err").text("");
+            $(".duration_of_advertisment_start_err").text("");
+            $(".duration_of_advertisment_end_err").text("");
+            $(".newspaper_publication_date_err").text("");
+            $(".upload_newspaper_clip_txt_err").text("");
+
+
+            $err=0;
+            if($job_title==""){
+                $(".job_title_err").text("Job title field is required.");
+                $err=1;
+            }
+
+            if(($engagement=="") || ($engagement==null)) {
+                $(".engagement_err").text("Type of engagement field is required.");
+                $err=1;
+            }
+
+            if(($designation_engagement=="") || ($designation_engagement==null)){
+                $(".designation_engagement_err").text("Designation of engagement field is required.");
+                $err=1;
+            }
+
+            if(($duration_of_engagement_start=="") || ($duration_of_engagement_start==null)){
+                $(".duration_of_engagement_start_err").text("Duration of engagement year is required.");
+                $err=1;
+            }
+            if(($duration_of_engagement_end=="") || ($duration_of_engagement_end==null)){
+                $(".duration_of_engagement_end_err").text("Month is required.");
+                $err=1;
+            }
+
+            if($number_of_required_resources==""){
+                $(".number_of_required_resources_err").text("Number of required resources field is required");
+                $err=1;
+            }
+
+            if(($domain=="") || ($domain==null)){
+                $(".domain_err").text("Domain details field is required");
+                $err=1;
+            }
+
+            if(($discipline=="") || ($discipline==null)){
+                $(".discipline_err").text("Discipline field is required");
+                $err=1;
+            }
+
+            if($qualification_requirements==""){
+                $(".qualification_requirements_err").text("Qualification requirements field is required");
+                $err=1;
+            }
+
+            if($course==""){
+                $(".course_err").text("Course field is required");
+                $err=1;
+            }
+
+            if($qualification_percent==""){
+                $(".qualification_percent_err").text("Qualification score/percent field is required");
+                $err=1;
+            }
+
+            if(($minimum_work_experience=="") || ($minimum_work_experience==null)){
+                $(".minimum_work_experience_err").text("Minimum work experience field is required");
+                $err=1;
+            }else if(isNaN($minimum_work_experience)){
+                $(".minimum_work_experience_err").text("Minimum work experience value should be numeric ");
+                $err=1;
+            }
+
+            if($retired_government_personnel==""){
+                $(".retired_government_personnel_err").text("Retired government personnel field is required");
+                $err=1;
+            }
+            // if($comment==""){
+            //     $(".comment_err").text("Remark field is required");
+            //     $err=1;
+            // }
+            if (start_date == "Invalid Date") {
+                $(".duration_of_advertisment_start_err").text('Start date field is required.');
+                    $err=1;
+            }
+            if (end_date == "Invalid Date") {
+                $(".duration_of_advertisment_end_err").text('End date field is required.');
+                    $err=1;
+            }
+            if (start_date <= today) {
+                $(".duration_of_advertisment_start_err").text('Start date should be in the future.');
+                    $err=1;
+            }
+            if (end_date <= today) {
+                $(".duration_of_advertisment_end_err").text('End date should be in the future.');
+                    $err=1;
+            }
+
+            if($job_description==""){
+                $(".job_description_err").text("Job description field is required");
+                $err=1;
+            }
+            // if($newspaper_publication_date==""){
+            //     $(".newspaper_publication_date_err").text("News paper publication date field is required");
+            //     $err=1;
+            // }else{
+            //     let dayDiff =dateValidation($newspaper_publication_date);
+            //     if(dayDiff>0){
+            //         $(".newspaper_publication_date_err").text("Newspaper publication date should not be future date");
+            //         $err=1;
+            //     }
+            //     if(dayDiff<(-180)){
+            //         $(".newspaper_publication_date_err").text("Newspaper publication date should be within the past 6 months.");
+            //         $err=1;
+            //     }
+            // }
+
+            // if(($upload_newspaper_clip_txt=="") || ($upload_newspaper_clip_txt==null)){
+            //     $(".upload_newspaper_clip_txt_err").text("Upload newspaper clip field is required");
+            //     $err=1;
+            // }
+
+
+            if($upload_for_efile_noting==""){
+                $(".upload_for_efile_noting_err").text("Upload advertisement file field is required");
+                $err=1;
+            }
+
+
+            if($err){
+                return false;
+            }else{
+                $("#resourceRequisitionFrm").submit();
+            }
+
+        });
+
+        /*******************************************Upload For Efile Noting  ***********************************************/
+        $('.upload_for_efile_noting').on('change', function() {
+            var $this = $(this);
+
+            // Check the file type
+            if ($this[0].files[0].type !== 'application/pdf') {
+                Swal.fire('Warning', 'Please select a valid pdf file only!!!', 'warning');
+                $this.val("");
+                return false;
+            }
+
+            // Check the file size (2MB)
+            if ($this[0].files[0].size > 2000000) {
+                $this.val("");
+                Swal.fire('Warning', 'File size should not exceed 2MB!!!', 'warning');
+                return false;
+            }
+
+            var formData = new FormData();
+            var file = $this[0].files[0];
+            formData.append('upload_for_efile_noting', file);
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            formData.append('_token', csrfToken);
+
+            const finalUrl = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/storeUpload_cover_photo` : null;
+            const finalUrlOfViewFiles = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/viewFiles` : null;
+
+            $.ajax({
+                url: finalUrl,
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.status == true) {
+                        var fileName = encodeURIComponent(response.file_name);
+                        var pathName = encodeURIComponent('uploads/hr/upload_for_efile_noting/');
+                        let url = `${finalUrlOfViewFiles}?pathName=:pathName&fileName=:fileName`;
+                        url = url.replace(':fileName', fileName);
+                        url = url.replace(':pathName', pathName);
+                        $("#upload_for_efile_noting_txt").val(url);
+                        let ii=0;
+
+                        $this.parents('.attachment_section_photos').find('.hide_upload_photos').hide();
+                        $this.parents('.attachment_section_photos').find('input[type="file"]').prop('required', false);
+                        $this.parents('.attachment_section_photos').siblings('.attachment_section_photos').show();
+
+                        $('.attachment_section_photos').append('<div id="temp_12' + ii + '" ><a target="_blank" href="' + url + '" class="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-80 report_preview_support_photo">View Document</a>&nbsp<a href="javascript:void(0);" class="focus:outline-none bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 report_remove_photos" data-id="' + ii++ + '" data-name="' + response.file_name + '">Remove</a>&nbsp&nbsp&nbsp&nbsp');
+
+                        $("#upload_photos").val(response.file_name);
+                    } else {
+                        Swal.fire('Info', ""+response.message+"", 'info');
+                        $this.val("");
+                        return false;
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error occurred: " + status + " " + error);
+                }
+            });
+        });
+        $(document).on('click', '.report_remove_photos', function() {
+            var $this = $(this);
+            var id = $(this).attr("data-id");
+            $this.parents('.attachment_section_photos').find('.hide_upload_photos').show();
+            $this.parents('#temp_12' + id).hide();
+            $("#hiddendoc_upload_cover_photo").val('');
+        });
+        /**************************************End Upload For EfileNoting ***************************************** */
+        /*************************************Fetching posted jobs ****************** */
+        $("#jobPosted").click(function(){
+
+            $('#loader').show();
+            let take= $("#vMore").attr("data-posted");
+            let searchQuery =$(".searchKeyPost").val();
+            let filterData =$("#filterBy").val();
+            const finalUrl = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/posted-jobs?take=${take}` : null;
+            const finalUrlEditPostedJobs = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/editPostedJobs/` : null;
+            const finalUrlViewPostedJobs = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/viewPostedJobs/` : null;
+            const finalUrlDeletePostedJobs = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/deletePostedJobs/` : null;
+            $.ajax({
+                    url: finalUrl,
+                    type: 'GET',
+                    data: {
+                        searchKey:searchQuery,
+                        filterKey:filterData,
+                    },
+                    // contentType: false,
+                    // processData: false,
+                    success: function(response) {
+                        $('#loader').hide();
+                        let finalDev ="";
+                        const userElement = document.getElementById('Home');
+                        const loggedInUserId = userElement.dataset.usersPostid;
+                        for(let i=0; i<response.length; i++){
+
+                            if (response[i] && response[i].job_title && response[i].job_description) {
+                                let editUrl = `${finalUrlEditPostedJobs}${response[i].encryptedId}`;
+                                let viewUrl = `${finalUrlViewPostedJobs}${response[i].encryptedId}`;
+                                let deleteUrl = `${finalUrlDeletePostedJobs}${response[i].encryptedId}`;
+                                let formattedDate = formatDate(response[i].end_date);
+
+                                finalDev += `<div class="job_posted_cust">
+                                    <a href="#">
+                                        <h4 class="">${response[i].job_title}</h4>
+                                        <div class="mb-[10px] cust_p pt-[5px]">
+                                            <p>Active Until: <span>${formattedDate}</span></p>
+                                        </div>
+                                        <p class="">${response[i].job_description.substr(0, 150)} ...</p>
+                                    </a>
+                                    <div class="cust_points_jobs mt-[10px] justify-end">`;
+
+                                // ✅ Show Edit/Delete only if job was created by current user
+                                if (String(response[i].created_by) === String(loggedInUserId)) {
+                                    finalDev += `
+                                        <span><a href="${editUrl}">Edit</a></span>
+                                        <span><button class="viewPost" type="button" data-id="${viewUrl}">View</button></span>
+                                        <span style="background: rgb(202, 21, 21); color: white;">
+                                            <button class="deletePost" type="button" data-id="${deleteUrl}">Delete</button>
+                                        </span>`;
+                                } else {
+                                    finalDev += `
+                                        <span><button class="viewPost" type="button" data-id="${viewUrl}">View</button></span>`;
+                                }
+
+                                finalDev += `
+                                    </div>
+                                </div>`;
+                            }
+
+                        }
+
+                        if(!response.length){
+                                    finalDev+=`<div class="">
+                                        <span>No Data Found</span>
+                                    </div>`;
+
+                        }else{
+                            if(response.length>8){
+                            finalDev+=`<div class="button_flex_cust_form postedVMore">
+                                        <button class="hover-effect-btn border_btn ">View More</button>
+                                    </div>`;
+                            }
+                        }
+                        $("#postedJobs").html(finalDev);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error occurred: " + status + " " + error);
+                    }
+
+            })
+        });
+
+        /**********************************Fetching  Archived jobs ************************************************ */
+
+        $("#archivedJobs").click(function(){
+            $('#loader').show();
+            let take= $("#vMore").attr("data-archived");
+            searchQuery =$(".searchKeyArch").val();
+
+            const finalUrl = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/archived-jobs?take=${take}` : null;
+            const finalUrlEditPostedJobs = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/editPostedJobs/` : null;
+            const finalUrlViewPostedJobs = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/viewPostedJobs/` : null;
+            const finalUrlDeletePostedJobs = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/deletePostedJobs/` : null;
+            $.ajax({
+                    url: finalUrl,
+                    type: 'GET',
+                    data: {
+                        searchKey: searchQuery
+                    },
+                    // contentType: false,
+                    // processData: false,
+                    success: function(response) {
+                        $('#loader').hide();
+                        let finalDev ="";
+                        const userElement = document.getElementById('Home');
+                        const loggedInUserId = userElement.dataset.usersPostid;
+                        $("#vMore").attr("data-archived",response.length);
+                        for(let i=0; i<response.length; i++){
+
+                            if (response[i] && response[i].job_title && response[i].job_description) {
+                                let editUrl = `${finalUrlEditPostedJobs}${response[i].encryptedId}`;
+                                let viewUrl = `${finalUrlViewPostedJobs}${response[i].encryptedId}`;
+                                let deleteUrl = `${finalUrlDeletePostedJobs}${response[i].encryptedId}`;
+                                let formattedDate = formatDate(response[i].end_date);
+
+                                finalDev += `<div class="job_posted_cust">
+                                    <a href="#">
+                                        <h4 class="">${response[i].job_title}</h4>
+                                        <div class="mb-[10px] cust_p pt-[5px]">
+                                            <p>Active Until: <span>${formattedDate}</span></p>
+                                        </div>
+                                        <p class="">${response[i].job_description.substr(0, 150)} ...</p>
+                                    </a>
+                                    <div class="cust_points_jobs mt-[10px] justify-end">`;
+
+                                // Show Edit/Delete only if job was created by current user
+                                if (String(response[i].created_by) === String(loggedInUserId)) {
+                                    finalDev += `
+                                        <span><a href="${editUrl}">Edit</a></span>
+                                        <span><button class="viewPost" type="button" data-id="${viewUrl}">View</button></span>
+                                        <span style="background: rgb(202, 21, 21); color: white;">
+                                            <button class="deletePost" type="button" data-id="${deleteUrl}">Delete</button>
+                                        </span>`;
+                                } else {
+                                    // Only View button for other users
+                                    finalDev += `
+                                        <span><button class="viewPost" type="button" data-id="${viewUrl}">View</button></span>`;
+                                }
+
+                                finalDev += `
+                                    </div>
+                                </div>`;
+                            }
+
+                        }
+                        if(!response.length){
+                                    finalDev+=`<div class="">
+                                        <span>No Data Found</span>
+                                    </div>`;
+
+                        }else{
+                            finalDev+=`<div class="button_flex_cust_form archiveVMore">
+                                        <button class="hover-effect-btn border_btn ">View More</button>
+                                    </div>`;
+                        }
+
+                        $("#archiveJobs").html(finalDev);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error occurred: " + status + " " + error);
+                    }
+
+            })
+        });
+
+
+        $(document).on('click', '.close-btn', function() {
+            $("#postedJob-modal").hide();
+
+        });
+        const modal = document.getElementById('postedJob-modal');
+        modal.classList.toggle('show');
+        modal.style.display = "none";
+
+        $(document).on('click', '.viewPost', function() {
+
+            modal.style.display = "";
+
+            let url = $(this).data('id');
+
+            $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: "",
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+
+                        let yearText = (response.engagement_year || "0") + " Year ";
+                        let monthText = (response.engagement_month || "0") + " Month";
+                        $("#duration_of_engagement_hr").text(yearText + monthText);
+
+                        $("#v_job_description").text(response.job_description || "");
+                        $("#v_job_title").text(response.job_title || "");
+
+                        year=response.ref_work_experience_year_id || "N/A";
+                        if(Number(response.ref_work_experience_year_id)<=1){
+                            year+= " year";
+                        }else{
+                            year+=" years";
+                        }
+                        $("#v_minimum_work_experience").text(year);
+
+                        $("#v_number_of_required_resources").text(response.number_of_required_resources || "");
+
+                        let view_efile = null;
+                        if (response.upload_for_efile_noting) {
+                            view_efile = window.location.href.substring(0, window.location.href.indexOf('editPostedJobs')) 
+                                        + "viewFiles?pathName=" + response.upload_for_efile_noting_filepath 
+                                        + "&fileName=" + response.upload_for_efile_noting;
+
+                            $("#view_advertisment_details_hr").html(`<a target="_blank" href="` + view_efile + `"><i class="fa fa-eye"></i></a>`);
+                        } else {
+                            $("#view_advertisment_details_hr").html(null); // or you can use "" instead of null
+                        }
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error occurred: " + status + " " + error);
+                    }
+
+            })
+
+        });
+
+        $(document).on('click', '.deletePost', function() {
+        // function confirmDelete(id,tab_id) {
+        var urlLink = $(this).data('id');
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: "Cancel",
+                confirmButtonText: "Yes, delete it!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = urlLink;
+                }
+            })
+        });
+
+
+         /*******************************************Upload For News Paper Clips  ***********************************************/
+         $('.upload_newspaper_clip').on('change', function() {
+            var $this = $(this);
+
+            // Check the file type
+            if ($this[0].files[0].type !== 'application/pdf') {
+                Swal.fire('Warning', 'Please select a valid pdf file only!!!', 'warning');
+                $this.val("");
+                return false;
+            }
+
+            // Check the file size (2MB)
+            if ($this[0].files[0].size > 2000000) {
+                $this.val("");
+                Swal.fire('Warning', 'File size should not exceed 2MB!!!', 'warning');
+                return false;
+            }
+
+            var formData = new FormData();
+            var file = $this[0].files[0];
+            formData.append('upload_newspaper_clip', file);
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            formData.append('_token', csrfToken);
+
+            const finalUrl = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/storeUpload_cover_photo` : null;
+            const finalUrlOfViewFiles = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/viewFiles` : null;
+
+            $.ajax({
+                url: finalUrl,
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.status == true) {
+                        var fileName = encodeURIComponent(response.file_name);
+                        var pathName = encodeURIComponent('uploads/hr/upload_newspaper_clip/');
+                        let url = `${finalUrlOfViewFiles}?pathName=:pathName&fileName=:fileName`;
+                        url = url.replace(':fileName', fileName);
+                        url = url.replace(':pathName', pathName);
+                        $("#upload_newspaper_clip_txt").val(url);
+                        let ii=0;
+
+                        $this.parents('.attachment_section_newsclip').find('.hide_upload_photos').hide();
+                        $this.parents('.attachment_section_newsclip').find('input[type="file"]').prop('required', false);
+                        $this.parents('.attachment_section_newsclip').siblings('.attachment_section_newsclip').show();
+
+                        $('.attachment_section_newsclip').append('<div id="temp_12' + ii + '" ><a target="_blank" href="' + url + '" class="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-80 report_preview_support_photo">View Document</a>&nbsp<a href="javascript:void(0);" class="focus:outline-none bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 report_remove_photos" data-id="' + ii++ + '" data-name="' + response.file_name + '">Remove</a>&nbsp&nbsp&nbsp&nbsp');
+
+                        $("#upload_photos").val(response.file_name);
+                    } else {
+                        Swal.fire('Info', ""+response.message+"", 'info');
+                        $this.val("");
+                        return false;
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error occurred: " + status + " " + error);
+                }
+            });
+        });
+        $(document).on('click', '.report_remove_photos', function() {
+            var $this = $(this);
+            var id = $(this).attr("data-id");
+            $this.parents('.attachment_section_newsclip').find('.hide_upload_photos').show();
+            $this.parents('#temp_12' + id).hide();
+            $("#hiddendoc_upload_cover_photo").val('');
+        });
+        /**************************************End Upload For News Paper Clips ***************************************** */
+
+        $(document).on('change','#qualification_requirements',function() {
+            $("#course").html("");
+            let courses = JSON.parse($(this).attr('data-courses') || '[]');
+            let qualificationId = Number($('#qualification_requirements').val());
+            if(isNaN(qualificationId)){
+                qualificationId = Number($('#qualification_requirements').val().slice(-1)[0]);
+            }
+            let optData = '<option value="">Select Course</option>';
+            for (var i = 0; i < courses.length; i++) {
+                if (courses[i].ref_qualification_id == qualificationId) {
+                    optData += `<option value="${courses[i].id}">${courses[i].course_name}</option>`;
+                }
+            }
+            $("#course").html(optData);
+        });
+
+        $(document).on('change','#course',function() {
+
+            let course =$("#course").val();
+            updateCourseList(course);
+        });
+
+        function updateCourseList(courseId){
+
+            let courseList = $("#course_list").val() ? $("#course_list").val().split(',') : [];
+            courseList.push(courseId);
+            $("#course_list").val(courseList.join(','));
+        }
+
+        if(window.location.href.indexOf("xegrjvdhjhvdv256hdfh6543fdhgdyt6r5get4rtrrtr")>0){
+
+
+           // return 0;
+           setTimeout(() => {
+            $("#jobPosted").click();
+            location.href.replace("xegrjvdhjhvdv256hdfh6543fdhgdyt6r5get4rtrrtr", "");
+           }, 50);
+        }
+        if(window.location.href.indexOf("xegrjvdhjhvdv256hdfh6789fdhgdyt6r5get4rtrrtr")>0){
+
+
+            //return 0;
+            setTimeout(() => {
+                $("#archivedJobs").click();
+            location.href.replace("xegrjvdhjhvdv256hdfh6789fdhgdyt6r5get4rtrrtr", "");
+            }, 50);
+        }
+        else{
+            $("#defaultOpen").click();
+            //return 0;
+        }
+
+
+        /******************************Archive view More ************************** */
+        $(document).on("click",".archiveVMore",function(){
+            let $currentLength=$("#vMore").attr("data-archived");
+            let neLength =Number($currentLength)+ Number(8);
+            $("#vMore").attr("data-archived",neLength);
+            $("#archivedJobs").click();
+        });
+
+        /******************************Posted Jobs view More ************************** */
+
+        $(document).on("click",".postedVMore",function(){
+            let  $currentLength=$("#vMore").attr("data-posted");
+            let neLength =Number($currentLength)+ Number(8);
+            $("#vMore").attr("data-posted",neLength);
+            $("#jobPosted").click();
+        });
+
+        /***********************************Search Posted and archive Jobs ************* */
+        $(document).on("click",".archSearch , .postSearch",function(){
+            let searchQuery="";
+            if ($(this).hasClass("archSearch")) {
+                searchQuery =$(".searchKeyArch").val();
+                if(searchQuery!=""){
+                    $('#loader').show();
+                    let take= $("#vMore").attr("data-archived");
+                    const finalUrl = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/archived-jobs?take=${take}` : null;
+                    const finalUrlEditPostedJobs = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/editPostedJobs/` : null;
+                    const finalUrlViewPostedJobs = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/viewPostedJobs/` : null;
+                    const finalUrlDeletePostedJobs = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/deletePostedJobs/` : null;
+                    $.ajax({
+                            url: finalUrl,
+                            type: 'GET',
+                            data: {
+                            searchKey: searchQuery
+                            },
+                            // contentType: false,
+                            // processData: false,
+                            success: function(response) {
+
+                                $('#loader').hide();
+                                let finalDev ="";
+                                $("#vMore").attr("data-archived",response.length);
+                                for(let i=0; i<response.length; i++){
+
+                                    if (response[i] && response[i].job_title && response[i].job_description) {
+                                        let editUrl =`${finalUrlEditPostedJobs}${response[i].encryptedId}`;
+                                        let viewUrl = `${finalUrlViewPostedJobs}${response[i].encryptedId}`;
+                                        let deleteUrl = `${finalUrlDeletePostedJobs}${response[i].encryptedId}`;
+                                        finalDev+=`<div class="job_posted_cust">
+                                            <a href="#">
+                                                <h4 class="">`+response[i].job_title+`</h4>
+                                                <div class="mb-[10px] cust_p pt-[5px]">
+                                                    <p>Active Until: <span> `+response[i].end_date+`</span></p>
+                                                </div>
+                                                <p class="">`+response[i].job_description.substr(0, 150)+" ..."+`</p>
+                                            </a>
+                                            <div class="cust_points_jobs mt-[10px] justify-end">
+                                                <span class=""><a href="${editUrl}" >Edit</a></span>
+                                                <span class=""><button class="viewPost" type="button" data-id="${viewUrl}" >View</button></span>
+                                                <span style="background: rgb(202, 21, 21); color: white;"><button class="deletePost" type="button" data-id="${deleteUrl}" >Delete</button></span>
+                                            </div>
+                                                </div>
+                                        </div>`;
+                                    }
+                                }
+                                if(!response.length){
+                                    finalDev+=`<div class="">
+                                        <span>No Data Found</span>
+                                    </div>`;
+
+                                }else{
+                                    finalDev+=`<div class="button_flex_cust_form archiveVMore">
+                                                <button class="hover-effect-btn border_btn ">View More</button>
+                                            </div>`;
+                                }
+                                $("#archiveJobs").html(finalDev);
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error occurred: " + status + " " + error);
+                            }
+
+                    });
+                }else{
+                    $("#vMore").attr("data-archived",0);
+                    $("#archivedJobs").click();
+                }
+            } else if ($(this).hasClass("postSearch")) {
+                searchQuery =$(".searchKeyPost").val();
+                if(searchQuery!=""){
+                    $('#loader').show();
+                    let take= $("#vMore").attr("data-posted");
+
+                    const finalUrl = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/posted-jobs?take=${take}` : null;
+                    const finalUrlEditPostedJobs = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/editPostedJobs/` : null;
+                    const finalUrlViewPostedJobs = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/viewPostedJobs/` : null;
+                    const finalUrlDeletePostedJobs = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/deletePostedJobs/` : null;
+                    $.ajax({
+                            url: finalUrl,
+                            type: 'GET',
+                            data: {
+                            searchKey: searchQuery
+                            },
+                            // contentType: false,
+                            // processData: false,
+                            success: function(response) {
+                                $('#loader').hide();
+                                let finalDev ="";
+                                for(let i=0; i<response.length; i++){
+                                    if (response[i] && response[i].job_title && response[i].job_description && response[i].engagement_year) {
+                                        let editUrl =`${finalUrlEditPostedJobs}${response[i].encryptedId}`;
+                                        let viewUrl = `${finalUrlViewPostedJobs}${response[i].encryptedId}`;
+                                        let deleteUrl = `${finalUrlDeletePostedJobs}${response[i].encryptedId}`;
+                                        let formattedDate = formatDate(response[i].end_date);
+
+                                        finalDev+=`<div class="job_posted_cust">
+                                            <a href="#">
+                                                <h4 class="">`+response[i].job_title+`</h4>
+                                                <div class="mb-[10px] cust_p pt-[5px]">
+                                                    <p>Active Until: <span> `+ formattedDate +`</span></p>
+                                                </div>
+                                                <p class="">`+response[i].job_description.substr(0, 150)+" ..."+`</p>
+                                            </a>
+                                            <div class="cust_points_jobs mt-[10px] justify-end">
+                                                <span class=""><a href="${editUrl}" >Edit</a></span>
+                                                <span class=""><button class="viewPost" type="button" data-id="${viewUrl}" >View</button></span>
+                                                <span style="background: rgb(202, 21, 21); color: white;"><button class="deletePost" type="button" data-id="${deleteUrl}" >Delete</button></span>
+                                            </div>
+                                                </div>
+                                        </div>`;
+                                    }
+                                }
+
+
+
+                                if(!response.length){
+                                    finalDev+=`<div class="">
+                                        <span>No Data Found</span>
+                                    </div>`;
+
+                                }else{
+                                    finalDev+=`<div class="button_flex_cust_form postedVMore">
+                                                <button class="hover-effect-btn border_btn ">View More</button>
+                                            </div>`;
+                                }
+                                $("#postedJobs").html(finalDev);
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error occurred: " + status + " " + error);
+                            }
+
+                    })
+                }else{
+                    $("#vMore").attr("data-posted",0);
+                    $("#jobPosted").click();
+                }
+            }
+
+        });
+
+        $(document).on("change","#filterBy",function(){
+            $("#jobPosted").click();
+        });
+
+        $('.js-example-basic-multiple').select2();
+        $(".select2-search__field").width("7.75em");
+        $(document).on("change", "#qualification_requirements", function() {
+                setTimeout(() => {
+                    $(".select2-search__field").width("7.75em");
+                }, 10);
+        });
+        $(document).on("blur", ".select2", function() {
+                setTimeout(() => {
+                    $(".select2-search__field").width("7.75em");
+                }, 10);
+        });
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('#engagement').on('change', function () {
+
+            var engagementId = $(this).val();
+
+            if (engagementId) {
+                const finalUrl = websiteUrl ? `${websiteUrl}/resource-pool-portal/designations?engagement_id=${engagementId}` : null;
+                $.ajax({
+                    url: finalUrl,
+                    method: 'GET',
+                    success: function (data) {
+
+                        $('#designation_engagement').prop('disabled', false);
+                        $('#designation_engagement').empty();
+                        data.forEach(function (item) {
+
+                            $('#designation_engagement').append('<option value="' + item.id + '">' + item.designation + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        console.error('Error fetching designations:', error);
+                    }
+                });
+            } else {
+                // If no engagement ID is selected, disable the Designation dropdown
+                $('#designation_engagement').prop('disabled', true);
+                $('#designation_engagement').empty();
+                $('#designation_engagement').append('<option value="">Select a Designation</option>');
+            }
+        });
+});
+
+$(document).ready(function () {
+            $('.js-example-basic-multiple').select2();
+            $(".select2-search__field").width("7.75em");
+            $(document).on("change", "#qualification_requirements", function() {
+                    setTimeout(() => {
+                        $(".select2-search__field").width("7.75em");
+                    }, 10);
+
+                    $("#course").html("");
+                    let courses = JSON.parse($(this).attr('data-courses') || '[]');
+                    let qualificationId = Number($('#qualification_requirements').val());
+                    if(isNaN(qualificationId)){
+                        qualificationId = Number($('#qualification_requirements').val().slice(-1)[0]);
+                    }
+                    let optData = '<option value="">Select Course</option>';
+
+                    for (var i = 0; i < courses.length; i++) {
+                        if (courses[i].ref_qualification_id == qualificationId) {
+                            optData += `<option value="${courses[i].id}">${courses[i].course_name}</option>`;
+                        }
+                    }
+                    // optData += `<option value="others">Others</option>`;
+
+                    $("#course").html(optData);
+            });
+
+            $(document).on('change','#course',function() {
+
+                let course =$("#course").val();
+                updateCourseList(course);
+            });
+
+            function updateCourseList(courseId){
+
+                let courseList = $("#course_list").val() ? $("#course_list").val().split(',') : [];
+                courseList.push(courseId);
+                $("#course_list").val(courseList.join(','));
+            }
+            $(document).on("blur", ".select2", function() {
+                    setTimeout(() => {
+                        $(".select2-search__field").width("7.75em");
+                    }, 10);
+            });
+
+            let requisitionEl = document.getElementById('requisition-data');
+            let courses = JSON.parse(requisitionEl.getAttribute('data-courses') || '[]');
+            let eFile = requisitionEl.getAttribute('data-efile');
+            let eFilePath = requisitionEl.getAttribute('data-efile-path');
+            let newsClip = requisitionEl.getAttribute('data-news-clip');
+            let newsClipFilePath = requisitionEl.getAttribute('data-news-clip-path');
+
+            if(eFile){
+
+                let completEfile = window.location.href.substring(0, window.location.href.indexOf('editPostedJobs')) + "viewFiles?pathName=" + eFilePath + "&fileName=" + eFile;
+                $("#upload_for_efile_noting_txt").val(completEfile);
+                $(".hide_upload_efile").hide();
+                $('.attachment_section_photos').append(`<div id="efile_edit" >
+                <a target="_blank" href="`+completEfile+`" class="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-80  report_preview_efile">View </a>&nbsp
+                <a href="javascript:void(0);" class="focus:outline-none tbg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 report_remove_pre" data-id="2" data-name="">Remove</a>
+                </div>`);
+            }
+            if(newsClip){
+                let completNewsfile =window.location.href.substring(0, window.location.href.indexOf('editPostedJobs')) + "viewFiles?pathName=" + newsClipFilePath + "&fileName=" + newsClip;
+                $("#upload_newspaper_clip_txt").val(completNewsfile);
+                $(".hide_upload_newspaper_clip").hide();
+                $('.attachment_section_newsclip').append(`<div id="newspaper_clip_edit" >
+                <a target="_blank" href="`+completNewsfile+`" class="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-80  report_preview_newsClip">View </a>&nbsp
+                <a href="javascript:void(0);" class="focus:outline-none bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 report_remove_pre_news" data-id="2" data-name="">Remove</a>
+                </div>`);
+            }
+
+            $(document).on("click",".report_remove_pre",function(){
+                $(this).hide();
+                $(".report_preview_efile").hide();
+                $(".hide_upload_efile").show();
+            })
+            $(document).on("click",".report_remove_pre_news",function(){
+                $(this).hide();
+                $(".report_preview_newsClip").hide();
+                $(".hide_upload_newspaper_clip").show();
+            })
+
+            /*******************************************Upload For News Paper Clips  ***********************************************/
+         $('.upload_newspaper_clip').on('change', function() {
+            var $this = $(this);
+
+            // Check the file type
+            if ($this[0].files[0].type !== 'application/pdf') {
+                Swal.fire('Warning', 'Please select a valid pdf file only!!!', 'warning');
+                $this.val("");
+                return false;
+            }
+
+            // Check the file size (2MB)
+            if ($this[0].files[0].size > 2000000) {
+                $this.val("");
+                Swal.fire('Warning', 'File size should not exceed 2MB!!!', 'warning');
+                return false;
+            }
+
+            var formData = new FormData();
+            var file = $this[0].files[0];
+            formData.append('upload_newspaper_clip', file);
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            formData.append('_token', csrfToken);
+
+            const websiteMeta = document.querySelector('meta[name="website-url"]');
+            const websiteUrl = websiteMeta?.getAttribute('content');
+            let finalUrl = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/storeUpload_cover_photo` : null;
+            let finalUrlOfViewFiles = websiteUrl ? `${websiteUrl}/resource-pool-portal/hr/viewFiles` : null;
+
+            $.ajax({
+                url: finalUrl, // Update with the correct route
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.status == true) {
+                        var fileName = encodeURIComponent(response.file_name);
+                        var pathName = encodeURIComponent('uploads/hr/upload_newspaper_clip/');
+                        let url = `${finalUrlOfViewFiles}?pathName=:pathName&fileName=:fileName`;
+                        url = url.replace(':fileName', fileName);
+                        url = url.replace(':pathName', pathName);
+                        $("#upload_newspaper_clip_txt").val(url);
+                        let ii=0;
+
+                        $this.parents('.attachment_section_newsclip').find('.hide_upload_photos').hide();
+                        $this.parents('.attachment_section_newsclip').find('input[type="file"]').prop('required', false);
+                        $this.parents('.attachment_section_newsclip').siblings('.attachment_section_newsclip').show();
+
+                        $('.attachment_section_newsclip').append('<div id="temp_12' + ii + '" ><a target="_blank" href="' + url + '" class="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-80 report_preview_support_photo">View Document</a>&nbsp<a href="javascript:void(0);" class="focus:outline-none bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 report_remove_photos" data-id="' + ii++ + '" data-name="' + response.file_name + '">Remove</a>&nbsp&nbsp&nbsp&nbsp');
+
+                        $("#upload_photos").val(response.file_name);
+                    } else {
+                        $this.val('');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error occurred: " + status + " " + error);
+                }
+            });
+        });
+        $(document).on('click', '.report_remove_photos', function() {
+            var $this = $(this);
+            var id = $(this).attr("data-id");
+            $this.parents('.attachment_section_newsclip').find('.hide_upload_photos').show();
+            $this.parents('#temp_12' + id).hide();
+            $("#hiddendoc_upload_cover_photo").val('');
+        });
+        /**************************************End Upload For News Paper Clips ***************************************** */
+
+        });
+
+
+        $(document).ready(function () {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    // Function to populate Designation dropdown based on the selected Engagement
+    function populateDesignationDropdown(engagementId) {
+        var engagement_designation_id = $('#engagement_designation_id').val();
+        const websiteMeta = document.querySelector('meta[name="website-url"]');
+        const websiteUrl = websiteMeta?.getAttribute('content');
+        let finalUrl = websiteUrl ? `${websiteUrl}/resource-pool-portal/designations?engagement_id=${engagementId}` : null;
+
+                if (engagementId) {
+                    $.ajax({
+                        url: finalUrl,
+                        method: 'GET',
+                        success: function (data) {
+                            $('#Designation_Engagement').prop('disabled', false);
+                            $('#Designation_Engagement').empty();
+                            $('#Designation_Engagement').append('<option value="">Select a Designation</option>'); // Default option
+                            data.forEach(function (item) {
+                                var selected = (item.id == engagement_designation_id) ? 'selected' : '';
+                                $('#Designation_Engagement').append('<option value="' + item.id + '" ' + selected + '>' + item.designation + '</option>');
+                            });
+                        },
+                        error: function (error) {
+                            console.error('Error fetching designations:', error);
+                        }
+                    });
+                } else {
+                    $('#Designation_Engagement').prop('disabled', true);
+                    $('#Designation_Engagement').empty();
+                    $('#Designation_Engagement').append('<option value="">Select a Designation</option>');
+                }
+            }
+
+            // Trigger the function on page load to populate Designation for the already selected Engagement
+            var selectedEngagementId = $('#Engagement').val();
+            if (selectedEngagementId) {
+                populateDesignationDropdown(selectedEngagementId);
+            }
+
+            // Handle Engagement dropdown change event
+            $('#Engagement').on('change', function () {
+                var engagementId = $(this).val();
+                populateDesignationDropdown(engagementId);
+            });
+        });
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const pad = (n) => n.toString().padStart(2, '0');
+
+            const day = pad(date.getDate());
+            const month = pad(date.getMonth() + 1); // months are 0-based
+            const year = date.getFullYear();
+            const hours = pad(date.getHours());
+            const minutes = pad(date.getMinutes());
+            const seconds = pad(date.getSeconds());
+
+            return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+        }

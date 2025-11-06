@@ -1,0 +1,149 @@
+<?php $attributes ??= new \Illuminate\View\ComponentAttributeBag; ?>
+<?php foreach($attributes->onlyProps(['id', 'buttons' => [], 'routePrefix' => '', 'role' => '', 'module' => '', 'status']) as $__key => $__value) {
+    $$__key = $$__key ?? $__value;
+} ?>
+<?php $attributes = $attributes->exceptProps(['id', 'buttons' => [], 'routePrefix' => '', 'role' => '', 'module' => '', 'status']); ?>
+<?php foreach (array_filter((['id', 'buttons' => [], 'routePrefix' => '', 'role' => '', 'module' => '', 'status']), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
+    $$__key = $$__key ?? $__value;
+} ?>
+<?php $__defined_vars = get_defined_vars(); ?>
+<?php foreach ($attributes as $__key => $__value) {
+    if (array_key_exists($__key, $__defined_vars)) unset($$__key);
+} ?>
+<?php unset($__defined_vars); ?>
+
+<?php
+    $user = Auth::user();
+    $userRole = $user->getRoleNames()->first();
+    $userPermissions = $user->getAllPermissions()->pluck('name')->toArray();
+?>
+
+
+<div class="btn-group" role="group">
+
+    <?php $__currentLoopData = $buttons; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php switch($type):
+            case ('show'): ?>
+                <?php if(canAccess('view', $userPermissions, $module)): ?>
+                    <a href="<?php echo e(route($routePrefix . '.show', encryptId($id))); ?>" class="btn btn-sm btn-info">View</a>
+                <?php endif; ?>
+            <?php break; ?>
+
+            <?php case ('renew'): ?>
+                <?php if(canAccess('renew', $userPermissions, $module)): ?>
+                    <a href="<?php echo e(route($routePrefix . '.renew', encryptId($id))); ?>" class="btn btn-sm btn-info">Renew</a>
+                <?php endif; ?>
+            <?php break; ?>
+
+            <?php case ('edit'): ?>
+                <?php if(canAccess('edit', $userPermissions, $module)): ?>
+                    
+                    <?php if($userRole == 'MD-Role'): ?>
+                        <?php if($user->id == $creator_id && $status != 'Completed'): ?>
+                            <a href="<?php echo e(route($routePrefix . '.edit', encryptId($id))); ?>" class="btn btn-sm btn-warning">Edit</a>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <a href="<?php echo e(route($routePrefix . '.edit', encryptId($id))); ?>" class="btn btn-sm btn-warning">Edit</a>
+                    <?php endif; ?>
+                    
+                <?php endif; ?>
+            <?php break; ?>
+
+            <?php case ('delete'): ?>
+                <?php if(canAccess('delete', $userPermissions, $module)): ?>
+                    
+                    <?php if($userRole === 'MD-Role'): ?>
+                        <?php if($user->id == $creator_id && $status != 'Completed'): ?>
+                            <form action="<?php echo e(route($routePrefix . '.destroy', encryptId($id))); ?>" method="POST"
+                                style="display:inline;">
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('DELETE'); ?>
+                                <button type="submit" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('Are you sure?')">Delete</button>
+                            </form>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <form action="<?php echo e(route($routePrefix . '.destroy', encryptId($id))); ?>" method="POST"
+                            style="display:inline;">
+                            <?php echo csrf_field(); ?>
+                            <?php echo method_field('DELETE'); ?>
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
+                    <?php endif; ?>
+                    
+                <?php endif; ?>
+            <?php break; ?>
+
+            <?php case ('status'): ?>
+                <?php if(canAccess('status', $userPermissions, $module)): ?>
+                    
+                    <?php if($userRole === 'MD-Role'): ?>
+                        <?php if($status != 'Completed'): ?>
+                            <button type="button" class="btn btn-sm btn-primary mark-as-completed-btn"
+                                data-action="<?php echo e(route($routePrefix . '.complete', encryptId($id))); ?>">
+                                Update
+                            </button>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <button type="button" class="btn btn-sm btn-primary mark-as-completed-btn"
+                            data-action="<?php echo e(route($routePrefix . '.complete', encryptId($id))); ?>">
+                            Update
+                        </button>
+                    <?php endif; ?>
+                    
+                <?php endif; ?>
+            <?php break; ?>
+
+            <?php case ('verify'): ?>
+                <?php if(canAccess('verify', $userPermissions, $module)): ?>
+                    <form action="<?php echo e(route($routePrefix . '.verify', encryptId($id))); ?>" method="POST" style="display:inline;">
+                        <?php echo csrf_field(); ?>
+                        <?php echo method_field('PUT'); ?>
+                        <button type="submit" onclick="return confirm('Are you sure want to verify?')"
+                            class="btn btn-sm btn-info mark-as-completed-btn" data-action="">
+                            Verify
+                        </button>
+
+                    </form>
+
+                    
+                <?php endif; ?>
+            <?php break; ?>
+
+            
+
+            <?php case ('receive'): ?>
+                <?php if(canAccess('receive', $userPermissions, $module)): ?>
+                    <button type="button" class="btn btn-sm btn-primary receive-btn"
+                        data-action="<?php echo e(route($routePrefix . '.receive.update', encryptId($id))); ?>">
+                        Receive
+                    </button>
+                <?php endif; ?>
+            <?php break; ?>
+
+            <?php case ('referback'): ?>
+                <?php if(canAccess('referback', $userPermissions, $module)): ?>
+                    <button type="button" class="btn btn-sm btn-danger referback-btn"
+                        data-action="<?php echo e(route($routePrefix . '.referback', encryptId($id))); ?>">
+                        Refer Back
+                    </button>
+                <?php endif; ?>
+            <?php break; ?>
+
+          <?php case ('renewsubmit'): ?>
+                   <a href="<?php echo e(route($routePrefix . '.showrenew', encryptId($id))); ?>"  class="btn btn-sm btn-danger">
+                      view
+                  </a>
+           <?php break; ?>
+
+             <?php case ('acceptrenew'): ?>
+                   <a href="<?php echo e(route($routePrefix . '.acceptRenew', encryptId($id))); ?>"  class="btn btn-sm btn-danger">
+                      view
+                  </a>
+           <?php break; ?>
+
+        <?php endswitch; ?>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+</div>
+<?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/components/action-buttons.blade.php ENDPATH**/ ?>

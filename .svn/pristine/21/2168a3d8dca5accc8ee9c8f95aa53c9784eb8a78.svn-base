@@ -1,0 +1,46 @@
+
+
+<?php $__env->startSection('dashboard_content'); ?>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="parrent_dahboard_">
+                <div class="text"><?php echo e(__('Master Settings')); ?></div>
+            </div>
+        </div>
+    </div>
+    <div class="bg_chart_card">
+        <div class="row">
+            <?php
+                $items = [
+                    'State' => route('states.index'),
+                    'Department' => '#',
+                    'Designation' => '#',
+                    'Examination' => '#',
+                    'Working Basic' => '#',
+                    'Post Graduation' => '#',
+                    'Nature of Employment' => '#',
+                    'Graduation or Diploma' => '#',
+                    'Parent Department Category' => '#',
+                    'Nature of Employment in NHIDCL' => '#',
+                    'Pay Scale (CDA, IDA or Other DA Pattern)' => '#',
+                ];
+            ?>
+
+            <?php $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item => $route): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-3 my-2">
+                    <div class="content_botm_card bg_botom_card1">
+                        <a href="<?php echo e($route); ?>" class="d-flex justify-content-center" aria-label="<?php echo e($item); ?>">
+                            <p><?php echo e($item); ?></p>
+                        </a>
+                    </div>
+                </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('scripts'); ?>
+    <script src="<?php echo e(asset('js/chart-loader.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/custom.js')); ?>"></script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\nhidcl\resources\views/master-settings/index.blade.php ENDPATH**/ ?>

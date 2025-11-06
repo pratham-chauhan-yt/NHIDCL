@@ -1,0 +1,29 @@
+@php
+    if (!session()->has('salt')) {
+        session(['salt' => rand(1111, 9999)]);
+    }
+    $saltKey = session('salt');
+@endphp
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ config('app.name', 'NHIDCL') }} - Corporate Office</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="National Highways and Infrastructure Development Corporation" name="description" />
+    <meta content="nhidcl.com" name="author" />
+    <meta name="salt-key" content="{{ $saltKey }}">
+    <meta name="website-url" content="{{ config('app.url', 'https://www.nhidcl.com/application/') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @yield('meta-head')
+    <link href="{{asset('/favicon.ico')}}" type="image/x-icon" rel="icon"/>
+    <link href="{{asset('/favicon.ico')}}" type="image/x-icon" rel="shortcut icon"/>
+    @include('partials.admin.styles')
+</head>
+<body class="dashboard_bg_body">
+    <div id="loader" class="loader"></div>
+    @include('sweetalert::alert')
+    @yield('content')
+    @yield('contents')
+    @include('partials.admin.scripts')
+</body>
+</html>

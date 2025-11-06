@@ -1,0 +1,41 @@
+<?php $__env->startSection('dashboard_content'); ?>
+    <div class="container-fluid md:p-0">
+        <div class="top_heading_dash__">
+            <div class="main_hed"><?php echo e(__('View Role')); ?></div>
+            <div class="plain_dlfex bg_elips_ic">
+                <a href="<?php echo e(route('roles.index')); ?>"><button type="button"
+                        class="hover-effect-btn fill_btn"><?php echo e(__('Back')); ?></button></a>
+            </div>
+        </div>
+    </div>
+    <!-- input type designs  -->
+    <div class="container inner_page_dash__ mt-[20px]">
+        <div class="inpus_cust_cs grid check_box_input edit_input__">
+            <div class="">
+                <label class="">Role</label>
+                <input type="text" class="" placeholder="role" value="<?php echo e($role->name); ?>" disabled>
+            </div>
+        </div>
+        <div class="border_check_box__">
+            <p>Permissions</p>
+            <div class="grid_for_check_box">
+                <?php if($permissions->isNotEmpty()): ?>
+                    <?php $__currentLoopData = $permissions->filter(fn($permission) => $hasPermissions->contains($permission->name)); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $permission): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <div class="custom_check_inline-item">
+                            <input type="checkbox" id="permission-<?php echo e($permission->id); ?>"
+                                class="custom_check_inline-checkbox" name="permission[]"
+                                value="<?php echo e($permission->name); ?>" checked>
+                            <label class="custom_check_inline-label" for="permission-<?php echo e($permission->id); ?>">
+                                <?php echo e(Str::replaceFirst('user config - ', '', $permission->name)); ?>
+
+                            </label>
+                        </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endif; ?>
+
+            </div>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/roles/show.blade.php ENDPATH**/ ?>

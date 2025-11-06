@@ -1,0 +1,71 @@
+
+<?php $__env->startSection('dashboard_content'); ?>
+    <section class="home-section ">
+        <div class="container-fluid md:p-0">
+            <div class="top_heading_dash__">
+                <div class="main_hed">Current Vacancies</div>
+            </div>
+        </div>
+        <div class="inner_page_dash__">
+            <div class="my-4 ">
+                <div id="Application">
+                    <div class="table_over">
+                        <table class="cust_table__ table_sparated">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Advertisement Post</th>
+                                    <th>Total Vacancy</th>
+                                    <th>Mode Of Recruitment</th>
+                                    <th>End Date & Time</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if(sizeof($postdata) > 0): ?>
+                                <?php $__currentLoopData = $postdata; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $vacancyData): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <tr>
+                                        <td><?php echo e($loop->iteration); ?></td>
+                                        <td><?php echo e($vacancyData?->post_name); ?></td>
+                                        <td><?php echo e($vacancyData?->total_vacancy ?? 0); ?></td>
+                                        <td><?php echo e($vacancyData?->mode_of_requirement != 4 ? 'Deputation' : 'Permanent'); ?></td>
+                                        <td>
+                                            <?php echo e(\Carbon\Carbon::parse($vacancyData?->last_datetime)->format('d-m-Y h:i:s A')); ?>
+
+                                        </td>
+                                        <td>
+                                            <?php if($vacancyData?->is_active): ?>
+                                                <span class="badge badge-info">Active</span>
+                                            <?php else: ?>
+                                                <span class="badge badge-danger">Inactive</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <?php
+                                                $now = \Carbon\Carbon::now();
+                                                $start = $vacancyData?->advertisement?->start_datetime ? \Carbon\Carbon::parse($vacancyData?->advertisement?->start_datetime) : null;
+                                                $end   = $vacancyData?->advertisement?->expiry_datetime ? \Carbon\Carbon::parse($vacancyData?->advertisement?->expiry_datetime) : null;
+                                            ?>
+                                            <?php if($start && $end && $now->between($start, $end) && now()->lessThan(\Carbon\Carbon::parse($vacancyData?->last_datetime))): ?>
+                                            <a href="<?php echo e(route('recruitment-portal.candidate.advertisement.post', encrypt($vacancyData?->id))); ?>" class="btn btn-default btn-sm" target="_blank">Apply Here</a>
+                                            <?php else: ?>
+                                            <a href="javascript:void(0);" class="btn btn-theme btn-sm text-hover">Apply Here</a>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <th colspan="7">No records found here</th>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\recruitment\resources\views/recruitment-management/Candidate/post-vacancies.blade.php ENDPATH**/ ?>

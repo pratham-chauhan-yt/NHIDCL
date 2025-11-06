@@ -1,0 +1,70 @@
+<?php $__env->startSection('dashboard_content'); ?>
+    <section class="home-section">
+        <div class="container-fluid md:p-0">
+            <div class="top_heading_dash__">
+                <div class="main_hed">Advertisement Details</div>
+            </div>
+        </div>
+        <div class="inner_page_dash__">
+            <div class="my-4">
+                <div id="Home" class="tabcontent">
+                    <div class="candidat_cust-dates">
+                        <p><b>Start Date:</b> <br><span><?php echo e(\Carbon\Carbon::parse($record->start_datetime)->format('d-m-Y h:i:s A')); ?></span></p>
+                        <p><b>End Date Time:</b> <br><span><?php echo e(\Carbon\Carbon::parse($record->expiry_datetime)->format('d-m-Y h:i:s A')); ?></span></p>
+                    </div>
+                    <hr class="my-3">
+                    <div class="heading_and_btn">
+                        <h1 class="candidat_cust-title"><?php echo e($record->advertisement_title); ?></h1>
+
+                    <div class="inline-flex mt-3 mb-2 gap-10">
+                        <!-- <h2 class="font-semibold text-red-500">Notes:-</h2> -->
+                        <?php if(!empty($record?->advertisement_file)): ?>
+                            <p><a href="<?php echo e(url('recruitment-portal/candidate/advertisement/view/files').'?pathName=/uploads/recruitment/advertisement/&fileName=' . urlencode(optional($record)->advertisement_file)); ?>" class="text-hover btn btn-default" target="_blank">View Advertisement</a></p>
+                        <?php endif; ?>
+                    </div>
+                    </div>
+                    <!-- <p><?php echo e($record->note_instruction); ?></p> -->
+                    <div class="candidat_cust-container-3cols">
+                        <?php $__currentLoopData = $postdata; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $postresult): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php
+                            $readableModes = $postresult->moderecruitment->pluck('name')->implode(', ');
+                        ?>
+                        <div class="candidat_cust-item">
+                            <div class="candidat_cust-header">
+                                <span class="candidat_cust-time">Mode of Recruitment</span>
+                                <span class="candidat_cust-time"><?php echo e($readableModes); ?></span>
+                            </div>
+                            <h4 class="candidat_cust-title"><?php echo e($postresult->post_name); ?></h4>
+                            
+
+                            <div class="candidat_cust-dates">
+                                <p>Total Vacancy <br><span><?php echo e($postresult->total_vacancy ?? '0'); ?></span></p>
+                                <?php if($postresult->last_datetime): ?>
+                                <p>Last date and time <br><span><?php echo e(\Carbon\Carbon::parse($postresult->last_datetime)->format('d-m-Y h:i:s A')); ?></span></p>
+                                <?php endif; ?>
+                            </div>
+                            <?php
+                                $now = \Carbon\Carbon::now();
+                                $start = $record?->start_datetime ? \Carbon\Carbon::parse($record?->start_datetime) : null;
+                                $end   = $record?->expiry_datetime ? \Carbon\Carbon::parse($record?->expiry_datetime) : null;
+                            ?>
+                            <?php if($start && $end && $now->between($start, $end) && now()->lessThan(\Carbon\Carbon::parse($postresult->last_datetime))): ?>
+                            <div class="text-right">
+                                <a href="<?php echo e(route('recruitment-portal.candidate.advertisement.post', encrypt($postresult->id))); ?>" class="hover-effect-btn text-hover btn btn-primary text-white">Apply Here</a>
+                            </div>
+                            <?php else: ?>
+                            <div class="text-right">
+                                <a href="javascript:void(0);" class="text-hover btn btn-theme">Apply Here</a>
+                            </div>
+                            <?php endif; ?>
+
+                        </div>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/recruitment-management/advertisement-data.blade.php ENDPATH**/ ?>

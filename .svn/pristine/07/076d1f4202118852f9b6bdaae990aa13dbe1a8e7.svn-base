@@ -1,0 +1,73 @@
+
+<?php $__env->startSection('dashboard_content'); ?>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="parrent_dahboard_">
+                <div class="text"><?php echo e(__('Notifications')); ?></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="bg_chart_card mt-0">
+                    <div class="parrent_dahboard_ chart_c">
+                        <div class="text text-dark"> </div>
+                        <a href="<?php echo e(route('notifications.markAllAsRead')); ?>" id="markAllAsRead"
+                            class="quick-btn"><?php echo e(__('Mark All as Read')); ?></a>
+                    </div>
+                    <ul class="list-group">
+                        <?php if($notifications->count() > 0): ?>
+                            <?php $__currentLoopData = $notifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notification): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <li class="list-group-item <?php echo e($notification->read_at ? '' : 'list-group-item-primary'); ?>">
+                                    
+                                    <a href="<?php echo e(route('notification.read', $notification->id)); ?>"
+                                        class="text-reset d-block">
+                                        <?php echo e($notification->data['message']); ?>
+
+                                    </a>
+                                    <small
+                                        class="text-muted float-right"><?php echo e($notification->created_at->diffForHumans()); ?></small>
+                                </li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php else: ?>
+                            <li class="list-group-item">
+                                <?php echo e(__('No notifications')); ?>
+
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+
+                    <?php echo e($notifications->links()); ?> <!-- Pagination links -->
+                </div>
+            </div>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('scripts'); ?>
+    <script src="<?php echo e(asset('js/chart-loader.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/custom.js')); ?>"></script>
+
+    <script>
+        document.getElementById('markAllAsRead').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default link action
+
+            fetch("<?php echo e(route('notifications.markAllAsRead')); ?>", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Update the notification badge to 0 or remove unread notification styling
+                        document.querySelectorAll('.notification-item').forEach(item => item.classList.remove(
+                            'list-group-item-primary'));
+                        document.querySelector('.badge').innerText = '0';
+                    }
+                });
+        });
+    </script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\nhidcl\resources\views/notifications/all.blade.php ENDPATH**/ ?>

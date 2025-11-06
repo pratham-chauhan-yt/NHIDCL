@@ -1,0 +1,74 @@
+<?php $__env->startSection('dashboard_content'); ?>
+    <div class="container-fluid md:p-0">
+        <div class="top_heading_dash__">
+            <div class="main_hed">View Users</div>
+            <div class="plain_dlfex bg_elips_ic">
+                <a href="<?php echo e(route('user-config.view')); ?>"><button type="button"
+                        class="hover-effect-btn fill_btn"><?php echo e(__('Back')); ?></button></a>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid inner_page_dash__ mt-[20px]" id="usersContainer" data-route-url="<?php echo e(route('user-config.view')); ?>">
+        <div class="space-y-4 mb-6 inpus_cust_cs ">
+            <div class="flex space-x-4 gap-[10px]">
+                <div class="flex flex-col gap-[10px]">
+                    <label for="email_filter" class="text-sm font-medium">Email:</label>
+                    <input type="text" id="email_filter" name="email_filter" placeholder="Filter by Email"
+                        class="mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="flex flex-col gap-[10px]">
+                    <label for="mobile_filter" class="text-sm font-medium">Mobile:</label>
+                    <input type="text" name="mobile_filter" id="mobile_filter" placeholder="Filter by Mobile"
+                        class="mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="flex flex-col gap-[10px]">
+                    <label for="department_filter" class="text-sm font-medium">Department:</label>
+                    <select id="department_filter" name="department_filter"
+                        class="mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">Select Department</option>
+                        <?php $__currentLoopData = $departments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rowDepart): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($rowDepart->id); ?>"><?php echo e($rowDepart->name); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </select>
+                </div>
+
+                <div class="flex flex-col gap-[10px]">
+                    <label for="role_filter" class="text-sm font-medium">Role:</label>
+                    <select id="role_filter" name="role_filter"
+                        class="mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">Select Role</option>
+                        <?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rowRole): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($rowRole->id); ?>"><?php echo e($rowRole->name); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </select>
+                </div>
+                <div class="mt-8">
+                    <button onclick="window.location.href='<?php echo e(route('users.export', request()->except('page'))); ?>'"
+                        class="btn btn-primary rounded-lg">
+                        Download Excel
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+        <table id="usersTable_data" class="data_bg_table cust_table__ table_sparated table-auto text-wrap cell-border">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Mobile No</th>
+                    <th>Department</th>
+                    <th>Roles</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/user-config/view.blade.php ENDPATH**/ ?>

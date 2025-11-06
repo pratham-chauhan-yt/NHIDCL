@@ -1,0 +1,865 @@
+
+
+<?php $__env->startSection('dashboard_content'); ?>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="parrent_dahboard_">
+                <div class="text"><?php echo e(__(' Dashboard ')); ?></div>
+                <div class="date_selection">
+                    <select name="date" id="date">
+                        <option value="18/07/2024">18/07/2024</option>
+                        <option value="18/07/2024">18/07/2024</option>
+                        <option value="18/07/2024">18/07/2024</option>
+                        <option value="18/07/2024">18/07/2024</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-12">
+            <div class="row">
+                <div class="col-md-6 col-lg-4 col-xl-4">
+                    <div class="bg_card_icons_dahboard">
+                        <a href="#">
+                            <div class="icons_card_flex">
+                                <div class="icons_">
+                                    <img src="./images/total-emp.png" alt="total-emp">
+                                </div>
+                                <div class="content_card_b">
+                                    <h5>350</h5>
+                                    <p>Total Employee</p>
+                                </div>
+                                <div class="icons_right_card">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 col-xl-4">
+                    <div class="bg_card_icons_dahboard">
+                        <a href="#">
+                            <div class="icons_card_flex present_emp">
+                                <div class="icons_">
+                                    <img src="./images/present.png" alt="persent">
+                                </div>
+                                <div class="content_card_b">
+                                    <h5>285</h5>
+                                    <p>Today's Present Employees</p>
+                                </div>
+                                <div class="icons_right_card">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 col-xl-4">
+                    <div class="bg_card_icons_dahboard">
+                        <a href="#">
+                            <div class="icons_card_flex leave_emp">
+                                <div class="icons_">
+                                    <img src="./images/leave.png" alt="leave">
+                                </div>
+                                <div class="content_card_b">
+                                    <h5>65</h5>
+                                    <p>Employees on Leave</p>
+                                </div>
+                                <div class="icons_right_card">
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="bg_chart_card">
+                        <div class="parrent_dahboard_ chart_c">
+                            <div class="text">Attendance</div>
+                            <div class="plain_dlfex">
+                                <div class="date_selection">
+                                    <select name="date" id="date">
+                                        <option value="18/07/2024">18/07/2024</option>
+                                        <option value="18/07/2024">18/07/2024</option>
+                                        <option value="18/07/2024">18/07/2024</option>
+                                        <option value="18/07/2024">18/07/2024</option>
+                                    </select>
+                                </div>
+                                <div class="bg_elips_ic">
+                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="donutchart" style="width: 100%; height: auto; justify-content: center; display: flex;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="bg_chart_card">
+                        <div class="parrent_dahboard_ chart_c">
+                            <div class="text">Category of Employees</div>
+                            <div class="plain_dlfex">
+                                <div class="bg_elips_ic">
+                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="columnchart_values"
+                            style="width: 100%; height: auto; justify-content: center; display: flex;"></div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <nav>
+                        <div class="nav nav-tabs" id="nhidcl_tabs" role="tablist">
+                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+                                aria-selected="true">NHIDCL Policies</button>
+                            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+                                type="button" role="tab" aria-controls="nav-profile" aria-selected="false">NHIDCL
+                                Circulars</button>
+                            <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
+                                type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Other
+                                Publications</button>
+                            <button class="nav-link" id="nav-office-order-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-office-order" type="button" role="tab"
+                                aria-controls="nav-office-order" aria-selected="false">Office Orders</button>
+                        </div>
+                    </nav>
+                    <div class="tab-content tab_bg_cont" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                            aria-labelledby="nav-home-tab" tabindex="0">
+                            <div class="tab_cont_list">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                <p>Handing over/entrustment of stretches as identified in the cabinet note for
+                                    development of NHIDCL</p>
+                                <div class="pdf_link">
+                                    <a href="#"> <span>PDF</span>
+                                        Download</a>
+                                </div>
+                            </div>
+                            <div class="tab_cont_list">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                <p>Handing over/entrustment of stretches as identified in the cabinet note for
+                                    development of NHIDCL</p>
+                                <div class="pdf_link">
+                                    <a href="#"> <span>PDF</span>
+                                        Download</a>
+                                </div>
+                            </div>
+                            <div class="tab_cont_list">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                <p>Handing over/entrustment of stretches as identified in the cabinet note for
+                                    development of NHIDCL</p>
+                                <div class="pdf_link">
+                                    <a href="#"> <span>PDF</span>
+                                        Download</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
+                            tabindex="0">Upcoming Circulars</div>
+                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab"
+                            tabindex="0">Upcoming Publications</div>
+                        <div class="tab-pane fade" id="nav-office-order" role="tabpanel"
+                            aria-labelledby="nav-office-order-tab" tabindex="0">Upcoming Orders</div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- col-6 end parent  -->
+        <div class="col-md-3">
+            <div class="bg_notification">
+                <div class="parrent_dahboard_ chart_c inner_body_style mt-0">
+                    <div class="text ">Notification</div>
+                    <div class="plain_dlfex">
+                        <div class="bg_elips_ic">
+                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="notifiction_parent">
+                    <div class="icons_profile">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </div>
+                    <div class="notification_contetn">
+                        <div class="content_hed_p_notification">
+                            <h6>Changes in Time-off Policy</h6>
+                            <p>Please read the updated policy document carefully.</p>
+                        </div>
+                        <a href="#"><span>PDF</span></a>
+                    </div>
+                </div>
+                <div class="notifiction_parent">
+                    <div class="icons_profile">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </div>
+                    <div class="notification_contetn">
+                        <div class="content_hed_p_notification">
+                            <h6>Changes in Time-off Policy</h6>
+                            <p>Please read the updated policy document carefully.</p>
+                        </div>
+                        <a href="#"><span>PDF</span></a>
+                    </div>
+                </div>
+                <div class="notifiction_parent">
+                    <div class="icons_profile">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </div>
+                    <div class="notification_contetn">
+                        <div class="content_hed_p_notification">
+                            <h6>Changes in Time-off Policy</h6>
+                            <p>Please read the updated policy document carefully.</p>
+                        </div>
+                        <a href="#"><span>PDF</span></a>
+                    </div>
+                </div>
+                <div class="notifiction_parent">
+                    <div class="icons_profile">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </div>
+                    <div class="notification_contetn">
+                        <div class="content_hed_p_notification">
+                            <h6>Changes in Time-off Policy</h6>
+                            <p>Please read the updated policy document carefully.</p>
+                        </div>
+                        <a href="#"><span>PDF</span></a>
+                    </div>
+                </div>
+                <div class="notifiction_parent">
+                    <div class="icons_profile">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </div>
+                    <div class="notification_contetn">
+                        <div class="content_hed_p_notification">
+                            <h6>Changes in Time-off Policy</h6>
+                            <p>Please read the updated policy document carefully.</p>
+                        </div>
+                        <a href="#"><span>PDF</span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="bg_notification bg_audit_management mt-4">
+                <div class="parrent_dahboard_ chart_c inner_body_style mt-0">
+                    <div class="text ">Audit Managment</div>
+                    <div class="plain_dlfex">
+                        <div class="bg_elips_ic">
+                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="audit_management_cont">
+                    <ul>
+                        <li>Technical Training to enhances technical competencies.
+                            <div class="cldsks">
+                                <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i>
+                                    <span>17-08-2024</span></a>
+                                <a href="#"><i class="fa fa-clock" aria-hidden="true"></i>
+                                    <span>Time Swipe : 02</span></a>
+                            </div>
+                        </li>
+                        <li>Technical Training to enhances technical competencies.
+                            <div class="cldsks">
+                                <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i>
+                                    <span>17-08-2024</span></a>
+                                <a href="#"><i class="fa fa-clock" aria-hidden="true"></i>
+                                    <span>Time Swipe : 02</span></a>
+                            </div>
+                        </li>
+                        <li>Technical Training to enhances technical competencies.
+                            <div class="cldsks">
+                                <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i>
+                                    <span>17-08-2024</span></a>
+                                <a href="#"><i class="fa fa-clock" aria-hidden="true"></i>
+                                    <span>Time Swipe : 02</span></a>
+                            </div>
+                        </li>
+                        <li>Technical Training to enhances technical competencies.
+                            <div class="cldsks">
+                                <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i>
+                                    <span>17-08-2024</span></a>
+                                <a href="#"><i class="fa fa-clock" aria-hidden="true"></i>
+                                    <span>Time Swipe : 02</span></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div> <!-- col-md-3 prenet close  -->
+        <div class="col-md-3">
+            <div class="bg_notification bg_query_management_s">
+                <div class="parrent_dahboard_ chart_c inner_body_style mt-0">
+                    <div class="text ">Query Management</div>
+                    <div class="plain_dlfex">
+                        <div class="bg_elips_ic">
+                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="query_mang_content">
+                    <div class="img_profile">
+                        <img src="./images/profile-1.png" alt="Profile">
+                    </div>
+                    <div class="contant_qury_mght">
+                        <h5>Tarun Kumar</h5>
+                        <p>Query Raised on : <span>18 July 2024</span></p>
+                        <p>Type of Query : <span>Training</span></p>
+                        <p>Status : <span class="text-success">In-process</span></p>
+                    </div>
+                </div>
+                <div class="query_mang_content">
+                    <div class="img_profile">
+                        <img src="./images/profile-1.png" alt="Profile">
+                    </div>
+                    <div class="contant_qury_mght">
+                        <h5>Tarun Kumar</h5>
+                        <p>Query Raised on : <span>18 July 2024</span></p>
+                        <p>Type of Query : <span>Training</span></p>
+                        <p>Status : <span class="text-success">In-process</span></p>
+                    </div>
+                </div>
+                <div class="query_mang_content">
+                    <div class="img_profile">
+                        <img src="./images/profile-1.png" alt="Profile">
+                    </div>
+                    <div class="contant_qury_mght">
+                        <h5>Tarun Kumar</h5>
+                        <p>Query Raised on : <span>18 July 2024</span></p>
+                        <p>Type of Query : <span>Training</span></p>
+                        <p>Status : <span class="text-success">In-process</span></p>
+                    </div>
+                </div>
+                <div class="query_mang_content">
+                    <div class="img_profile">
+                        <img src="./images/profile-1.png" alt="Profile">
+                    </div>
+                    <div class="contant_qury_mght">
+                        <h5>Tarun Kumar</h5>
+                        <p>Query Raised on : <span>18 July 2024</span></p>
+                        <p>Type of Query : <span>Training</span></p>
+                        <p>Status : <span class="text-success">In-process</span></p>
+                    </div>
+                </div>
+                <div class="query_mang_content">
+                    <div class="img_profile">
+                        <img src="./images/profile-1.png" alt="Profile">
+                    </div>
+                    <div class="contant_qury_mght">
+                        <h5>Tarun Kumar</h5>
+                        <p>Query Raised on : <span>18 July 2024</span></p>
+                        <p>Type of Query : <span>Training</span></p>
+                        <p>Status : <span class="text-success">In-process</span></p>
+                    </div>
+                </div>
+                <div class="query_mang_content">
+                    <div class="img_profile">
+                        <img src="./images/profile-1.png" alt="Profile">
+                    </div>
+                    <div class="contant_qury_mght">
+                        <h5>Tarun Kumar</h5>
+                        <p>Query Raised on : <span>18 July 2024</span></p>
+                        <p>Type of Query : <span>Training</span></p>
+                        <p>Status : <span class="text-success">In-process</span></p>
+                    </div>
+                </div>
+                <div class="query_mang_content">
+                    <div class="img_profile">
+                        <img src="./images/profile-1.png" alt="Profile">
+                    </div>
+                    <div class="contant_qury_mght">
+                        <h5>Tarun Kumar</h5>
+                        <p>Query Raised on : <span>18 July 2024</span></p>
+                        <p>Type of Query : <span>Training</span></p>
+                        <p>Status : <span class="text-success">In-process</span></p>
+                    </div>
+                </div>
+                <div class="query_mang_content">
+                    <div class="img_profile">
+                        <img src="./images/profile-1.png" alt="Profile">
+                    </div>
+                    <div class="contant_qury_mght">
+                        <h5>Tarun Kumar</h5>
+                        <p>Query Raised on : <span>18 July 2024</span></p>
+                        <p>Type of Query : <span>Training</span></p>
+                        <p>Status : <span class="text-success">In-process</span></p>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- col-md-3 parent last end  -->
+    </div> <!-- parent row end  -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="bg_chart_card">
+                <div class="parrent_dahboard_ chart_c nhidcl_office_border_hed">
+                    <div class="text">NHIDCL Regional Offices</div>
+                    <div class="plain_dlfex">
+                        <div class="date_selection">
+                            <select name="date" id="date">
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="Uttarakhand">Uttarakhand Uttarakhand</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="india_map">
+                            <img src="./images/india-map.png" alt="india-map" class="w-100">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="overflow_addres_cont_name">
+                            <div class="border_bot_name_after">
+                                <div class="india_map_content">
+                                    <h5>Amarendra Narayan Singh</h5>
+                                    <p>Executive Director</p>
+                                    <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i>
+                                        ro[dot]dehradun[at]nhidcl[dot]com</a>
+                                    <a href="#"><i class="fa fa-phone" aria-hidden="true"></i>
+                                        9162423600</a>
+                                </div>
+                                <div class="india_map_content mt-4">
+                                    <h5>Rupesh Kumar</h5>
+                                    <p>General Manager (P)</p>
+                                    <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i>
+                                        gmp[dot]dehradun[at]nhidcl[dot]com</a>
+                                    <a href="#"><i class="fa fa-phone" aria-hidden="true"></i>
+                                        9471002814</a>
+                                </div>
+                            </div>
+                            <div class="border_bot_name_after">
+                                <div class="india_map_content mt-4">
+                                    <h5>Address :</h5>
+                                    <p>C 24, Ajabpur kalan THDCC, Dehradun-248121</p>
+
+                                </div>
+                            </div>
+                            <div class="border_bot_name_after">
+                                <div class="india_map_content">
+                                    <h5>Amarendra Narayan Singh</h5>
+                                    <p>Executive Director</p>
+                                    <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i>
+                                        ro[dot]dehradun[at]nhidcl[dot]com</a>
+                                    <a href="#"><i class="fa fa-phone" aria-hidden="true"></i>
+                                        9162423600</a>
+                                </div>
+                                <div class="india_map_content mt-4">
+                                    <h5>Rupesh Kumar</h5>
+                                    <p>General Manager (P)</p>
+                                    <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i>
+                                        gmp[dot]dehradun[at]nhidcl[dot]com</a>
+                                    <a href="#"><i class="fa fa-phone" aria-hidden="true"></i>
+                                        9471002814</a>
+                                </div>
+                            </div>
+                            <div class="border_bot_name_after">
+                                <div class="india_map_content mt-4">
+                                    <h5>Address :</h5>
+                                    <p>C 24, Ajabpur kalan THDCC, Dehradun-248121</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- col-md-6 parent colse  -->
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6 col-lg-4 col-xl-4 mt-4 ">
+                    <div class="content_botm_card bg_botom_card1">
+                        <a href="#">
+                            <p>Minute of the Executives Committee</p>
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 col-xl-4 mt-4 ">
+                    <div class="content_botm_card bg_botom_card1 bg_botom_card2">
+                        <div class="audit_mang_card_2">
+                            <p>Audit Query Raised By Finance</p>
+                            <div class="bg_elips_ic bottom_card_icon">
+                                <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="bottom_card_count">
+                            <span>200 <br> Total</span>
+                            <span>120 <br> Pending</span>
+                            <span>80 <br> Closed</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 col-xl-4 mt-4 ">
+                    <div class="content_botm_card bg_botom_card1 bg_botom_card3">
+                        <div class="audit_mang_card_2">
+                            <p>Query Raised By Employees</p>
+                            <div class="bg_elips_ic bottom_card_icon">
+                                <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="bottom_card_count">
+                            <span>220 <br> Total</span>
+                            <span>60 <br> Pending</span>
+                            <span>160 <br> Closed</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="parrent_dahboard_ chart_c mb-2 mt-4">
+                        <div class="text text-dark">Employee on Leave Today</div>
+                        <div class="plain_dlfex">
+                            <div class="bg_elips_ic">
+                                <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle table-hover custom_table_nhidcl mb-0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Emp. ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">From</th>
+                                    <th scope="col">To</th>
+                                    <th scope="col">Department</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>1587</td>
+                                    <td>Hiren Chauhan</td>
+                                    <td>10-07-2024</td>
+                                    <td>13-07-2024</td>
+                                    <td>04</td>
+                                    <td><a href="#"><i class="fa fa-eye text-success" aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>1587</th>
+                                    <td>Hiren Chauhan</td>
+                                    <td>10-07-2024</td>
+                                    <td>13-07-2024</td>
+                                    <td>04</td>
+                                    <td><a href="#"><i class="fa fa-eye text-success" aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>1587</th>
+                                    <td>Hiren Chauhan</td>
+                                    <td>10-07-2024</td>
+                                    <td>13-07-2024</td>
+                                    <td>04</td>
+                                    <td><a href="#"><i class="fa fa-eye text-success" aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>1587</th>
+                                    <td>Hiren Chauhan</td>
+                                    <td>10-07-2024</td>
+                                    <td>13-07-2024</td>
+                                    <td>04</td>
+                                    <td><a href="#"><i class="fa fa-eye text-success" aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pagination_cust">
+                            <span>01 to 10 of 50 Items</span>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item"><a class="page-link" href="#"><i
+                                                class="fa fa-angle-left" aria-hidden="true"></i></a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#"><i
+                                                class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- inner row close  -->
+        </div>
+    </div> <!-- Row parent colse  -->
+
+    <section class="home-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="parrent_dahboard_">
+                        <div class="text">Master Page</div>                        
+                    </div>
+                </div>
+            </div>
+            <div class="row">  
+                <div class="col-md-12">
+                    <div class="bg_chart_card mt-0">
+                        <div class="parrent_dahboard_ chart_c">
+                            <div class="text text-dark">Table Section</div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table align-middle table-hover custom_table_nhidcl mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Emp. ID</th>
+                                        <th>Name</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Department</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>1587
+                                        </th><td>Hiren Chauhan</td>
+                                        <td>10-07-2024</td>
+                                        <td>13-07-2024</td>
+                                        <td>04</td>
+                                        <td><a href="#"><i class="fa fa-eye text-success" aria-hidden="true"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <th>1587</th>
+                                        <td>Hiren Chauhan</td>
+                                        <td>10-07-2024</td>
+                                        <td>13-07-2024</td>
+                                        <td>04</td>
+                                        <td><a href="#"><i class="fa fa-eye text-success" aria-hidden="true"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <th>1587</th>
+                                        <td>Hiren Chauhan</td>
+                                        <td>10-07-2024</td>
+                                        <td>13-07-2024</td>
+                                        <td>04</td>
+                                        <td><a href="#"><i class="fa fa-eye text-success" aria-hidden="true"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <th>1587</th>
+                                        <td>Hiren Chauhan</td>
+                                        <td>10-07-2024</td>
+                                        <td>13-07-2024</td>
+                                        <td>04</td>
+                                        <td><a href="#"><i class="fa fa-eye text-success" aria-hidden="true"></i></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="pagination_cust">
+                                <span>01 to 10 of 50 Items</span>
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination">
+                                        <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-12">
+                    <div class="bg_chart_card">
+                        <div class="parrent_dahboard_ chart_c">
+                            <div class="text text-dark">Form Section</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Text Field</label>
+                                    <input type="text" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Date Field</label>
+                                    <input type="date" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <div class="mb-3">
+                                    <label class="form-label">File Upload</label>
+                                    <input type="file" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Text Area</label>
+                                    <textarea class="form-control" rows="1"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Select Box</label>
+                                    <select class="form-control">
+                                        <option>Select</option>
+                                        <option value="1">Select</option>
+                                        <option value="2">Select</option>
+                                        <option value="3">Select</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <div class="radio-btns-inp d-flex align-items-center h-100">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" value="option1">
+                                        <label class="form-check-label">Radio 1</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" value="option2">
+                                        <label class="form-check-label">Radio 2</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <div class="d-flex align-items-center flex-wrap h-100">
+                                    <label for="" class="form-label">Custom Checkbox</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <div class="d-flex align-items-center h-100">
+                                    <div class="form-check">
+                                        <input class="form-check-input inline-frm-chk" type="checkbox">
+                                        <label class="form-check-label text-nowrap pb-0">
+                                            Default checkbox
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="center-buttons">
+                            <button type="button" class="quick-btn gray-btn">Cancel</button>
+                            <button type="button" class="quick-btn">Sign in</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-12">
+                    <div class="bg_chart_card">
+                        <div class="parrent_dahboard_ chart_c">
+                            <div class="text text-dark">Buttons Position</div>
+                        </div>
+                        <div class="center-buttons">
+                            <button type="button" class="quick-btn gray-btn">Cancel</button>
+                            <button type="button" class="quick-btn">Sign in</button>
+                        </div>
+                        <div class="end-buttons">
+                            <button type="button" class=" quick-btn gray-btn">Cancel</button>
+                            <button type="button" class="quick-btn ">Sign in</button>
+                        </div>
+                        <div class="start-buttons">
+                            <button type="button" class="btn quick-btn gray-btn">Cancel</button>
+                            <button type="button" class="quick-btn">Sign in</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-12">
+                    <div class="bg_chart_card">
+                        <div class="parrent_dahboard_ chart_c">
+                            <div class="text text-dark">Type of Buttons</div>
+                        </div>
+                        <div class="center-buttons">
+                            <a href="javascript:void(0)" class="quick-btn gradient-btn">Gradient</a>
+                            <a href="javascript:void(0)" class="quick-btn transparent-btn">Transparent Button</a>
+                            <a href="javascript:void(0)" class="quick-btn black-btn">Black Button</a>
+                            <button type="button" class="quick-btn gray-btn">Gray Button</button>
+                            <button type="button" class="quick-btn">Blue Button</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-12">
+                    <div class="bg_chart_card">
+                        <div class="parrent_dahboard_ chart_c">
+                            <div class="text text-dark">PopUp</div>
+                        </div>
+                        <div class="center-buttons">
+                            <!-- Modal - 1 Start   -->
+                            <!-- Button trigger modal -->
+                            <button type="button" class="quick-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Launch static backdrop modal
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade common-modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" style="display: none;" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <!-- <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5> -->
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h5 class="modal-title">Title Text</h5>
+                                            <p>Lorem ipsum, dolor sit amet consectetur
+                                                adipisicing elit. Aliquid, culpa.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="quick-btn gray-btn" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="quick-btn">Understood</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal - 1 Start   -->
+
+                            <!-- Modal - 2 Start   -->
+                            <!-- Button trigger modal -->
+                            <button type="button" class="quick-btn gray-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Launch demo modal
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade common-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h5 class="modal-title">Title Text</h5>
+                                            Lorem ipsum dolor sit amet consectetur,
+                                            adipisicing elit. Culpa ullam eum fugiat ea
+                                            dolorem voluptatem aspernatur sequi, ratione
+                                            facilis accusamus!
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="center-buttons">
+                                                <button type="button" class="quick-btn gray-btn" data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="quick-btn">Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal - 2 End   -->
+                        </div>
+                    </div>
+                </div>
+             
+                
+            </div> 
+             
+        </div>
+    </section>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+    <script src="<?php echo e(asset('js/chart-loader.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/custom.js')); ?>"></script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\nhidcl\resources\views/dashboard/index.blade.php ENDPATH**/ ?>

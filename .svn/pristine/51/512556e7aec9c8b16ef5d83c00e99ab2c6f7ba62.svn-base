@@ -1,0 +1,35 @@
+
+<?php $__env->startSection('content'); ?>
+    <div id="layout-wrapper">
+        <?php if(isset($header)): ?>
+            <?php echo $__env->make('shared.header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <?php endif; ?>
+        <?php if(isset($sidebar)): ?>
+            <?php echo $__env->make('shared.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <?php endif; ?>
+        <div class="vertical-overlay"></div>
+        <div class="main-content">
+            <div class="page-content">
+                <div class="container-fluid">
+                    <?php echo $__env->yieldContent('dashboard_content'); ?>
+                </div>
+            </div>
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <script>document.write(new Date().getFullYear())</script> © CAG.
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="text-sm-end d-none d-sm-block">
+                                Comptroller and Auditor General of India. All Rights Reserved.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\CAGBEMS\resources\views/layouts/dashboard.blade.php ENDPATH**/ ?>

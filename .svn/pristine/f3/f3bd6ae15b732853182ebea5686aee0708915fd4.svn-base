@@ -1,0 +1,124 @@
+<table>
+    <thead>
+        <tr>
+            <th><b>Id</b></th>
+            <th><b>Application Id</th>
+            <th><b>Name</b></th>
+            <th><b>Father/Husband Name</b></th>
+            <th><b>Mother Name</b></th>
+            <th><b>Email</b></th>
+            <th>Mobile</th>
+            <th>Date Of Birth</th>
+            <th>Gender</th>
+            <th>Marital Status</th>
+            <th>Spouse Name</th>
+            <th>Citizenship</th>
+            <th>Category</th>
+            <th>Aadhaar Number</th>
+            <th>Ex Service Man</th>
+            <th>Whether you are PwBD or not</th>
+            <th>Correspondence Address</th>
+            <th>Permanent Address</th>
+            <th>GATE Reg No</th>
+            <th>GATE Score</th>
+        </tr>
+    </thead>
+    <tbody>
+                    <tr>
+                <td>1</td>
+                <td>NHIDCL/2025/40/22</td>
+                <td>Shubham</td>
+                <td></td>
+                <td></td>
+                <td>shubhamshara@gmail.com</td>
+                <td></td>
+                <td>2007-04-04</td>
+
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    , 
+                </td>
+                <td>
+                    , 
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>2</td>
+                <td>NHIDCL/2025/40/238</td>
+                <td>Mayank Raghav</td>
+                <td>Mr DS Raghav</td>
+                <td>Mrs Neeraj Devi</td>
+                <td>mayank.velocis25895@yopmail.com</td>
+                <td>9808397555</td>
+                <td>1995-01-05</td>
+
+                <td>Male</td>
+                <td>Married</td>
+                <td>Mrs Tina Singh</td>
+                <td>India</td>
+                <td>GENERAL</td>
+                <td>242519</td>
+                <td>No</td>
+                <td>Yes</td>
+                <td>
+                    Gaur City 2, 14th Avenue, Greater Noida, Uttar Pradesh, 201301
+                </td>
+                <td>
+                    Gaur City 2, 14th Avenue, Greater Noida, Uttar Pradesh, 201318
+                </td>
+                <td>NHIDCL/2024/98083973555000F</td>
+                <td>850.00</td>
+            </tr>
+            </tbody>
+</table>
+<h3>Category-wise Totals</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+                            <tr>
+                <td>Null</td>
+                <td>1</td>
+            </tr>
+                                <tr>
+                <td>GENERAL</td>
+                <td>1</td>
+            </tr>
+                            <tr>
+            <td><strong>Grand Total</strong></td>
+            <td><strong>2</strong></td>
+        </tr>
+    </tbody>
+</table>
+<h3>PwBD Totals</h3>
+<table>
+    <thead>
+        <tr>
+            <th>PwBD</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+                            <tr>
+                <td>i. Deaf(D) / Hard of Hearing(HH)</td>
+                <td>1</td>
+            </tr>
+                            <tr>
+            <td><strong>Grand Total</strong></td>
+            <td><strong>1</strong></td>
+        </tr>
+    </tbody>
+</table>

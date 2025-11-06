@@ -1,0 +1,30 @@
+<?php
+    if (!session()->has('salt')) {
+        session(['salt' => rand(1111, 9999)]);
+    }
+    $saltKey = session('salt');
+?>
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title><?php echo e(config('app.name', 'NHIDCL')); ?> - Corporate Office</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="National Highways and Infrastructure Development Corporation" name="description" />
+    <meta content="nhidcl.com" name="author" />
+    <meta name="salt-key" content="<?php echo e($saltKey); ?>">
+    <meta name="website-url" content="<?php echo e(config('app.url', 'https://www.nhidcl.com/application/')); ?>">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <?php echo $__env->yieldContent('meta-head'); ?>
+    <link href="<?php echo e(asset('/favicon.ico')); ?>" type="image/x-icon" rel="icon"/>
+    <link href="<?php echo e(asset('/favicon.ico')); ?>" type="image/x-icon" rel="shortcut icon"/>
+    <?php echo $__env->make('partials.admin.styles', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+</head>
+<body class="dashboard_bg_body">
+    <div id="loader" class="loader"></div>
+    <?php echo $__env->make('sweetalert::alert', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->yieldContent('content'); ?>
+    <?php echo $__env->yieldContent('contents'); ?>
+    <?php echo $__env->make('partials.admin.scripts', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+</body>
+</html>
+<?php /**PATH C:\xampp\htdocs\NHIDCL\recruitment\resources\views/layouts/app.blade.php ENDPATH**/ ?>

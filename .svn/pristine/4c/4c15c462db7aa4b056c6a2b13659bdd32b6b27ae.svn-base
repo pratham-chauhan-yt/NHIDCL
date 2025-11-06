@@ -1,0 +1,74 @@
+<?php $__env->startSection('dashboard_content'); ?>
+    <section class="home-section ">
+        <div class="container-fluid md:p-0">
+            <div class="top_heading_dash__">
+                <div class="main_hed"><?php echo e(__('Create Role')); ?></div>
+            </div>
+        </div>
+
+        <div class="inner_page_dash__">
+            <?php echo Form::open(['route' => 'roles.store','method' => 'POST']); ?>
+
+                <div class="inpus_cust_cs grid check_box_input grid-cols-2 gap-[30px] mt-4">
+                    <div class="">
+                        <label class="form-label aster"><?php echo e(__('Role Name')); ?></label>
+                            <input type="text" class="form-control <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="name"
+                                name="name" value="<?php echo e(old('name')); ?>" maxlength="100" required>
+                            <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong><?php echo e($message); ?></strong>
+                                </span>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+                </div>
+
+                <div class=" inner_page_dash__ mt-[20px]">
+                    <h4 class="text-[18px] py-[10px] font-semibold">Assign Permissions</h4>
+                        <div class="permission-section grid_rdit_page_user border_check_box__">
+                            <?php
+                                $permissions = $permissions->mapWithKeys(function ($items, $key) {
+                                    return [($key ?: 'Others') => $items];
+                                });
+                            ?>
+                            <?php $__currentLoopData = $permissions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $module => $permissionGroup): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <h4 class="text-[18px] py-[10px] font-semibold"><?php echo e($module); ?></h4>
+                                <div class="grid_for_check_box">
+                                    <?php $__currentLoopData = $permissionGroup; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $permission): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <div class="permissions">
+                                            <input type="checkbox" id="permission-<?php echo e($permission->id); ?>" class="custom_check_inline-checkbox"
+                                                name="permission[]" value="<?php echo e($permission->name); ?>">
+                                            <label class="custom_check_inline-label" for="permission-<?php echo e($permission->id); ?>">
+                                                <?php echo e($permission->name); ?>
+
+                                            </label>
+                                        </div>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-input">
+                    <button type="submit" class="hover-effect-btn fill_btn"><?php echo e(__('Create Role')); ?></button>
+                </div>
+            <?php echo Form::close(); ?>
+
+        </div>
+    </div>
+</section>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/roles/create.blade.php ENDPATH**/ ?>

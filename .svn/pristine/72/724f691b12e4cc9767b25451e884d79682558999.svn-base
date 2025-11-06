@@ -1,0 +1,119 @@
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Application Id</th>
+            <th>Name</th>
+            <th>Father/Husband Name</th>
+            <th>Mother Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Date Of Birth</th>
+            <th>Gender</th>
+            <th>Marital Status</th>
+            <th>Spouse Name</th>
+            <th>Citizenship</th>
+            <th>Category</th>
+            <th>Aadhaar Number</th>
+            <th>Ex Service Man</th>
+            <th>Whether you are PwBD or not</th>
+            <th>Correspondence Address</th>
+            <th>Permanent Address</th>
+            <th>GATE Reg No</th>
+            <th>GATE Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $__currentLoopData = $previewData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <tr>
+                <td><?php echo e($index+1); ?></td>
+                <td><?php echo e('NHIDCL/' . date('Y') . '/' . ($item->nhidcl_recruitment_posts_id ?? '') . '/' . ($item?->users?->id ?? '')); ?></td>
+                <td><?php echo e($item->users ? $item->users?->name : ''); ?></td>
+                <td><?php echo e(optional($item->application->first())->father_husband_name); ?></td>
+                <td><?php echo e(optional($item->application->first())->mother_name); ?></td>
+                <td><?php echo e($item->users ? $item->users?->email : ''); ?></td>
+                <td><?php echo e($item->users ? $item->users?->mobile : ''); ?></td>
+                <td><?php echo e($item->users ? $item->users?->date_of_birth : ''); ?></td>
+
+                <td><?php echo e(optional($item->application->first())->gender); ?></td>
+                <td><?php echo e(optional($item->application->first())->marital_status); ?></td>
+                <td><?php echo e(optional($item->application->first())->spouse_name); ?></td>
+                <td><?php echo e(optional($item->application->first())->indian_citizen); ?></td>
+                <td><?php echo e(optional($item->application->first())->caste->caste ?? ''); ?></td>
+                <td><?php echo e(optional($item->application->first())->aadhar_number); ?></td>
+                <td><?php echo e(is_null(optional($item->application->first())->ex_serviceman) ? '' : (optional($item->application->first())->ex_serviceman ? 'Yes' : 'No')); ?></td>
+                <td><?php echo e(optional($item->application->first())->pwbd ?? ''); ?></td>
+                <td>
+                    <?php echo e(implode(
+                        ', ',
+                        array_filter([
+                            optional($item->application->first())->correspondence_address,
+                            optional($item->application->first())->correspondence_city,
+                            optional($item->application->first())->correspondenceState?->name . ', ' . optional($item->application->first())->correspondence_pincode
+                        ]),
+                    )); ?>
+
+                </td>
+                <td>
+                    <?php echo e(implode(
+                        ', ',
+                        array_filter([
+                            optional($item->application->first())->permanent_address,
+                            optional($item->application->first())->permanent_city,
+                            optional($item->application->first())->permanentState?->name . ', ' . optional($item->application->first())->permanent_pincode
+                        ]),
+                    )); ?>
+
+                </td>
+                <td><?php echo e(optional($item->gatescore->first())->gate_registration_number ?? ''); ?></td>
+                <td><?php echo e(optional($item->gatescore->first())->gate_score ?? ''); ?></td>
+            </tr>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    </tbody>
+</table>
+<h3>Category-wise Totals</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $grandTotal = 0; ?>
+        <?php $__currentLoopData = $categoryCounts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category => $count): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <tr>
+                <td><?php echo e($category); ?></td>
+                <td><?php echo e($count); ?></td>
+            </tr>
+            <?php $grandTotal += $count; ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <tr>
+            <td><strong>Grand Total</strong></td>
+            <td><strong><?php echo e($grandTotal); ?></strong></td>
+        </tr>
+    </tbody>
+</table>
+<h3>PwBD Totals</h3>
+<table>
+    <thead>
+        <tr>
+            <th>PwBD</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $disabilityTotal = 0; ?>
+        <?php $__currentLoopData = $disabilityCounts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $disability => $count): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <tr>
+                <td><?php echo e($disability); ?></td>
+                <td><?php echo e($count); ?></td>
+            </tr>
+            <?php $disabilityTotal += $count; ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <tr>
+            <td><strong>Grand Total</strong></td>
+            <td><strong><?php echo e($disabilityTotal); ?></strong></td>
+        </tr>
+    </tbody>
+</table><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/recruitment-management/Candidate/export-applicant.blade.php ENDPATH**/ ?>

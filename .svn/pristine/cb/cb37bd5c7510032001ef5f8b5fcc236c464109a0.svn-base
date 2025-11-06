@@ -1,0 +1,10 @@
+<?php echo $__env->yieldPushContent('script_start'); ?>
+<script src="<?php echo e(asset('public/vendor/sweetalert/sweetalert.all.js')); ?>"></script>
+<script src="<?php echo e(asset('public/js/flowbit.min.js')); ?>"></script>
+<script src="<?php echo e(asset('public/js/custom.js')); ?>"></script>
+<script src="<?php echo e(asset('public/js/data-tables.js')); ?>"></script>
+
+<?php echo $__env->yieldPushContent('scripts'); ?>
+
+<?php echo $__env->yieldPushContent('script_end'); ?>
+<?php /**PATH C:\xampp\htdocs\NHIDCL\recruitment\resources\views/partials/admin/scripts.blade.php ENDPATH**/ ?>

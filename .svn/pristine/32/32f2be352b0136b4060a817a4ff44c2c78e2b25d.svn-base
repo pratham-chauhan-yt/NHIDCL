@@ -1,0 +1,41 @@
+
+<?php $__env->startSection('dashboard_content'); ?>
+    <section class="home-section ">
+        <div class="container-fluid md:p-0">
+            <div class="top_heading_dash__">
+                <div class="main_hed">Candidate Profile Logs</div>
+                <button onclick="window.location.href='<?php echo e(route("recruitment-portal.application.activity.export")); ?>'" class="btn btn-primary rounded-lg">
+                    Export Data
+                </button>
+            </div>
+        </div>
+        <div class="inner_page_dash__">
+            <div class="my-4 ">
+                <div class="table_over">
+                    <table class="cust_table__ table_sparated" id="applicantLogDataTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Date Time</th>
+                                <th>Ip Address</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                                <th>Status</th>
+                                <th>Comment</th>
+                                <th>View File</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+    <script>
+        const applicantLogDataUrl = "<?php echo e(route('recruitment-portal.application.activity.data')); ?>";
+    </script>
+    <script src="<?php echo e(asset('public/js/recruitment-portal.js')); ?>"></script>
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\recruitment\resources\views/recruitment-management/activity-log.blade.php ENDPATH**/ ?>

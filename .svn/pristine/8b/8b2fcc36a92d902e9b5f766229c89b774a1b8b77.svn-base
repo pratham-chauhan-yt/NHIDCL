@@ -1,0 +1,148 @@
+<?php $__env->startSection('auth_content'); ?>
+    <form class="bg_form" method="POST" action="<?php echo e(route('auth.login')); ?>">
+        <div class="heading_main">
+            <h5><?php echo e(__('Login')); ?></h5>
+        </div>
+
+        <?php echo csrf_field(); ?>
+        <input type="email" class="form-control login-input <?php $__errorArgs = ['login'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" name="login"
+            id="login" value="<?php echo e(old('login')); ?>" aria-describedby="emailHelp" placeholder="<?php echo e(__('Email ID')); ?>"
+            autofocus autocomplete="off" required>
+
+        <?php $__errorArgs = ['login'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+            <span class="invalid-feedback" role="alert">
+                <strong><?php echo e($message); ?></strong>
+            </span>
+        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+
+        <input type="password" class="form-control login-input-password <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+            id="password" name="password" aria-describedby="textHelp" placeholder="********" required>
+
+        <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+            <span class="invalid-feedback" role="alert">
+                <strong><?php echo e($message); ?></strong>
+            </span>
+        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+
+        <div class="row">
+            <div class="col-md-5 col-5">
+                <img src="<?php echo e(captcha_src('default')); ?>" alt="Captcha Image" id="captcha-image" class="w-100 caption_border">
+            </div>
+            <div class="col-md-2 col-sm-2 col-2 m-auto text-center">
+                <img src="<?php echo e(asset('/images/refresh.png')); ?>" alt="refresh" type="button" class="btn btn-refresh">
+            </div>
+            <div class="col-md-5 col-5">
+                <input type="text" class="form-control verification_code <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                    aria-describedby="emailHelp" id="captcha" name="captcha" placeholder="<?php echo e(__('Verification Code')); ?>"
+                    required autocomplete="off">
+                <?php $__errorArgs = ['captcha'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <span class="invalid-feedback" role="alert">
+                        <strong><?php echo e($message); ?></strong>
+                    </span>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+            </div>
+        </div>
+
+        
+
+        <button type="submit" class="button_form btn_custom top-to-bottom login_dash_btn">
+            <?php echo e(__('Login')); ?>
+
+        </button>
+        <div class="row">
+            <div class="col pt-1">
+                <div class="form-check form_rember_me">
+                    <input type="checkbox" class="form-check-input" name="remember" id="remember">
+                    <label class="form-check-label" for="exampleCheck1"><?php echo e(__('Remember Me')); ?></label>
+                </div>
+
+            </div>
+            <div class="col forgot_passowrd_">
+                <a href="<?php echo e(route('password.request')); ?>"><?php echo e(__('Forgot Password?')); ?></a>
+            </div>
+        </div>
+        <div class="orange_box"></div>
+    </form>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('scripts'); ?>
+    <script type="text/javascript">
+        $('.btn-refresh').click(function() {
+            $.ajax({
+                type: 'GET',
+                url: '/refresh-captcha',
+                success: function(data) {
+                    // Update captcha image
+                    $("#captcha-image").attr("src", data.captcha + '?' + Math.random());
+
+                    // Refresh audio captcha
+                    // $.ajax({
+                    //     type: 'GET',
+                    //     url: '/captcha/audio/inverse',
+                    //     success: function(audioData) {
+                    //         // Update audio source
+                    //         const audioSrc =
+                    //         audioData; // Assuming audioData is the audio source URL
+                    //         $('audio source').attr("src", audioSrc);
+
+                    //         // Load the new audio source
+                    //         $('audio')[0].load();
+                    //     },
+                    //     error: function(xhr) {
+                    //         console.error(xhr
+                    //         .responseText); // Log any errors to the console
+                    //     }
+                    // });
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    </script>
+    
+    
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.auth', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\nhidcl\resources\views/auth/login.blade.php ENDPATH**/ ?>

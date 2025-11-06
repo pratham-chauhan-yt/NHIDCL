@@ -1,0 +1,219 @@
+<?php $__env->startSection('content'); ?>
+    <div class="cutom_flex_p">
+
+        <?php echo $__env->make('shared.header1', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+        <div class="flex flex-col justify-between md:h-[100%] xl:h-[100vh]">
+            <div class="bg_main_dash cust_corl_bg">
+                <div class="container">
+                    <div class="heading__regist">
+                        <h1 class="text-3xl font-bold">Frequently Asked Questions</h1>
+                    </div>
+                    <div class="banner_cust_m">
+                        <div class="regis_cust">
+                            <div class="form_bg_inner">
+                            </div>
+                            <div class="reg_cust_bg">
+                                <div class="container mb-8">
+                                    <section class="mx-auto px-4">
+
+                                        <div id="accordion-color" data-accordion="collapse"
+                                            data-active-classes="bg-blue-100 dark:bg-gray-800 text-blue-600 dark:text-white">
+
+                                            <?php
+                                                $faqs = [
+                                                    [
+                                                        'question' => 'What is the NHIDCL Resource Portal?',
+                                                        'answer' =>
+                                                            '“NHIDCL Resource Pool Portal” is a digital platform where applicants interested in being engaged by NHIDCL can register their profile in the prescribed format and which will be maintained by NHIDCL, or any agency authorized by it. This portal shall be in compliance with the principles of equal access, and open competition and facilitate transparent selection of Young Professionals and Expert Professionals.',
+                                                    ],
+                                                    [
+                                                        'question' => 'Who can register and use the portal?',
+                                                        'answer' =>
+                                                            'Any interested individual who meets the eligibility criteria for engagement with NHIDCL as a Young Professional, Expert Professional, or Person of eminence may register on the portal by visiting https://nhidcl.com/resource-pool',
+                                                    ],
+                                                    [
+                                                        'question' => 'How do I register for the portal?',
+                                                        'answer' =>
+                                                            'To register, the applicants are requested to follow the below mentioned steps:<br>a) Enter your Full Name, Mobile Number, Email Address, and Date of Birth.<br>b) Verify your mobile number and email address by clicking on the ‘Get OTP’ button.<br>c) After submitting, you\'ll receive an email with a profile verification link.<br>d) Click the link and set your password to complete the registration process.<br><br>Refer to the User Manual for more details.',
+                                                    ],
+                                                    [
+                                                        'question' => 'How can I update my profile information?',
+                                                        'answer' =>
+                                                            'Registered applicants can log in to the portal using their email address and password. After logging in, profile information can be updated by clicking on the “Applicant Profile” link.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'What if I encounter any technical issues or need help using the portal?',
+                                                        'answer' =>
+                                                            'For technical support or queries, please contact the helpdesk at xxxx[at]xxxx[dot]xxx.',
+                                                    ],
+                                                    [
+                                                        'question' => 'How frequently is the portal updated?',
+                                                        'answer' =>
+                                                            'The portal is maintained throughout the year and updated as and when new requirements arise in various verticals or divisions of NHIDCL.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'Do I need to apply for any particular job posting?',
+                                                        'answer' =>
+                                                            'No. After registering on the portal, the applicants can create their profile with up-to-date academic, professional, and other details as mentioned in the portal. NHIDCL shall use this pool of profiles to shortlist applicants as per its requirements from time to time. The requirements of the organization shall be posted on the portal as advertisements only for the information of the applicants. In certain cases, if an adequate number of suitable profiles are already available in the Resource Pool Portal, NHIDCL may, at its discretion, consider applicants from the existing pool without any further public advertisements.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'My university/ college is not appearing in the drop-down menu? How can I select my university/ college?',
+                                                        'answer' =>
+                                                            'If your university or college is not listed in the drop-down menu while filling the Education Details section, you may select the option “Other” and manually enter the name of your institution.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'I have appeared in a Competitive Exam, but it is not appearing in the drop-down menu? How can I get it updated?',
+                                                        'answer' =>
+                                                            'If the competitive exam you have appeared for is not listed, you can select the “Other” option and manually enter the name of the exam.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'I do not have an institute-issued CGPA-to-percentage converter. How shall I proceed?',
+                                                        'answer' =>
+                                                            'In case the CGPA-to-percentage converter is not available with the applicant, the applicant can convert the CGPA using the following formula:<br>Percentage = (CGPA achieved / Maximum CGPA on the grading scale) x 100<br>For example, if the applicant has achieved a CGPA of 5 out of a maximum CGPA of 8 on the grading scale, then the converted percentage shall be:<br>Percentage = (5 / 8) x 100 = 62.5<br>In case the CGPA-to-percentage converter is available with the applicant, the same shall also be uploaded in the portal along with their marksheet.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'I have submitted my resume. Can I still change my profile?',
+                                                        'answer' =>
+                                                            'Yes. Applicants can edit their profiles anytime after the final submission. However, only the latest information available at the time of internal shortlisting and subsequent process shall be considered.',
+                                                    ],
+                                                    [
+                                                        'question' => 'Can I update my profile after shortlisting?',
+                                                        'answer' =>
+                                                            'No. Once shortlisted, the profile on the portal shall be marked as “Shortlisted” and shall not be editable until the end of the process. To request updates, contact the Helpdesk at xxxx[at]xxxx[dot]xxx. NHIDCL may or may not accept such requests.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'Can I submit my resume to NHIDCL in physical mode?',
+                                                        'answer' =>
+                                                            'No. All applications must be submitted through the NHIDCL Resource Pool Portal. Physical submissions shall not be accepted until specifically mentioned in the advertisement.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'I am pursuing an education course. Can I add it in the portal?',
+                                                        'answer' =>
+                                                            'No. Only completed educational courses shall be mentioned in the Education Details section of the profile form.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'I have not updated my profile in last one year. Will I be considered for relevant opportunities?',
+                                                        'answer' =>
+                                                            'No. Profiles not updated in the last one year, from the date of the last successful submission of the profile, shall be archived, and shall not be considered by NHIDCL for suitable opportunities. It is advisable to regularly update the profile to ensure consideration for relevant opportunities.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'How will I get notified about my shortlist and further selection process?',
+                                                        'answer' =>
+                                                            'Notifications regarding shortlisting and the further selection process shall be sent to the applicant’s registered email address and mobile number. Please ensure your contact details are up to date.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'How can I access open opportunities with NHIDCL?',
+                                                        'answer' =>
+                                                            'Open opportunities shall be advertised on the NHIDCL Resource Pool Portal, NHIDCL website and shall also be published in leading newspapers.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'What are the minimum qualification criteria for eligibility through this portal?',
+                                                        'answer' =>
+                                                            'Detailed minimum qualification criteria shall be mentioned in the advertisements as released by NHIDCL from time to time. General qualification guidelines are also mentioned in the scheme document for easy reference of the applicants.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'I was engaged through this Portal and my current tenure duration in NHIDCL as per contract is completed. Do I need to apply again for extension?',
+                                                        'answer' =>
+                                                            'No. In case the applicant is engaged through this portal under the applicable scheme, and their current tenure duration as per contract is complete, their profile shall be made active on the Portal and shall be considered for any relevant opportunity as part of the resource pool and as per the discretion of the competent authority. It is the responsibility of the applicants to keep their work experience and other details as mentioned in the portal up to date.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'I have already completed my maximum tenure in NHIDCL. Can I apply again for relevant opportunities through this portal?',
+                                                        'answer' =>
+                                                            'No. In case the applicant is engaged through this portal under the applicable scheme, and their maximum tenure duration as per contract is complete, their profile shall be made active on the Portal and shall be considered for any relevant opportunity as part of the resource pool and as per the discretion of the competent authority. It is the responsibility of the applicants to keep their work experience and other details as mentioned in the portal up to date.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'I am yet to receive my experience certificate from my employer. What other documents I can submit?',
+                                                        'answer' =>
+                                                            'In the absence of an experience certificate, the applicant may submit the following alternative documents:<br>a) Appointment letter<br>b) Last three salary slips, as applicable<br>c) Self-declaration detailing your work experience.<br><br>The selection of the applicant in such cases shall be provisional and subject to submission of relevant experience certificate at the time of joining.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'I am yet to receive my degree. What other documents I can submit?',
+                                                        'answer' =>
+                                                            'In case the applicant’s degree certificate is pending, they can submit a provisional degree and/ or a bonafide certificate from their institution confirming the completion of their course requirements.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'I am a retired Government employee. Which document(s) can I submit as Work Experience Certificate?',
+                                                        'answer' =>
+                                                            'Retired Government employees can submit documents such as retirement orders, last pay certificates, or service records as proof of work experience.',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'I am already working in NHIDCL. Can I apply through this portal?',
+                                                        'answer' =>
+                                                            'Yes. NHIDCL employees can create their profiles in this portal to be considered for relevant opportunities. However, once the applicant is engaged through this portal under the applicable scheme, their profile shall be marked as “selected”, and shall not be considered for any other opportunities under the applicable scheme',
+                                                    ],
+                                                    [
+                                                        'question' =>
+                                                            'Can I use data I gathered during my tenure in NHIDCL for research purposes such as Master or PhD thesis?',
+                                                        'answer' =>
+                                                            'Utilization of any data obtained during the applicant’s tenure at NHIDCL for any purpose such as research requires prior approval. The applicant must seek permission from the competent authority before using any such data.',
+                                                    ],
+                                                ];
+                                            ?>
+
+
+                                            <?php $__currentLoopData = $faqs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $faq): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <h2 id="accordion-color-heading-<?php echo e($index); ?>">
+                                                    <button type="button"
+                                                        class="mt-2 flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 rounded-t-xl focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 gap-3"
+                                                        data-accordion-target="#accordion-color-body-<?php echo e($index); ?>"
+                                                        aria-expanded="true"
+                                                        aria-controls="accordion-color-body-<?php echo e($index); ?>" style="text-align-last: left;">
+                                                        <?php echo e($index + 1 . '. ' . $faq['question']); ?>
+
+                                                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0"
+                                                            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                        </svg>
+                                                    </button>
+                                                </h2>
+                                                <div id="accordion-color-body-<?php echo e($index); ?>" class="mb-2 hidden"
+                                                    aria-labelledby="accordion-color-heading-<?php echo e($index); ?>">
+                                                    <div
+                                                        class="p-5 border rounded-b-xl border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                                                        <p class="text-gray-500 dark:text-gray-400"><?php echo $faq['answer']; ?>
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="bg-footer-color p-4">
+                <div class="container">
+                    <p>@ <?php echo e(now()->year); ?> NHIDCL </p>
+                </div>
+            </footer>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/resource-pool/faq.blade.php ENDPATH**/ ?>

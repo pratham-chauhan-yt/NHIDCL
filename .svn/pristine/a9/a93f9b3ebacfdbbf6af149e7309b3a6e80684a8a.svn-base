@@ -1,0 +1,24 @@
+<header>
+    <div class="header_parent_cust">
+        <div class="container main_header">
+            <div class="logo_cust">
+                <a href="https://www.nhidcl.com/" class="text-blue-600 fs-14 fw-700">Back to NHIDCL Website</a>
+                <a href="<?php echo e(route('recruitment.login')); ?>"> <img src="<?php echo e(asset('public/images/logo.png')); ?>" alt="NHIDCL Logo"></a>
+                <div class="logo_content ">
+                    <h4 class="">Recruitment Portal</h4>
+                </div>
+            </div>
+            <div class="flex flex-col justify-between">
+                <div class="pb-3 mt-2">
+                    <ul class="header_li">
+                        <li><a target="_blank" href="https://www.nhidcl.com/sites/default/files/Circular/nhidcl_rectt._seniority_and_promotion_rules-2025_1.pdf">NHIDCL Cadre Rules 2025</a></li>
+                        <li><a target="_blank" href="<?php echo e(asset('public/pdf/RP_USER_MANUAL.pdf')); ?>">User Manual</a></li>
+                        <li><a target="_blank" href="<?php echo e(route(name: 'recruitment.help.desk')); ?>">Help Desk</a></li>
+                        <li><a target="_blank" href="<?php echo e(route('recruitment.faqs')); ?>">FAQ</a></li>
+                        <li><a target="_blank" href="<?php echo e(asset('public/video/rp-video.mp4')); ?>">Explainer Video</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header><?php /**PATH C:\xampp\htdocs\NHIDCL\recruitment\resources\views/shared/header1.blade.php ENDPATH**/ ?>

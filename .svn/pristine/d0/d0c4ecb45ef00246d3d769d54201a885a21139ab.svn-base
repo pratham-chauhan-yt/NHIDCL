@@ -1,0 +1,37 @@
+@extends('layouts.app')
+@section('content')
+    <div class="cutom_flex_p">
+        @include('shared.header1')
+        <div class="flex flex-col justify-between md:h-[100%] xl:h-[100vh]">
+            <div class="bg_main_dash cust_corl_bg">
+                <div class="container">
+                    <div class="heading__regist">
+                        <h1 class="text-3xl font-bold">Help Desk</h1>
+                    </div>
+
+                    <div class="banner_cust_m">
+                        <div class="regis_cust">
+                            <div class="form_bg_inner">
+                            </div>
+                            <div class="reg_cust_bg">
+                                <div class="container mb-8">
+                                    <section class="mx-auto px-4">
+                                        <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
+                                            <p class="mb-4">For any queries please contact us at the following email address: 
+                                                <b>helpdesk-resource[at]nhidcl[dot]com</b>
+                                            </p>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="bg-footer-color p-4">
+                <div class="container">
+                    <p>@ {{ now()->year }} NHIDCL </p>
+                </div>
+            </footer>
+        </div>
+    </div>
+@endsection

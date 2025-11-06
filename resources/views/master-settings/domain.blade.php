@@ -1,0 +1,108 @@
+@extends('layouts.dashboard')
+@section('dashboard_content')
+    <div class="container-fluid md:p-0">
+        <div class="top_heading_dash__">
+            <div class="main_hed">{{ __('Master Settings - Domain') }}</div>
+            <div class="plain_dlfex bg_elips_ic">
+                <a href="{{ URL::previous() }}"><button class="hover-effect-btn fill_btn" type="button">{{ __('Back') }}
+                    </button></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="inner_page_dash__" id="domainFormContainer" style="display: none;">
+        <div class="my-4 ">
+            <div>
+                <div class="parrent_dahboard_ chart_c inner_body_style inner_pages mt-0">
+                    <div class="">Domain </div>
+                </div>
+                <form class="form_grid_cust" method="POST" id="domainForm">
+                    @csrf
+                    <input type="hidden" name="_method" id="method" value="POST">
+                    <div class="inpus_cust_cs form_grid_dashboard_cust_">
+                        <div>
+                            <label class="">Domain</label>
+                            <input type="text" class="" name="domain_name" value="{{ old('domain_name') }}" id="domain_name"
+                                required>
+                        </div>
+
+                        @error("domain_name")
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+
+                    </div>
+
+                    <div class="button_flex_cust_form">
+                        <button class="hover-effect-btn fill_btn" type="submit"
+                            id="submitButton">{{ __('Create') }}</button>
+                    </div>
+
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+    </div>
+
+    <div class="inner_page_dash__ mt-[20px]">
+        <div class="top_heading_dash__">
+            <div class="main_hed">
+                <h4 class="text-[24px] py-[10px] font-semibold text-black">Domain List</h4>
+            </div>
+            <div class="plain_dlfex bg_elips_ic">
+                <button class="hover-effect-btn border_btn" type="button"
+                    onclick="formContainer()">{{ __('Create') }}
+                </button>
+            </div>
+        </div>
+        <table class="data_bg_table cust_table__ table_sparated" id="domainTable">
+            <thead class="">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Created</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+@endsection
+
+@push('scripts')
+    @include('master-settings.js.datatable-init')
+    @include('master-settings.js.delete-confirmation')
+    @include('master-settings.js.form-handler')
+
+    <script>
+        $(document).ready(function () {
+            initDataTable('#domainTable', '{{ route("master-settings.domain.index") }}', [{
+                data: 'domain_name',
+                name: 'domain_name'
+            },
+            {
+                data: 'created_at',
+                name: 'created_at'
+            },
+            ]);
+        });
+
+        function formContainer(isEdit = false, qmsTypeId = null) {
+            handleFormToggle('domainFormContainer', 'domainForm', isEdit, qmsTypeId, {
+                updateUrl: "{{ route('master-settings.domain.update', ':id') }}",
+                editUrl: "{{ route('master-settings.domain.edit', ':id') }}",
+                storeUrl: "{{ route('master-settings.domain.store') }}",
+                fieldMap: {
+                    'domain_name': 'domain_name'
+                },
+                idField: 'domain_name_id'
+            });
+        }
+
+        handleFormSubmit('domainForm', '#domainTable', 'domainFormContainer');
+    </script>
+@endpush

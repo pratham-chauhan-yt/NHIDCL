@@ -1,0 +1,397 @@
+@media screen and (max-width: 767px) {
+
+    /* start index page css  */
+    .main_header {
+        flex-wrap: wrap !important;
+        justify-content: end !important;
+        gap: 12px;
+    }
+    .datatable-container {
+        overflow-x: scroll;
+    }
+    .header_parent_cust .logo_cust .logo_content {
+        border-right: 1px solid transparent !important;
+        width: 80%;
+    }
+
+    .banner_cust_m {
+        flex-wrap: wrap !important;
+    }
+
+    .banner_cust_m .left_side {
+        width: 100%;
+    }
+
+    .banner_cust_m .right_form {
+        width: 100%;
+        padding-top: 4.5rem;
+    }
+
+    .banner_heading h4 {
+        font-size: 1.25rem !important;
+    }
+
+    .banner_heading h4::before {
+        top: -95px;
+        left: 10px;
+    }
+
+    .banner_heading h4::after {
+        bottom: -80px;
+        right: 6px;
+    }
+
+    .banner_heading h4::before,
+    .banner_heading h4::after {
+        font-size: 5rem;
+    }
+
+    .banner_heading p {
+        font-size: 0.875rem !important;
+        width: 100% !important;
+    }
+
+    .moudle_list_cust {
+        flex-wrap: wrap;
+        padding: 0;
+        top: 2rem;
+    }
+
+    .moudle_list_cust .left_side {
+        width: 100%;
+        box-shadow: rgb(255 255 255 / 0%) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0) 0px 50px 100px -20px, rgb(0 0 0 / 14%) 0px 30px 50px -37px;
+    }
+
+    .moudle_list_cust .left_side ul {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .moudle_list_cust .right_side {
+        width: 100%;
+        margin-bottom: 25px;
+    }
+
+    .fill_btn {
+        width: 100%;
+    }
+
+    ul.header_li {
+        margin-right: 20px;
+    }
+
+    /* End index page css  */
+
+    /* registration page css  */
+
+    .form_grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    /* End registration css  */
+
+    /* dashboard  */
+    .logo-details i {
+        left: 10px;
+        top: 80px;
+    }
+
+    .drop_profile_bg {
+        margin-right: 12px;
+    }
+
+    .sidebar.open {
+        top: 0rem;
+        height: 100%;
+        position: absolute;
+    }
+
+    .home-section {
+        padding: 10px;
+    }
+
+    .dashbord_main_content_rigt {
+        flex-wrap: wrap;
+    }
+
+    .dashbord_main_content_rigt .one_cut {
+        width: 100%;
+    }
+
+    .card_cust_parnet_dash {
+        flex-wrap: wrap;
+    }
+
+    .card_cust_parnet_dash .first_card_dash {
+        width: 100%;
+    }
+
+    .card_cust_parnet_dash .second_card_dash {
+        width: 100%;
+        grid-template-columns: 1fr;
+    }
+
+    .chart_grid_custom {
+        flex-wrap: wrap;
+    }
+
+    .bg_chart_card {
+        width: 100%;
+    }
+
+    .pagination_cust {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .dashbord_main_content_rigt .second_cust {
+        width: 100%;
+    }
+
+    .input_cust_end {
+        gap: 7px;
+        flex-wrap: wrap;
+    }
+
+    .input_cust_end div {
+        width: 100%;
+    }
+
+    .candidat_cust-container {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 10px;
+    }
+
+    .border_btn {
+        width: 100% !important;
+    }
+
+    .gray_btn {
+        width: 100%;
+    }
+
+    .tab_custom_c {
+        white-space: nowrap;
+        overflow-x: scroll;
+    }
+
+    .tab_custom_c::-webkit-scrollbar {
+        display: none;
+    }
+
+    .form_grid_dashboard_cust_ {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    label.upload_cust {
+        padding: 8px 7px;
+        min-width: 35%;
+    }
+
+    .button_flex_cust_form {
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .applicat_cust-row {
+        grid-template-columns: 1fr;
+    }
+
+    .applicat_cust-label {
+        padding: 5px 10px;
+    }
+
+    .applicat_cust-value {
+        padding: 5px 10px;
+    }
+
+    .cust_table__ {
+        margin-top: 15px;
+    }
+
+    .job_poster_grid_cust {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    /* Edn dashboard  */
+}
+
+@media screen and (min-width: 1101px) {
+
+    .banner_heading h4 {
+        font-size: 2.375rem !important;
+    }
+
+}
+
+@media screen and (min-width: 767px) {
+    /* start index page css  */
+
+
+    .header_parent_cust .logo_cust .logo_content {
+        border-right: 1px solid rgba(128, 128, 128, 0.267) !important;
+    }
+}
+
+@media screen and (min-width: 767px) and (max-width: 1100px) {
+    /* start index page css  */
+
+
+    .header_parent_cust .logo_cust .logo_content {
+        width: 60%;
+    }
+
+    .banner_cust_m .left_side {
+        width: 50%;
+    }
+
+    .banner_cust_m .right_form {
+        width: 40%;
+        padding-top: 3.5rem;
+    }
+
+    .banner_heading h4 {
+        font-size: 1.875rem !important;
+    }
+
+    .banner_heading h4::before {
+        top: -95px;
+        left: 10px;
+    }
+
+    .banner_heading h4::after {
+        bottom: -80px;
+        right: 6px;
+    }
+
+    .banner_heading h4::before,
+    .banner_heading h4::after {
+        font-size: 5rem;
+    }
+
+    .banner_heading p {
+        font-size: 1.375rem !important;
+        width: 100% !important;
+    }
+
+
+    .moudle_list_cust .left_side ul {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 10px;
+    }
+
+    .moudle_list_cust .right_side p {
+        font-size: 0.813rem;
+    }
+
+    /* End index page css  */
+
+    /* registration page css  */
+
+    .form_grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+
+    /* End registration css  */
+
+    /* dashboard  */
+
+
+
+
+    .dashbord_main_content_rigt {
+        flex-wrap: wrap;
+    }
+
+    .dashbord_main_content_rigt .one_cut {
+        width: 100%;
+    }
+
+    .card_cust_parnet_dash .first_card_dash {
+        width: 35%;
+    }
+
+    .card_cust_parnet_dash .second_card_dash {
+        width: 65%;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .bg_chart_card {
+        width: 100%;
+    }
+
+    .pagination_cust {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .cust-schedule-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 0;
+    }
+
+    .cust-schedule-details {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .dashbord_main_content_rigt .second_cust {
+        width: 100%;
+    }
+
+    .candidat_cust-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .tab_custom_c {
+        flex-wrap: wrap;
+        gap: 3px;
+    }
+
+    .form_grid_dashboard_cust_ {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    label.upload_cust {
+        padding: 8px 7px;
+        min-width: 35%;
+    }
+
+    .button_flex_cust_form {
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .applicat_cust-row {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .cust_table__ {
+        margin-top: 15px;
+        white-space: normal;
+        font-size: 0.688rem;
+    }
+
+    .cust_table__ thead tr th {
+        font-weight: 600 !important;
+    }
+
+    .cust_table__ tbody {
+        font-size: 0.625rem;
+    }
+
+    .job_poster_grid_cust {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    /* Edn dashboard  */
+}

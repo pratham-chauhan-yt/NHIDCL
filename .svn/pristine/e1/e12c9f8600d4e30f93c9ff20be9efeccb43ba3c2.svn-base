@@ -1,0 +1,438 @@
+<style>
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+}
+</style>
+<script>
+document.querySelectorAll('.dropdown-submenu').forEach(function (element) {
+    element.addEventListener('mouseenter', function (e) {
+        let submenu = this.querySelector('.dropdown-menu');
+        if (submenu) submenu.classList.add('show');
+    });
+
+    element.addEventListener('mouseleave', function (e) {
+        let submenu = this.querySelector('.dropdown-menu');
+        if (submenu) submenu.classList.remove('show');
+    });
+});
+</script>
+<div class="sidebar">
+    <ul class="nav-list ">
+        <li
+            class="menu-item <?php echo e(request()->is('dashboard') || request()->is('resource-pool-portal/hr/dashboard') || request()->is('recruitment-portal/dashboard') ? 'active' : ''); ?>">
+            <?php if(auth()->user() && auth()->user()->getRoleNames()->isEmpty()): ?>
+                <a href="<?php echo e(route('candidate.dashboard')); ?>">
+            <?php elseif(auth()->user() && auth()->user()->hasRole('HR Resource Pool')): ?>
+                <a href="<?php echo e(route('hr.dashboard')); ?>">
+            <?php elseif(auth()->user() && auth()->user()->hasRole('Recruitment User')): ?>
+                <a href="<?php echo e(route('recruitment-portal.recruitment.dashboard')); ?>">
+            <?php else: ?>
+                <a href="<?php echo e(route('admin.dashboard')); ?>">
+            <?php endif; ?>
+            <img src="<?php echo e(asset('public/images/dashboard.svg')); ?>" alt="Dashboard">
+            <span class="links_name">Dashboard</span>
+            </a>
+        </li>
+        <?php if (! \Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
+        <?php if (\Illuminate\Support\Facades\Blade::check('canModule', 'Resource Pool Portal')): ?>
+        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['resource-pool-users'])): ?>
+            <li class="menu-item <?php echo e(request()->is('resource-pool/users/view/data') ? 'active' : ''); ?>">
+                <a href="<?php echo e(route('resource-pool.hr.listOfCandidates')); ?>">
+                    <img src="<?php echo e(asset('public/images/status.svg')); ?>" alt="bank">
+                    <span class="links_name">View Users</span>
+                </a>
+            </li>
+        <?php endif; ?>
+        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['resource-pool-advertisement', 'resource-pool-advertisement-create',
+            'resource-pool-advertisement-edit', 'resource-pool-advertisement-view', 'resource-pool-advertisement-delete'])): ?>
+            <li class="menu-item dropdown <?php echo e(request()->is(['resource-pool-portal/advertisement/*']) ? 'active' : ''); ?>">
+                <a href="javascript:void(0);" class="menu-link">
+                    <img src="<?php echo e(asset('public/images/MDI-information-outline.svg')); ?>" alt="user">
+                    <span class="links_name">Resource Advertisement</span>
+                </a>
+                <ul class="dropdown-menu cust_drop">
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('resource-pool-advertisement-view')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('candidate.candidateAdvertisement')); ?>">View Advertisement</a></li>
+                    <?php endif; ?>
+                    <?php if (\Illuminate\Support\Facades\Blade::check('hasrole', ['HR', 'HR Resource Pool'])): ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('resource-pool-advertisement-create')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('hr.create.advertisement')); ?>">Create Advertisement</a></li>
+                    <?php endif; ?>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
+
+        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['resource-pool-applicant-profile'])): ?>
+            <li class="menu-item <?php echo e(request()->is('resource-pool-portal/candidate/applicant/profile') ? 'active' : ''); ?>">
+                <a href="<?php echo e(route('candidate.applicantProfile')); ?>">
+                    <img src="<?php echo e(asset('public/images/MDI-information-outline.svg')); ?>" alt="Union">
+                    <span class="links_name">Applicant Profile</span>
+                </a>
+            </li>
+        <?php endif; ?>
+
+        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('resource-pool-selection-process')): ?>
+            <li class="menu-item dropdown <?php echo e(request()->is(['resource-pool/hr/*']) ? 'active' : ''); ?>">
+                <a href="javascript:void(0);" class="menu-link">
+                    <img src="<?php echo e(asset('public/images/MDI-information-outline.svg')); ?>" alt="user">
+                    <span class="links_name">Selection Process</span>
+                </a>
+                <ul class="dropdown-menu cust_drop">
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('resource pool - view HR shortlist')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('hr.selection-process')); ?>">HR Selection Process</a></li>
+                        <!-- <li><a class="dropdown-item" href="<?php echo e(route('hr.manual.selection-process')); ?>">HR Manual Selection Process</a></li> -->
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['resource pool - create chairperson shortlist', 'resource pool - view chairperson shortlist'])): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('chairperson.selection-process')); ?>">ChairPerson Selection Process</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['resource pool - create committee shortlist', 'resource pool - view committee shortlist'])): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('committee-member.selection-process')); ?>">Committee Selection Process</a></li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
+        <?php endif; ?>
+        <?php endif; ?>
+
+        <?php if (\Illuminate\Support\Facades\Blade::check('hasrole', 'Super Admin')): ?>
+        <?php if (\Illuminate\Support\Facades\Blade::check('canModule', 'User Management')): ?>
+        <li class="menu-item dropdown <?php echo e(request()->is(['user-config*', 'roles*', 'permissions*']) ? 'active' : ''); ?>">
+            <a href="javascript:void(0);" class="menu-link">
+                <img src="<?php echo e(asset('public/images/MDI-information-outline.svg')); ?>" alt="User Management">
+                <span class="links_name">User Management</span>
+            </a>
+            <ul class="dropdown-menu cust_drop">
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['user config - view user', 'user config - view role'])): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('user-config.index')); ?>">Dashboard</a></li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('user config - create user')): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('user-config.create')); ?>">Create User</a></li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['user config - view user', 'user config - edit user'])): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('user-config.view')); ?>">View Users</a></li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['roles-create', 'roles-view', 'roles-edit', 'roles-delete'])): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('roles.index')); ?>">Roles</a></li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['permissions-create', 'permissions-view', 'permissions-edit', 'permissions-delete'])): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('permissions.index')); ?>">Permissions</a></li>
+                <?php endif; ?>
+            </ul>
+        </li>
+        <?php endif; ?>
+        <?php endif; ?>
+
+        <?php if (! \Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
+        <?php if (\Illuminate\Support\Facades\Blade::check('canModule', 'MD Task Management System')): ?>
+        <li class="menu-item dropdown <?php echo e(request()->is('task-management*') ? 'active' : ''); ?>">
+            <a href="javascript:void(0);" class="menu-link">
+                <img src="<?php echo e(asset('public/images/MDI-information-outline.svg')); ?>" alt="MD Task Management">
+                <span class="links_name">MD Task Management</span>
+            </a>
+            <ul class="dropdown-menu cust_drop">
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('md-task-create')): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('task-management.create')); ?>">Create MD Task</a></li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['md-task-view', 'md-task-edit', 'md-task-delete', 'md-task-responder'])): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('task-management.index')); ?>">View MD Task</a></li>
+                <?php endif; ?>
+            </ul>
+        </li>
+        <?php endif; ?>
+        
+        <?php if (\Illuminate\Support\Facades\Blade::check('canModule', 'Bank Guarantee Management')): ?>
+        <li class="menu-item dropdown <?php echo e(request()->is('bgms*') ? 'active' : ''); ?>">
+            <a href="javascript:void(0);" class="menu-link">
+                <img src="<?php echo e(asset('public/images/MDI-information-outline.svg')); ?>" alt="BG">
+                <span class="links_name">Bank Guarantee</span>
+            </a>
+            <ul class="dropdown-menu cust_drop">
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('bgms-bg-create')): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('bgms.bg.create')); ?>">Create BG</a></li>
+                    
+                <?php endif; ?>
+                <li><a class="dropdown-item" href="<?php echo e(route('bgms.bg.encashment')); ?>">BG Encashment</a></li>
+                <li><a class="dropdown-item" href="<?php echo e(route('bgms.bg.claimlodge')); ?>">Claim Lodge</a></li>
+                
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['bgms-bg-view', 'bgms-bg-edit', 'bgms-bg-delete'])): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('bgms.bg.index')); ?>">BG List</a></li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['bgms-bg-receive'])): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('bgms.bg.receive')); ?>">Received BG</a></li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['bgms-bg-frt'])): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('bgms.bg.frt')); ?>">Finance Returned</a></li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['bgms-bg-archive'])): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('bgms.bg.archive')); ?>">Archive BG</a></li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['bgms-verifier-view', 'bgms-verifier-reject', 'bgms-verifier-verify'])): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('bgms.verifier.index')); ?>">Verify BG or Renewal</a></li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['bgms-finance-receive', 'bgms-finance-receivelist', 'bgms-finance-referback'])): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('bgms.finance.receive.refer')); ?>">Receive or Refer Back
+                            BG</a></li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['bgms-finance-accept'])): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('bgms.finance.accept')); ?>">Accept or Refer Back BG</a>
+                    </li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['bgms-finance-accepted'])): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('bgms.finance.accepted')); ?>">Accepted</a></li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['bgms-project-view', 'bgms-project-edit', 'bgms-project-create', 'bgms-project-delete',
+                    'bgms-project-dashboard'])): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('bgms.project.create')); ?>">Project Application</a></li>
+                <?php endif; ?>
+            </ul>
+        </li>
+        <?php endif; ?>
+
+        <?php if (\Illuminate\Support\Facades\Blade::check('canModule', 'Audit Management System')): ?>
+            <li class="menu-item dropdown <?php echo e(request()->is('audit-management*') ? 'active' : ''); ?>">
+                <a href="javascript:void(0);" class="menu-link">
+                    <img src="<?php echo e(asset('public/images/MDI-information-outline.svg')); ?>" alt="Audit Management">
+                    <span class="links_name">Audit Management</span>
+                </a>
+                <ul class="dropdown-menu cust_drop">
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ams-dashboard')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('audit-management.dashboard')); ?>">Dashboard</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ams-create')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('audit-management.create')); ?>">Create Audit Query</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['ams-view', 'ams-edit', 'ams-delete', 'ams-responder'])): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('audit-management.index')); ?>">View Audit Query</a></li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
+        <?php endif; ?>
+        
+        <?php if (\Illuminate\Support\Facades\Blade::check('canModule', 'Recruitment Management')): ?>
+        <?php if (\Illuminate\Support\Facades\Blade::check('hasrole', 'Recruitment User')): ?>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('recruitment-management-advertisement')): ?>
+            <li class="menu-item <?php echo e(request()->is('recruitment-portal/candidate/advertisement*') ? 'active' : ''); ?>">
+                <a href="<?php echo e(route('recruitment-portal.candidate.advertisement')); ?>">
+                    <img src="<?php echo e(asset('public/images/MDI-information-outline.svg')); ?>" alt="Vacancies">
+                    <span class="links_name">Vacancies</span>
+                </a>
+            </li>
+            <li class="menu-item <?php echo e(request()->is('recruitment-portal/recruitment/current/vacancies') ? 'active' : ''); ?>">
+                <a href="<?php echo e(route('recruitment-portal.candidate.current.vacancies')); ?>">
+                    <img src="<?php echo e(asset('public/images/MDI-information-outline2.svg')); ?>" alt="Current Vacancies">
+                    <span class="links_name">Current Vacancies</span>
+                </a>
+            </li>
+            <li class="menu-item <?php echo e(request()->is('recruitment-portal/candidate/archieve/advertisement') ? 'active' : ''); ?>">
+                <a href="<?php echo e(route('recruitment-portal.candidate.archieve.advertisement')); ?>">
+                    <img src="<?php echo e(asset('public/images/MDI-information-outline3.svg')); ?>" alt="Archive Vacancies">
+                    <span class="links_name">Archive Vacancies</span>
+                </a>
+            </li>
+            <li class="menu-item <?php echo e(request()->is('recruitment-portal/candidate/application*') ? 'active' : ''); ?>">
+                <a href="<?php echo e(route('recruitment-portal.recruitment.candidate.application')); ?>">
+                    <img src="<?php echo e(asset('public/images/MDI-information-outline4.svg')); ?>" alt="My Application">
+                    <span class="links_name">My Application</span>
+                </a>
+            </li>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('recruitment-management-profile')): ?>
+            <!-- <li class="menu-item <?php echo e(request()->is('recruitment-portal/candidate/profile') ? 'active' : ''); ?>">
+                    <a href="<?php echo e(route('recruitment-portal.candidate.profile')); ?>">
+                        <img src="<?php echo e(asset('public/images/MDI-information-outline.svg')); ?>" alt="Applicant Profile">
+                        <span class="links_name">Applicant Profile</span>
+                    </a>
+                </li> -->
+            <?php endif; ?>
+            <?php endif; ?>
+        <?php endif; ?>
+        <?php if (! \Illuminate\Support\Facades\Blade::check('role', ['Recruitment User', 'Super Admin'])): ?>
+        <li class="menu-item dropdown <?php echo e(request()->is('recruitment-portal*') ? 'active' : ''); ?>">
+            <a href="javascript:void(0);" class="menu-link">
+                <img src="<?php echo e(asset('public/images/MDI-information-outline.svg')); ?>" alt="Employee Management">
+                <span class="links_name">Recruitment Portal</span>
+            </a>
+            <ul class="dropdown-menu cust_drop">
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('recruitment-management-advertisement')): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('recruitment-portal.advertisement.index')); ?>">Advertisement</a></li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('recruitment-management-post')): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('recruitment-portal.post.index')); ?>">Recruitment Post</a></li>
+                <?php endif; ?>
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('recruitment-management-selection-process')): ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('recruitment-portal.selection.process')); ?>">Selection Process</a></li>
+                <?php endif; ?>
+            </ul>
+        </li>
+        <?php endif; ?>
+        <?php endif; ?>
+
+        <?php if (! \Illuminate\Support\Facades\Blade::check('role', 'Super Admin')): ?>
+        <?php if (\Illuminate\Support\Facades\Blade::check('canModule', 'Employee Management')): ?>
+            <li class="menu-item dropdown <?php echo e(request()->is('employee-management*') ? 'active' : ''); ?>">
+                <a href="javascript:void(0);" class="menu-link">
+                    <img src="<?php echo e(asset('public/images/MDI-information-outline.svg')); ?>" alt="Employee Management">
+                    <span class="links_name">Employee Management</span>
+                </a>
+                <ul class="dropdown-menu cust_drop">
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('hr-employee-attendance')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('employee-management.hr.employee.attendance')); ?>">Employees Attendance</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('hr-assign-asset')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('employee-management.hr.assign.asset')); ?>">Assign
+                                Asset</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('candidate-mark-attendance')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('employee-management.mark.attendance.index')); ?>">Mark
+                                Attendance</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('candidate-calendar')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('employee-management.calendar')); ?>">Calendar</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('candidate-apply-leave')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('employee-management.apply.leave.index')); ?>">Apply
+                                Leave</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('exit-interview')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('employee-management.exit.interview.index')); ?>">Exit
+                                Interview</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('other-facilities')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('employee-management.other.facilities.index')); ?>">Other
+                                Facilities</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('mark-attendance-checker')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('employee-management.mark.attendance.checker')); ?>">Mark
+                                Attendance Checker</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('mark-attendance-approver')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('employee-management.mark.attendance.approver')); ?>">Mark
+                                Attendance Approver</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('exit-interview-checker')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('employee-management.exit.interview.checker')); ?>">Exit
+                                Interview Checker</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('exit-interview-approver')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('employee-management.exit.interview.approver')); ?>">Exit
+                                Interview Approver</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('candidate-apply-leave-checker')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('employee-management.apply.leave.checker')); ?>">Apply
+                                Leave Checker</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('candidate-apply-leave-approver')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('employee-management.apply.leave.approver')); ?>">Apply
+                                Leave Approver</a></li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
+        <?php if (\Illuminate\Support\Facades\Blade::check('canModule', 'Grievance Management')): ?>
+            <li class="<?php echo e(request()->is('grievance-management*') ? 'active' : ''); ?>">
+                <a href="<?php echo e(route('grievance-management.grievance.index')); ?>">
+                    <img src="<?php echo e(asset('public/images/MDI-information-outline.svg')); ?>" alt="Grievance Application">
+                    <span class="links_name">Grievance Application</span>
+                </a>
+            </li>
+        <?php endif; ?>
+        
+        <?php if (\Illuminate\Support\Facades\Blade::check('canModule', 'Document Management')): ?>
+            <li class="menu-item dropdown <?php echo e(request()->is('document-management*') ? 'active' : ''); ?>">
+                <a href="javascript:void(0);" class="menu-link">
+                    <img src="<?php echo e(asset('public/images/MDI-information-outline.svg')); ?>" alt="Document Management">
+                    <span class="links_name">Document Management</span>
+                </a>
+                <ul class="dropdown-menu cust_drop">
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('dms-dashboard')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('dms.dashboard')); ?>">Dashboard</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('dms-create')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('dms.document.create')); ?>">Add Document</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('dms-view')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('dms.document.index')); ?>">View Documents</a></li>
+                    <?php endif; ?>
+                    <li><a class="dropdown-item" href="<?php echo e(route('dms.sharing.index')); ?>">Documents Received</a></li>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('dms-share')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('dms.sharing.create')); ?>">Share Documents</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('dms-approver')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('dms.sharing.pendingAndApprovedDocuments')); ?>">Approve Shared Documents</a></li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
+
+         <?php if (\Illuminate\Support\Facades\Blade::check('canModule', 'Query Management')): ?>
+            <li class="menu-item dropdown <?php echo e(request()->is('query-management*') ? 'active' : ''); ?>">
+                <a href="javascript:void(0);" class="menu-link">
+                    <img src="<?php echo e(asset('public/images/MDI-information-outline.svg')); ?>" alt="Query Management">
+                    <span class="links_name">Query Management</span>
+                </a>
+                <ul class="dropdown-menu cust_drop">
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('qms-dashboard')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('qms.dashboard')); ?>">Dashboard</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('qms-add-query')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('qms.create-query')); ?>">Add Query</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('qms-knowledge-base-query')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('qms.knowledge-base-query')); ?>">Knowledge Base Query</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('qms-raised-query')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('qms.raised-query')); ?>">Query Raised By Employee</a></li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
+        <?php endif; ?>
+
+        <?php if (\Illuminate\Support\Facades\Blade::check('hasrole', 'NHIDCL Employee|HQ/RO Employee')): ?>
+        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('directory-view')): ?>
+        <li class="<?php echo e(request()->is('directory-management/directory/stakeholder/list') ? 'active' : ''); ?>">
+            <a href="<?php echo e(route('directory-management.directory.stakeholder.list')); ?>">
+                <img src="<?php echo e(url('public/images/status.svg')); ?>" alt="Directory of Stakeholders">
+                <span class="links_name">Directory of Stakeholders</span>
+            </a>
+        </li>
+        <?php endif; ?>
+        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['external-user-create', 'external-user-view'])): ?>
+        <li class="<?php echo e(request()->is('directory-management/external/employees/create') ? 'active' : ''); ?>">
+            <a href="<?php echo e(route('directory-management.external.employees.create')); ?>">
+                <img src="<?php echo e(url('public/images/status.svg')); ?>" alt="Directory of Stakeholders">
+                <span class="links_name">Add External Employees</span>
+            </a>
+        </li>
+        <?php endif; ?>
+        <?php endif; ?>
+
+          <?php if (\Illuminate\Support\Facades\Blade::check('canModule', 'Employee Management')): ?>
+        
+        <?php endif; ?>
+
+
+        <?php if (\Illuminate\Support\Facades\Blade::check('hasrole', 'Super Admin')): ?>
+            <li class="menu-item <?php echo e(request()->is('master-settings*') ? 'active' : ''); ?>">
+                <a href="<?php echo e(route('master-settings.index')); ?>">
+                    <img src="<?php echo e(asset('public/images/MDI-information-outline.svg')); ?>" alt="master settings">
+                    <span class="links_name">Master Settings</span>
+                </a>
+            </li>
+        <?php endif; ?>
+
+        <?php if (\Illuminate\Support\Facades\Blade::check('hasrole', 'HR')): ?>
+            <li class="menu-item <?php echo e(request()->is('hr-settings*') ? 'active' : ''); ?>">
+                <a href="<?php echo e(route('hr-settings.index')); ?>">
+                    <img src="<?php echo e(asset('public/images/MDI-information-outline.svg')); ?>" alt="hr settings">
+                    <span class="links_name">HR System Setup</span>
+                </a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</div>
+<?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/shared/sidebar.blade.php ENDPATH**/ ?>

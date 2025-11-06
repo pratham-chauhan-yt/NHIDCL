@@ -1,0 +1,143 @@
+@extends('layouts.dashboard')
+@section('dashboard_content')
+    <section class="home-section">
+        <div class="container-fluid md:p-0">
+            <div class="top_heading_dash__">
+                <div class="main_hed">Sharing of Documents</div>
+            </div>
+        </div>
+        <div class="inner_page_dash__">
+            <div class="my-4">
+                <div class="tab_custom_c">
+                    <button class="tablink" onclick="openPage('Share', this, '#373737')" id="defaultOpen">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                        </svg>
+                        Share Document
+                    </button>
+
+                    <button class="tablink" onclick="openPage('Shared-Documents', this, '#373737')" data-page="Shared-Documents">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
+                        </svg>
+                        Shared Documents
+                    </button>
+                </div>
+
+                <div id="Share" class="tabcontent">
+                    <form id="share-document-form" method="POST" action="{{ route('dms.sharing.store') }}"
+                        class="form_grid_cust" enctype="multipart/form-data">
+                        @csrf
+                        <div class="inpus_cust_cs form_grid_dashboard_cust_">
+                            <div class="">
+                                <label class="required-label" for="title">Title</label>
+                                <input type="text" name="title" id="title" placeholder="Enter Title" />
+                                <span id="title_err" class="title_err candidateErr">
+                                    @error('title')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror
+                                </span>
+                            </div>
+                            <div class="attachment_section_doc attachment_preview">
+                                <label class="required-label" for="upload_doc">Document (<small
+                                        class="text-yellow-message">PDF file only, with a max size of 40 MB</small>)</label>
+                                <div class="flex gap-[10px]">
+                                    <input type="text" id="upload_doc_url" name="upload_doc_url"
+                                        class="upload_doc_url" placeholder="Upload Document" readonly>
+                                    <label class="upload_cust mb-0 hover-effect-btn hide_upload_doc_btn"> Upload File
+                                        <input id="upload_doc" type="file" name="upload_doc" class="hidden upload_doc">
+                                    </label>
+                                </div>
+                                <span id="upload_doc_err" class="upload_doc_err candidateErr">
+                                    @if ($errors->has('upload_doc'))
+                                        {{ $errors->first('upload_doc') }}
+                                    @endif
+                                </span>
+                            </div>
+
+                            <div class="">
+                                <label class="" for="remark">Remark</label>
+                                <input type="text" name="remark" id="remark" placeholder="Enter remark" />
+                                <span id="remark_err" class="remark_err candidateErr">
+                                    @error('remark')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror
+                                </span>
+                            </div>
+
+                            <div class="">
+                                <label class="required-label" for="share_type">Share Document</label>
+                                <select class="js-select2" required name="share_type" id="share_type">
+                                    <option value="">Select</option>
+                                    <option value="Within Department">Within Department</option>
+                                    <option value="Other Department">Other Department</option>
+                                </select>
+                                <span id="share_type_err" class="share_type_err candidateErr">
+                                    @error('share_type')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror
+                                </span>
+                            </div>
+
+                            <div class="">
+                                <label class="required-label" for="ref_users_id">User</label>
+                                <select class="js-select2" name="ref_users_id" id="ref_users_id">
+                                    <option value="">Select User</option>
+                                </select>
+                                <span id="ref_users_id_err" class="ref_users_id_err candidateErr">
+                                    @error('ref_users_id')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror
+                                </span>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="button_flex_cust_form">
+                            <button class="hover-effect-btn fill_btn" type="submit">
+                                Share
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="Shared-Documents" class="tabcontent">
+                    <div class="table_over mt-4 p-1">
+                        <table id="Shared-DocumentsTable" data-edit="@json(auth()->user()->can('dms-share'))"
+                            class="cust_table__ table-auto text-wrap cell-border stripe compact hover w-full">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>Remark</th>
+                                    <th>Shared Type</th>
+                                    <th>Shared With</th>
+                                    <th>Shared Date</th>
+                                    <th>File</th>
+                                    <th>Status</th>
+                                    <th>Approved By</th>
+                                    @can('dms-share')
+                                        <th>Action</th>
+                                    @endcan
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('public/css/flowbite.min.css') }}">
+@endpush
+@push('scripts')
+    <script src="{{ asset('public/js/select2.min.js') }}"></script>
+    <script src="{{ asset('public/js/utils/validationManager.js') }}"></script>
+    <script src="{{ asset('public/js/utils/dataTableManager.js') }}"></script>
+    <script src="{{ asset('public/js/utils/fileUpload.js') }}"></script>
+    <script src="{{ asset('public/js/document-management/sharing-document/share-document.js') }}"></script>
+@endpush

@@ -1,0 +1,19 @@
+<div class="w-fit">
+    <label <?php if(!empty($required)): ?> class="required-label" <?php endif; ?>><?php echo e($label); ?></label>
+
+    <?php if(($type ?? 'text') === 'select'): ?>
+        <select name="<?php echo e($name); ?>" id="<?php echo e($id ?? $name); ?>" class="js-single <?php echo e($class ?? ''); ?>" <?php echo e($required ?? ''); ?>>
+            <?php echo e($slot); ?>
+
+        </select>
+    <?php else: ?>
+        <input type="<?php echo e($type ?? 'text'); ?>" 
+               name="<?php echo e($name); ?>" 
+               id="<?php echo e($id ?? $name); ?>" 
+               placeholder="<?php echo e($placeholder ?? ''); ?>" 
+               minlength="<?php echo e($minlength ?? ''); ?>" 
+               maxlength="<?php echo e($maxlength ?? ''); ?>" 
+               class="<?php echo e($class ?? ''); ?>" 
+               <?php echo e($required ?? ''); ?>>
+    <?php endif; ?>
+</div><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/components/filter-input.blade.php ENDPATH**/ ?>

@@ -1,0 +1,153 @@
+@extends('layouts.dashboard')
+@section('dashboard_content')
+    <section class="home-section ">
+        <div class="container-fluid md:p-0">
+            <div class="top_heading_dash__">
+                <div class="main_hed">View Added Query</div>
+                <div class="plain_dlfex bg_elips_ic">
+                    <button type="button" onclick="history.back();"
+                        class="hover-effect-btn fill_btn">{{ __('Back') }}</button>
+                </div>
+            </div>
+        </div>
+        <div class="inner_page_dash__">
+            <div class="my-4">
+                <div class="tab_custom_c mb-[20px]">
+                    <button class="tablink" onclick="openPage('Home', this, '#373737')" id="defaultOpen">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z" />
+                        </svg>
+                        View Query
+                    </button>
+                </div>
+
+                <div id="Home" class="tabcontent">
+                    <div class="candidat_cust-dates">
+                        <table class="details-table">
+                            <tbody>
+                                <tr>
+                                    <th>Query ID:</th>
+                                    <td>{{ $data->query_id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Query Type:</th>
+                                    <td>{{ $data->queryType->query_type }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Title/Subject:</th>
+                                    <td>{{ $data->title }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Description:</th>
+                                    <td>{{ $data->description }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Added Date:</th>
+                                    <td>{{ $data->created_at ? $data->created_at->format('d-m-Y') : '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Added By:</th>
+                                    <td>{{ $data->createdBy ? $data->createdBy->name . ' (' . $data->createdBy->email . ')' : '-' }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Supporting Document:</th>
+                                    <td>
+                                        @if (isset($data->supporting_document))
+                                            @php
+                                                $FilePath = 'uploads/query-management/';
+                                                $FileName = basename($data->supporting_document);
+                                                $FileUrl = route('qms.view-file', [
+                                                    'pathName' => $FilePath,
+                                                    'fileName' => $FileName,
+                                                ]);
+                                            @endphp
+                                            <a href="{{ $FileUrl }}" target="_blank" data-bs-toggle="tooltip"
+                                                title="View query file">
+                                                <i class="fa fa-file mx-1" aria-hidden="true"></i> View File
+                                            </a>
+                                        @else
+                                            <span>No file uploaded</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    @php
+                                        $badgeLabel = '';
+                                        $badgeClass = '';
+                                        if ($data->status) {
+                                            $statusValue = strtolower($data->status->status);
+                                            if ($statusValue === 'pending_query') {
+                                                $badgeLabel = 'Pending Query';
+                                                $badgeClass = 'warning';
+                                            } else {
+                                                $badgeLabel = 'Resolved Query';
+                                                $badgeClass = 'success';
+                                            }
+                                        }
+                                    @endphp
+                                    <th>Status:</th>
+                                    <td>
+                                        <span class="badge badge-{{ $badgeClass }}">{{ $badgeLabel }}</span>
+                                    </td>
+                                </tr>
+                                @if ($data->remark)
+                                    <th>Status Remark:</th>
+                                    <td>
+                                        {{ $data->remark }}
+                                    </td>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection
+
+@push('styles')
+    <style>
+        .candidat_cust-dates {
+            margin: 1rem auto;
+        }
+
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .details-table th,
+        .details-table td {
+            padding: 10px 15px;
+            vertical-align: top;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .details-table th {
+            text-align: left;
+            width: 25%;
+            font-weight: 600;
+            color: #222;
+            background-color: #f9f9f9;
+        }
+
+        .details-table td {
+            color: #555;
+        }
+
+        .details-table a {
+            color: #0d6efd;
+            /* Bootstrap blue */
+            text-decoration: none;
+        }
+
+        .details-table a:hover {
+            text-decoration: underline;
+        }
+    </style>
+@endpush
+@push('scripts')
+    {{-- <script src="{{ asset('public/validation/query-management/raised-query.js') }}"></script> --}}
+@endpush

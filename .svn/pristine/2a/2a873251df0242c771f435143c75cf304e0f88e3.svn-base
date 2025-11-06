@@ -1,0 +1,253 @@
+@media only screen and (max-width: 997px) {
+       /* start header responsive css  */
+       .logo_content h4 {
+        font-size: 16px;
+    }
+    .logo_content p {
+        font-size: 12px;
+        max-width: 100%;
+    }
+    .logo_section a {
+        width: 50%;
+    }
+    .parent_header {
+        flex-wrap: wrap;
+    }
+    .logo_section {
+        width: 100%;
+    }
+    .parent_right_nav {
+        width: 100%;
+    }
+    .side_top_bar .top_bar_giude {
+        padding: 0;
+        background: #5082d3;
+        text-align: center;
+        justify-content: center;
+    }
+    .side_top_bar .top_bar_giude li {
+        padding:0 5px 4px 5px;
+    }
+    .side_top_bar .top_bar_giude li:nth-last-child(1) {
+        padding: 0 5px;
+    }
+    .side_top_bar .top_bar_giude li select option {
+        color: black;
+    }
+    .menu_ ul li {
+        font-size: 14px;
+    }
+    .side_top_bar {
+        margin: 0;
+    }
+    .side_top_bar .top_bar_giude li a {
+        font-size: 10px;
+    }
+    .side_top_bar .top_bar_giude li select {
+        font-size: 10px;
+    }
+    .menu_ ul li a {
+        color: rgb(0 0 0);
+    }
+
+    /* End header responsive css  */
+    .banner_image {
+        margin-top: 0;
+        padding: 20px;
+    }
+    .banner_content.observe-element h4 {
+        font-size: 2rem;
+        line-height: normal;
+    }
+    .banner_content.observe-element h4::before {
+        top: -12px;
+        left: -24px;
+        opacity: 0.5;
+        width: 50px;
+    }
+    .banner_content.observe-element h4::after {
+        bottom: -3px;
+        right: -22px;
+        opacity: 0.5;
+        width: 50px;
+    }
+    form.bg_form {
+        margin-top: 35px;
+    }
+    .verification_code {
+        font-size: 10px;
+    }
+    .form_rember_me {
+        font-size: 12px;
+        margin-bottom: 0 !important;
+    }
+    .forgot_passowrd_ a {
+        font-size: 12px;
+    }
+    .disp_grid {
+        margin-top: 0;
+    }
+    .disp_grid ul {
+        grid-template-columns: 1fr 1fr;
+    }
+    .heading_cions_document img {
+        width: 15%;
+    }
+    section.color_bg_grident {
+        background: none;
+    }
+    .footer_content {
+        margin-top: 20px;
+    }
+    .documentation_content p {
+        font-size: 14px;
+    }
+    .heading_cions_document h4 {
+        font-size: 1.25rem;
+    }
+
+    /* dashboard top header responsive  */
+    .logo-details i {
+        top: 6.2rem;
+        left: 0;
+    }
+    .right_header {
+        width: 100%;
+        justify-content: end;
+    }
+
+    .sidebar.open {
+        position: absolute;
+        z-index: 100;
+        left: 0;
+        width: 190px;
+        height: 100vh;
+        top: 9rem;
+        overflow: scroll;
+    }
+
+    .home-section {
+        left: 0;               /* Do not adjust the home-section's left position */
+        width: 100%;           /* Keep the home-section full width */
+        position: relative;    /* Maintain the relative positioning */
+    }
+
+    .sidebar.open ~ .home-section {
+        width: 100%;           /* Ensure the home-section remains full width */
+        left: 0;               /* Do not shift the home-section */
+    }
+    .sidebar {
+        left: -190px; /* Hide sidebar offscreen */
+        position: absolute;
+        transition: all 0.5s ease;
+    }
+
+    .sidebar.open {
+        left: 0; /* Bring sidebar into view */
+    }
+
+    /* Adjust Home Section for Mobile */
+    .home-section {
+        width: 100%;
+        left: 0;
+        border-radius: 0;
+        padding: 0;
+        padding-bottom: 20px !important;
+    }
+    div#nhidcl_tabs {
+        gap: 5px;
+    }
+    .tab_cont_list {
+        flex-wrap: wrap;
+    }
+    .tab_cont_list i {
+        padding: 1px 3px;
+    }
+    .bg_notification {
+        margin-top: 15px;
+    }
+    .parrent_dahboard_ {
+        gap: 10px;
+    }
+    .overflow_addres_cont_name {
+        margin-top: 13px;
+    }
+    table.custom_table_nhidcl {
+        border-spacing: 1px 5px;
+        border-collapse: separate;
+        white-space: nowrap;
+    }
+    .chart_c .text {
+        font-size: 12px;
+    }
+    .contant_qury_mght h5 {
+        font-size: 14px;
+    }
+    .contant_qury_mght p {
+        font-size: 11px;
+    }    
+    .date_selection select {
+        font-size: 11px;
+        padding: 4px;
+    }
+}
+
+
+
+@media screen and (min-width: 767px) and (max-width: 1200px) {
+    .disp_grid ul {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .disp_grid ul li img {
+        width: 35%;
+    }
+    .disp_grid ul li p {
+        font-size: 12px;
+        color: black;
+    }
+    .heading_cions_document {
+        flex-wrap: wrap;
+    }
+
+/* dashboard responsive  */
+
+    .parent_header {
+        flex-wrap: nowrap;
+    }
+    .logo-details i {
+        top: 2rem;
+        left: 30rem;
+    }
+    .bg_notification {
+        margin-top: 0px;
+    }
+    .notification_contetn {
+        flex-wrap: wrap;
+        gap: 3px;
+    }
+    .content_hed_p_notification h6 {
+        font-size: 12px;
+    }
+    .content_hed_p_notification p {
+        font-size: 10px;
+    }
+    .notification_contetn span {
+        font-size: 8px;
+    }
+    .bg_notification {
+        max-height: 480px;
+    }
+    .bg_audit_management.mt-4 {
+        max-height: 472px;
+    }
+    .bg_query_management_s {
+        max-height: 975px;
+    }
+
+}
+
+@media screen and (min-width: 767px) and (max-width: 959px) {
+    .sidebar.open {
+        top: 6.5rem;
+    }
+}

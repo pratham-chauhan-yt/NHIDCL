@@ -1,0 +1,99 @@
+
+<?php $__env->startSection('content'); ?>
+    <div id="layout-wrapper">
+        <?php if(isset($header)): ?>
+            <?php echo $__env->make('shared.header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <?php endif; ?>
+        <div class="main-container">
+            <?php if(isset($sidebar)): ?>
+                <?php echo $__env->make('shared.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <?php endif; ?>
+
+            <section class="home-section">
+                <!-- container-fluid start  -->
+                <div class="container-fluid">
+
+                    <?php echo $__env->yieldContent('dashboard_content'); ?>
+
+                </div>
+                <!-- container-fluid end  -->
+            </section>
+
+        </div>
+        <footer>
+            <div class="footer_content">
+                <p>@ 2024 NHIDCL </p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function fetchUnreadNotifications() {
+            axios.get('<?php echo e(route('notifications.unread')); ?>').then(response => {
+                const unreadCount = response.data.length;
+                const badge = document.querySelector('.badge');
+                badge.textContent = unreadCount;
+                badge.classList.toggle('d-none', unreadCount === 0);
+            }).catch(error => {
+                console.error('Error fetching notifications:', error);
+            });
+        }
+
+        // Call this function at regular intervals
+        fetchUnreadNotifications();
+        setInterval(fetchUnreadNotifications, 15000); // Fetch every 5 seconds
+    </script>
+
+    <script>
+        // Function to populate notifications in the dropdown
+        const notificationReadUrl = "<?php echo e(route('notification.read', ':id')); ?>";
+
+        function populateNotifications() {
+            axios.get('<?php echo e(route('notifications.unread')); ?>').then(response => {
+                const notifications = response.data;
+                const notificationContainer = document.querySelector('.simplebar-content');
+                notificationContainer.innerHTML = ''; // Clear existing notifications
+
+                // Create a list group for notifications
+                const listGroup = document.createElement('ul');
+                listGroup.classList.add('list-group');
+
+                notifications.forEach(notification => {
+                    const notificationItem = document.createElement('li');
+                    notificationItem.classList.add('list-group-item', 'list-group-item-action',
+                        'list-group-item-primary');
+
+                    // Replace ':id' in the URL template with the actual notification ID
+                    const notificationUrl = notificationReadUrl.replace(':id', notification.id);
+
+                    notificationItem.innerHTML = `
+                    <div class="d-flex align-items-start">
+                        <img src="<?php echo e(asset('images/users/user-dummy-img.jpg')); ?>" class="me-3 rounded-circle shadow-sm avatar-xs" alt="user-pic">
+                        <div class="flex-1">
+                            <a href="${notificationUrl}" class="text-reset d-block" style="text-align: justify;">
+                                ${notification.data.message}
+                            </a>
+                            <p class="pe-none mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                <span><i class="fa fa-clock align-middle p-1"></i> ${notification.formatted_created_at}</span>
+                            </p>
+                        </div>
+                    </div>
+                `;
+
+                    listGroup.appendChild(notificationItem);
+                });
+
+                // Append the list group to the notification container
+                notificationContainer.appendChild(listGroup);
+                document.getElementById('new-notifications-count').textContent = `${notifications.length} New`;
+            }).catch(error => {
+                console.error('Error fetching notifications:', error);
+            });
+        }
+
+        // Call populateNotifications to load notifications when the dropdown is opened
+        document.getElementById('page-header-notifications-dropdown').addEventListener('click', populateNotifications);
+    </script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\nhidcl\resources\views/layouts/dashboard.blade.php ENDPATH**/ ?>

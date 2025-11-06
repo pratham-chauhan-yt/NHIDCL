@@ -1,0 +1,189 @@
+@extends('layouts.dashboard')
+@section('dashboard_content')
+    <section class="home-section ">
+        <div class="container-fluid md:p-0">
+            <div class="top_heading_dash__">
+                <div class="main_hed">Add New Query</div>
+            </div>
+        </div>
+        <div class="inner_page_dash__">
+            <div class="my-4 ">
+                <div class="tab_custom_c mb-[20px]">
+                    <button class="tablink" onclick="openPage('Home', this, '#373737')" id="defaultOpen">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z" />
+                        </svg>
+                        Query Details
+                    </button>
+
+                    <button class="tablink" onclick="openPage('Pending', this, '#373737')">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
+                        </svg>
+                        Pending Queries
+                    </button>
+
+                    <button class="tablink" onclick="openPage('Resolved', this, '#373737')">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
+                        </svg>
+                        Resolved Queries
+                    </button>
+
+                </div>
+
+                <div id="Home" class="tabcontent">
+                    <form class="form_grid_cust" action="{{ route('qms.store-query') }}" method="POST"
+                        enctype="multipart/form-data" id="addQuery">
+                        @csrf
+                        <div class="inpus_cust_cs form_grid_dashboard_cust_">
+                            <div class="">
+                                <label class="required-label">Title/Subject</label>
+                                <input type="text" class="" name="title"
+                                    placeholder="Enter your query title here...">
+                                @error('title')
+                                    <div class="error-message">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="">
+                                <label class="required-label">Query Type</label>
+                                <select class="" name="query_type">
+                                    <option value="" selected disabled>Select Query Type</option>
+                                    @foreach ($queryTypes as $queryType)
+                                        <option value="{{ $queryType->id }}">{{ $queryType->query_type }}</option>
+                                    @endforeach
+                                </select>
+                                @error('query_type')
+                                    <div class="error-message">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="">
+                                <label class="required-label">Description</label>
+                                <textarea class="" rows="2" name="description" placeholder="Enter your query description here..."></textarea>
+                                @error('description')
+                                    <div class="error-message">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="">
+                                <label class="">Supporting Document (If Any)</label>
+                                <div class="flex gap-[10px]">
+                                    <input type="text" id="uploaded_query_file" name="uploaded_query_file"
+                                        placeholder="Upload Image" class="uploaded_query_file" readonly>
+                                    <label class="upload_cust mb-0 hover-effect-btn"> Upload File
+                                        <input type="file" id="upload_query_file" name="upload_query_file"
+                                            class="hidden upload_query_file">
+                                        <input type="hidden" id="query_file" name="query_file" value="">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="button_flex_cust_form">
+                            <button class="hover-effect-btn fill_btn" type="submit">
+                                Submit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="Pending" class="tabcontent">
+
+                    <div class="table_over">
+                        <table class="cust_table__ table_sparated" id="pendingQueriesTable">
+                            <thead class="">
+                                <tr>
+                                    <th scope="col">
+                                        #
+                                    </th>
+                                    <th scope="col">
+                                        Query ID
+                                    </th>
+                                    <th scope="col">
+                                        Title/Subject
+                                    </th>
+                                    <th scope="col">
+                                        Query Type
+                                    </th>
+                                    <th scope="col">
+                                        Created Date
+                                    </th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="Resolved" class="tabcontent">
+
+                    <div class="table_over">
+                        <table class="cust_table__ table_sparated" id="resolvedQueriesTable">
+                            <thead class="">
+                                <tr>
+                                    <th scope="col">
+                                        #
+                                    </th>
+                                    <th scope="col">
+                                        Query ID
+                                    </th>
+                                    <th scope="col">
+                                        Title/Subject
+                                    </th>
+                                    <th scope="col">
+                                        Query Type
+                                    </th>
+                                    <th scope="col">
+                                        Created Date
+                                    </th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="resolveModal" tabindex="-1" aria-labelledby="resolveModalLabel" aria-hidden="true"
+            style="display:none;">
+            <div class="modal-dialog">
+                <form id="resolveForm">
+                    @csrf
+                    <input type="hidden" name="query_id" id="resolve_query_id">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Mark as Resolved</h5>
+                            <button type="button" class="btn-close" id="closeResolveModal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to mark this query as <strong>resolved</strong>?
+                            <p id="resolve_query_title" class="mt-2 text-muted small"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Yes, Mark as Resolved</button>
+                            <button type="button" class="btn btn-secondary" id="cancelResolveModal">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </section>
+@endsection
+
+@push('styles')
+@endpush
+@push('scripts')
+    <script src="{{ asset('public/validation/query-management/add-query.js') }}"></script>
+    <script src="{{ asset('public/validation/query-management/markAsResolved.js') }}"></script>
+@endpush

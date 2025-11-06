@@ -1,0 +1,45 @@
+<?php $__env->startSection('dashboard_content'); ?>
+    <div class="container-fluid md:p-0">
+        <div class="top_heading_dash__">
+            <div class="main_hed">BG List</div>
+        </div>
+    </div>
+    <div class="inner_page_dash__">
+        <div class="my-4 ">
+
+            <div id="project" class="tabcontent">
+                <div class="table_over">
+                    <table class="cust_table__ table_sparated" id="bg-table">
+                        <thead class="">
+                            <tr>
+                                <th>#</th>
+                                <th>BG Id</th>
+                                <th>Ref. No</th>
+                                <th>SAP ID</th>
+                                <th>Guarantee Type</th>
+                                <th>State</th>
+                                <th>BG No</th>
+                                <th>No. of Renew</th>
+                                <th>Expiry Date</th>
+                                <th>Track Status</th>
+                                <th>Track Claim Lodge</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+
+
+
+
+                        </thead>
+                        <tbody class=""> </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+    <script src="<?php echo e(asset('/public/validation/bgms.bg.js')); ?>"></script>
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/bank-management/uploader/bg/index.blade.php ENDPATH**/ ?>

@@ -1,0 +1,33 @@
+
+<?php $__env->startSection('dashboard_content'); ?>
+<section class="home-section ">
+    <div class="container-fluid md:p-0">
+        <div class="top_heading_dash__">
+            <div class="main_hed"> Login History</div>
+        </div>
+    </div>
+    <div class="inner_page_dash__">
+        <table class="cust_table__ table_sparated">
+            <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>Logs</th>
+                    <th>Ip Address</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $__currentLoopData = $activities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <tr>
+                    <th><?php echo e($loop->iteration); ?></th>
+                    <td><?php echo e($data->activity); ?></td>
+                    <td><?php echo e($data->ip_address); ?></td>
+                    <td><?php echo e($data->created_at); ?></td>
+                </tr>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </tbody>
+        </table>
+    </div>
+</section>
+ <?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/profile/login_history.blade.php ENDPATH**/ ?>

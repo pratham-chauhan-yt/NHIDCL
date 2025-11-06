@@ -1,0 +1,99 @@
+let initFileUpload = function (config) {
+  const joinUrl = (base, path) =>
+    (base ? base.replace(/\/+$/, '') + '/' : '') + path.replace(/^\/+/, '');
+
+  // Upload handler
+  $(document).on('change', config.inputSelector, function () {
+    const $input = $(this);
+    const file = $input[0].files[0];
+    if (!file) return;
+
+    // Validate
+    const mimeOk = config.allowedTypes.includes(file.type);
+    const ext = file.name.split('.').pop()?.toLowerCase() || '';
+    const extOk = (config.allowedExt || []).includes(ext);
+    if (!mimeOk && !(config.allowedExt && extOk)) {
+      Swal.fire('Warning', `Please select a valid ${config.allowedTypesText} file only!`, 'warning');
+      $input.val('');
+      return;
+    }
+    if (file.size > config.maxSize) {
+      Swal.fire('Warning', `File size should not exceed ${config.maxSizeText}!`, 'warning');
+      $input.val('');
+      return;
+    }
+
+    const base = document.querySelector('meta[name="website-url"]')?.getAttribute('content') || '';
+    const uploadUrl = joinUrl(base, config.uploadUrl);
+    const viewUrl   = joinUrl(base, config.viewUrl);
+
+    const fd = new FormData();
+    fd.append(config.formDataKey, file);
+    fd.append('_token', $('meta[name="csrf-token"]').attr('content'));
+
+    const $section = $input.closest(config.sectionClass);
+
+    $('#loader').show();
+    $.ajax({
+      url: uploadUrl,
+      type: 'POST',
+      data: fd,
+      contentType: false,
+      processData: false,
+      success: function (res) {
+        $('#loader').hide();
+
+        if (!res || !res.status) {
+          Swal.fire('Error', res?.message || 'Upload failed.', 'error');
+          $input.val('');
+          return;
+        }
+
+        const fileName = res.file_name;
+        const url = `${viewUrl}?pathName=${encodeURIComponent(config.pathName)}&fileName=${encodeURIComponent(fileName)}`;
+
+        const key = `${config.prefix}_${Date.now()}_${Math.floor(Math.random()*1e6)}`;
+        if (config.single !== false) {
+          $section.find('.upload-preview').remove();
+        }
+
+        const previewHtml = `
+          <div class="upload-preview" data-key="${key}">
+            <a target="_blank" href="${url}" class="font-medium text-sm mx-2 my-2 ${config.viewClass || ''}">View</a>
+            <a href="javascript:void(0);" class="font-medium text-sm mx-2 my-2 ${config.removeClass || ''}"
+               data-key="${key}" data-filename="${fileName}">Remove</a>
+          </div>
+        `;
+
+        $section.append(previewHtml);
+        // $section.find(config.hideClass).hide();
+        $section.find(config.hideClass).hide().find('input[type="file"]').prop('disabled', true);
+        $section.find(config.hiddenInput).val(url);
+        $section.find('.candidateErr').text('');
+      },
+      error: function () {
+        $('#loader').hide();
+        Swal.fire('Error', 'Something went wrong. Try again.', 'error');
+        $input.val('');
+      }
+    });
+  });
+
+  // Remove handler (delegated)
+  $(document).on('click', `.${config.removeClass}`, function () {
+    const $btn = $(this);
+    const key = $btn.data('key');
+    const $section = $btn.closest(config.sectionClass);
+
+    initRemoveFilePreview(key, config.hideClass, config.inputSelector, config.hiddenInput, $section);
+  });
+};
+
+let initRemoveFilePreview = function(key, hideClass, inputSelector, hiddenInput, $section) {
+  $section.find(`.upload-preview[data-key="${key}"]`).remove();
+//   $section.find(hideClass).show();
+  $section.find(hideClass).show().find('input[type="file"]').prop('disabled', false);
+  $section.find(inputSelector).val('');
+  $section.find(hiddenInput).val('');
+  $section.find('.candidateErr').text('');
+};

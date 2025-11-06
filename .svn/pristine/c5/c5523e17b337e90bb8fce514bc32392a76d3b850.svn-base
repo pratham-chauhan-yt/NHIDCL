@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-layout-mode="light" data-layout-width="fluid" data-layout-position="fixed" data-layout-style="default">
+
+<head>
+    <meta charset="utf-8">
+    <title><?php echo e(config('app.name', 'Comptroller and Auditor General of India')); ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Comptroller and Auditor General of India" name="description" />
+    <meta content="cag.gov.in" name="author" />
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <link href="/favicon.ico" type="image/x-icon" rel="icon" />
+    <link href="/favicon.ico" type="image/x-icon" rel="shortcut icon" />
+    <link rel="stylesheet" href="<?php echo e(asset('css/bootstrap.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('css/icons.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('css/app.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('css/custom.min.css')); ?>">
+    <?php echo $__env->yieldContent('styles'); ?>
+</head>
+
+<body>
+    <?php echo $__env->yieldContent('content'); ?>
+    <div id="preloader" class="d-none">
+        <div id="status">
+            <div class="spinner-border text-primary avatar-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <script src="<?php echo e(asset('js/bootstrap.bundle.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/jquery-3.6.3.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/layout.js')); ?>"></script>
+    <?php if(isset($appScript)): ?>
+        <script src="<?php echo e(asset('js/app.js')); ?>"></script>
+    <?php endif; ?>
+    <?php echo $__env->yieldContent('scripts'); ?>
+</body>
+</html>
+<?php /**PATH C:\laragon\www\NHIDCL\resources\views/layouts/app.blade.php ENDPATH**/ ?>

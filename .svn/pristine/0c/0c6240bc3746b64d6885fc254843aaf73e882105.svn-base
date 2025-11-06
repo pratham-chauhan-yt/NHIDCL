@@ -1,0 +1,198 @@
+<div class="app-menu navbar-menu">
+    <div class="navbar-brand-box">
+        <a href="<?php echo e(url('admin.dashboard')); ?>" class="logo logo-dark">
+            <span class="logo-sm">
+                <img src="<?php echo e(asset('images/logo-light.png')); ?>"
+                alt="Comptroller and Auditor General of India" height="65">
+            </span>
+            <span class="logo-lg">
+                <img src="<?php echo e(asset('images/logo-light.png')); ?>"
+                alt="Comptroller and Auditor General of India" height="65">
+            </span>
+        </a>
+        <a href="<?php echo e(url('admin.dashboard')); ?>" class="logo logo-light">
+            <span class="logo-sm">
+                <img src="<?php echo e(asset('images/logo-light.png')); ?>"
+                alt="Comptroller and Auditor General of India" height="65">
+            </span>
+            <span class="logo-lg">
+                <img src="<?php echo e(asset('images/logo-light.png')); ?>"  alt="Comptroller and Auditor General of India" height="65">
+            </span>
+        </a>
+        <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+            <i class="ri-record-circle-line"></i>
+        </button>
+    </div>
+
+    <div id="scrollbar" data-simplebar="init" class="h-100"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;"><div class="simplebar-content" style="padding: 0px;">
+        <div class="container-fluid">
+
+            <div id="two-column-menu">
+            </div>
+            <ul class="navbar-nav" id="navbar-nav" data-simplebar="init"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden;"><div class="simplebar-content" style="padding: 0px;">
+                <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarDashboards">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link collapsed" href="#sidebarFile" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarFile">
+                        <i class="ri-file-2-line"></i> <span data-key="t-dashboards">File Management</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarFile">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="create-file.html" class="nav-link" data-key="t-google">
+                                    Create
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="files-list.html" class="nav-link" data-key="t-google">
+                                    View Files
+                                </a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link collapsed" href="#sidebarTask" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarTask">
+                        <i class="ri-todo-line"></i> <span data-key="t-dashboards">Task Management</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarTask">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="create-task.html" class="nav-link" data-key="t-google">
+                                    Create Task
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="tasks-list.html" class="nav-link" data-key="t-vector">
+                                    My Tasks
+                                </a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link collapsed" href="#sidebarLetter" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLetter">
+                        <i class="ri-inbox-line"></i> <span data-key="t-dashboards">Letter Management</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarLetter">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="create-letter.html" class="nav-link" data-key="t-google">
+                                    Draft a Letter
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="letter-list.html" class="nav-link" data-key="t-vector">
+                                    View Letters
+                                </a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link collapsed" href="#sidebarDak" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLetter">
+                        <i class="ri-inbox-line"></i> <span data-key="t-dashboards">Dak Management</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarDak">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="dak-entry.html" class="nav-link" data-key="t-google">
+                                    Dak Entry
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="dak-list.html" class="nav-link" data-key="t-vector">
+                                    View Dak
+                                </a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="meeting.html">
+                        <i class="ri-group-2-fill"></i> <span data-key="t-dashboards">Meeting Management</span>
+                    </a>
+                    
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="dms.html">
+                        <i class="ri-database-2-line"></i> <span data-key="t-dashboards">Document Repository</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="timeline.html">
+                        <i class="ri-file-edit-line"></i> <span data-key="t-dashboards">Timeline</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="blog.html">
+                        <i class="ri-file-edit-line"></i> <span data-key="t-dashboards">Blog</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="sucess-story.html">
+                        <i class="ri-folder-user-line"></i> <span data-key="t-dashboards">Sucess Stories</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="lession-learn.html">
+                        <i class="ri-file-shield-2-line"></i> <span data-key="t-dashboards">Lession Learn</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="research-paper.html">
+                        <i class="ri-file-list-3-line"></i> <span data-key="t-dashboards">Research Paper</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="network-contact.html">
+                        <i class=" ri-team-line"></i> <span data-key="t-dashboards">Network Contact</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="employee-directory.html">
+                        <i class="ri-contacts-book-line"></i> <span data-key="t-dashboards">Employee Directory</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="inventry-list.html">
+                        <i class="ri-contacts-book-line"></i> <span data-key="t-dashboards">Inventry Management</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#sidebarTickets" class="nav-link collapsed" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarTickets" data-key="t-supprt-tickets">
+                        <i class="ri-ticket-2-line"></i> <span data-key="t-dashboards">Help Desk
+                    </span></a>
+                    <div class="collapse menu-dropdown" id="sidebarTickets">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="tickets-list.html" class="nav-link" data-key="t-list-view">
+                                    My Tickets </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="tickets-details.html" class="nav-link" data-key="t-ticket-details"> Ticket Details </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="profile.html">
+                        <i class=" ri-account-circle-line"></i> <span data-key="t-dashboards">My Profile</span>
+                    </a>
+                </li>
+                
+
+            </div></div></div></div><div class="simplebar-placeholder" style="width: 249px; height: 840px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none; transform: translate3d(0px, 0px, 0px);"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; display: none;"></div></div></ul>
+        </div>
+    </div></div></div></div><div class="simplebar-placeholder" style="width: auto; height: 840px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none; transform: translate3d(0px, 0px, 0px);"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 69px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div>
+
+    <div class="sidebar-background"></div>
+</div><?php /**PATH C:\laragon\www\NHIDCL\resources\views/shared/sidebar.blade.php ENDPATH**/ ?>

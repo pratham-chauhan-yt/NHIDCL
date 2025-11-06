@@ -1,0 +1,65 @@
+@extends('layouts.dashboard')
+@section('dashboard_content')
+    <section class="home-section ">
+        <div class="container-fluid md:p-0">
+            <div class="top_heading_dash__">
+                <div class="main_hed">Query Raised By Employees</div>
+            </div>
+        </div>
+        <div class="inner_page_dash__">
+            <small class="">View all the Queries raised by the NHIDCL employees</small>
+            <div class="my-4 ">
+                <div class="tab_custom_c mb-[20px]">
+
+                    <button class="tablink" onclick="openPage('Pending', this, '#373737')" id="defaultOpen">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
+                        </svg>
+                        Raised Queries
+                    </button>
+                </div>
+
+                <div id="Pending" class="tabcontent">
+
+                    <div class="table_over">
+                        <table class="cust_table__ table_sparated" id="raisedQueryTable">
+                            <thead class="">
+                                <tr>
+                                    <th scope="col">
+                                        #
+                                    </th>
+                                    <th scope="col">
+                                        Query ID
+                                    </th>
+                                    <th scope="col">
+                                        Title/Subject
+                                    </th>
+                                    <th scope="col">
+                                        Query Type
+                                    </th>
+                                    <th scope="col">
+                                        Created Date
+                                    </th>
+                                    <th scope="col">
+                                        Query Raised By
+                                    </th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection
+
+@push('styles')
+@endpush
+@push('scripts')
+    <script src="{{ asset('public/validation/query-management/raised-query.js') }}"></script>
+    <script src="{{ asset('public/validation/query-management/markAsResolved.js') }}"></script>
+@endpush

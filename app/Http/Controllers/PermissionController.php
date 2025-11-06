@@ -1,0 +1,204 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Permission;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+use RealRashid\SweetAlert\Facades\Alert;
+use Yajra\DataTables\Facades\DataTables;
+
+class PermissionController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware(['auth', 'module.access:User Management']);
+        $this->middleware('module.permission:permissions-view')->only(['index']);
+        $this->middleware('module.permission:permissions-create')->only(['create', 'store']);
+        $this->middleware('module.permission:permissions-edit')->only(['edit', 'update']);
+        $this->middleware(['role:Super Admin', 'module.permission:permissions-delete'])->only(['destroy']);
+
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        if ($request->ajax()) {
+            $permissions = Permission::all();
+
+            return DataTables::of($permissions)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $editUrl = route('permissions.edit', Crypt::encrypt($row->id));
+                    $deleteUrl = route('permissions.destroy', Crypt::encrypt($row->id));
+
+                    return '<a href="' . $editUrl . '" class="btn btn-info btn-sm">Edit</a>
+                <a href="javascript:void(0)" class="btn btn-danger btn-sm" data-id="' . Crypt::encrypt($row->id) . '" onclick="confirmDelete(\'' . $row->id . '\')">Delete</a>
+                <form id="delete-form-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display: none;">' . csrf_field() . method_field('DELETE') . '</form>';
+                })
+                ->editColumn('created_at', function ($row) {
+                    return \Carbon\Carbon::parse($row->created_at)->format('d-m-Y');
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        $header = TRUE;
+        $sidebar = TRUE;
+        return view('permissions.index', compact('header', 'sidebar'));
+    }
+
+    public function create()
+    {
+        $header = TRUE;
+        $sidebar = TRUE;
+        $modules = [
+            'Dashboard',
+            'User Management',
+            'Resource Pool Portal',
+            'Recruitment Management',
+            'Grievance Management',
+            'MD Task Management System',
+            'Exit Interview',
+            'Attendance Management',
+            'Audit Management System',
+            'Training Management',
+            'Query Management',
+            'Bank Guarantee Management',
+            'Directory Management',
+            'Document Management',
+            'Employee Management',
+        ];
+        return view('permissions.create', compact('header', 'sidebar', 'modules'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'module' => 'required',
+                'name' => 'required|unique:permissions|min:3',
+            ]);
+
+            $insertData = array(
+                'module' => htmlspecialchars($validatedData['module']),
+                'name' => htmlspecialchars($validatedData['name']),
+            );
+
+            // 3. Create the user
+            Permission::create($insertData);
+            Alert::success('Success', 'Permission added successfully');
+
+            // 5. Redirect to index route
+            return redirect()->route('permissions.index');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Handle validation errors specifically
+            Alert::error('Error', 'There were validation errors');
+
+            // Redirect back with input and validation errors
+            return redirect()->back()->withInput()->withErrors($e->validator->errors());
+        } catch (\Exception $e) {
+            // 6. Handle errors gracefully
+            Alert::error('Error', 'Oops, something went wrong. Please try again later.');
+            return redirect()->back()->withInput()->withErrors(['msg' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        try {
+            $permission = Permission::findOrFail(Crypt::decrypt($id));
+            $sidebar = TRUE;
+            $header = True;
+            $modules = [
+                'Dashboard',
+                'User Management',
+                'Resource Pool Portal',
+                'Recruitment Management',
+                'Grievance Management',
+                'MD Task Management System',
+                'Exit Interview',
+                'Attendance Management',
+                'Audit Management System',
+                'Training Management',
+                'Query Management',
+                'Bank Guarantee Management',
+                'Directory Management',
+                'Document Management',
+                'Employee Management',
+            ];
+            return view('permissions.edit', compact('header', 'sidebar', 'permission', 'modules'));
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Invalid data provided.');
+            return redirect()->route('roles.index');
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $permissionId)
+    {
+        try {
+            $id = Crypt::decrypt($permissionId);
+            $permission = Permission::findOrFail($id);
+
+            $validatedData = $request->validate([
+                'module' => 'required',
+                'name' => 'required|string|unique:permissions,name,' . $id . '|min:3|max:255',
+            ]);
+
+            $permissionName = htmlspecialchars($validatedData['name'], ENT_QUOTES, 'UTF-8');
+
+            $permission->update(['module' => $validatedData['module'],'name' => $permissionName]);
+
+            Alert::success('Success', 'Permission updated successfully');
+            return redirect()->route('permissions.index');
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            Alert::error('Error', 'Invalid permission ID. Please try again.');
+            return redirect()->back()->withErrors(['msg' => 'Invalid permission ID.']);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Alert::error('Error', 'There were validation errors');
+            return redirect()->back()->withInput()->withErrors($e->validator->errors());
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Oops, something went wrong. Please try again later.');
+            return redirect()->back()->withInput()->withErrors(['msg' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        try {
+            $permission = Permission::find(Crypt::decrypt($id));
+            if (!$permission) {
+                Alert::error('Error', 'Something went wrong, Please try again.');
+                return redirect()->back()->withInput()->withErrors(['msg' => ['Something went wrong, Please try again.']]);
+            }
+            $permission->delete();
+            Alert::success('Success', 'Permission deleted successfully');
+            return redirect()->route('permissions.index')->with('success', 'Permission deleted successfully');
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Oops, something went wrong. Please try again later.');
+            return redirect()->back()->withInput()->withErrors(['msg' => $e->getMessage()]);
+        }
+    }
+}

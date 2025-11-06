@@ -1,0 +1,396 @@
+
+<?php $__env->startSection('dashboard_content'); ?>
+    <div class="row">
+        <div class="col-12">
+            <?php echo $__env->make('breadcrumb.index', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card crm-widget">
+                <div class="card-body p-0">
+                    <div class="row row-cols-md-3 row-cols-1">
+                        <div class="col col-lg border-end">
+                            <div class="py-4 px-3">
+                                <h5 class="text-muted text-uppercase fs-13">Employee Onboarded</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <i class="ri-team-line display-6 text-muted"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h2 class="mb-0"><span class="counter-value" data-target="197">197</span></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-lg border-end">
+                            <div class="mt-3 mt-md-0 py-4 px-3">
+                                <h5 class="text-muted text-uppercase fs-13">Users Online</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <i class="ri-team-fill display-6 text-muted"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h2 class="mb-0"><span class="counter-value" data-target="45">45</span></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-lg border-end">
+                            <div class="mt-3 mt-md-0 py-4 px-3">
+                                <h5 class="text-muted text-uppercase fs-13">Documents </h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <i class="ri-file-2-line display-6 text-muted"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h2 class="mb-0"><span class="counter-value" data-target="32">32</span></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-lg border-end">
+                            <div class="mt-3 mt-lg-0 py-4 px-3">
+                                <h5 class="text-muted text-uppercase fs-13">Total Tasks</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <i class="ri-todo-line display-6 text-muted"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h2 class="mb-0"><span class="counter-value" data-target="1596">1,596</span></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-lg">
+                            <div class="mt-3 mt-lg-0 py-4 px-3">
+                                <h5 class="text-muted text-uppercase fs-13">Sucess Stories </h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <i class="ri-discuss-fill display-6 text-muted"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h2 class="mb-0"><span class="counter-value" data-target="232">232</span></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xxl-4">
+            <div class="d-flex flex-column h-100">
+                <div class="row h-100">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Notice Board</h4>
+                                <div>
+                                    <a type="button" href="notice-board.html" class="btn btn-soft-primary btn-sm">
+                                        View all
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="d-flex align-middle">
+                                    <div class="col-auto">
+                                        <div class="avatar-sm p-1 py-2 h-auto bg-light rounded-3">
+                                            <div class="text-center">
+                                                <h5 class="mb-0">12</h5>
+                                                <div class="text-muted">Wed</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="mb-1 lh-base"><a href="#" class="text-reset">One stop shop
+                                                destination on all the latest news in crypto currencies</a></h6>
+                                        <footer class="blockquote-footer mt-0">Admin Dept on 12/12/2022</footer>
+                                    </div>
+                                </div>
+                                <div class="d-flex mt-4">
+                                    <div class="col-auto">
+                                        <div class="avatar-sm p-1 py-2 h-auto bg-light rounded-3">
+                                            <div class="text-center">
+                                                <h5 class="mb-0">03</h5>
+                                                <div class="text-muted">Wed</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="mb-1 lh-base"><a href="#" class="text-reset">Coin Journal is
+                                                dedicated to delivering stories on the latest crypto</a></h6>
+                                        <footer class="blockquote-footer mt-0">Admin Dept on 03/12/2022</footer>
+                                    </div>
+                                </div>
+                                <div class="d-flex mt-4 ">
+                                    <div class="col-auto">
+                                        <div class="avatar-sm p-1 py-2 h-auto bg-light rounded-3">
+                                            <div class="text-center">
+                                                <h5 class="mb-0">22</h5>
+                                                <div class="text-muted">Wed</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="mb-1 lh-base"><a href="#" class="text-reset">The bitcoin-holding
+                                                U.S. senator is trying to “fully integrate” crypto </a></h6>
+                                        <footer class="blockquote-footer mt-0">Admin Dept on 12/12/2022</footer>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-12">
+                            <div class="card card-animate">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <p class="fw-medium text-muted mb-0">Expert Onboarded</p>
+                                            <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value"
+                                                    data-target="28.05">28.05</span>k</h2>
+                                        </div>
+                                        <div>
+                                            <div class="avatar-sm flex-shrink-0">
+                                                <span class="avatar-title bg-soft-info rounded-circle fs-2">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-users text-info">
+                                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                        <circle cx="9" cy="7" r="4"></circle>
+                                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card card-animate  bg-primary">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <p class="fw-medium mb-0 text-white">Total Newsletter</p>
+                                            <h2 class="mt-4 ff-secondary fw-semibold text-white"><span class="counter-value"
+                                                    data-target="97.66">97.66</span>k</h2>
+                                        </div>
+                                        <div>
+                                            <div class="avatar-sm flex-shrink-0">
+                                                <span class="avatar-title bg-soft-info rounded-circle fs-2">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-activity text-info">
+                                                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xxl-8">
+            <div class="row h-100">
+                <div class="col-xl-7">
+                    <div class="card card-height-100">
+                        <div class="card-header align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">My Tasks</h4>
+                            <div class="flex-shrink-0">
+                                <div class="dropdown card-header-dropdown">
+                                    <a href="tasks-list.html" class="btn btn-soft-primary btn-sm">
+                                        View all
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-0">
+
+                            <div class="align-items-center p-3 justify-content-between d-flex">
+                                <div class="flex-shrink-0">
+                                    <div class="text-muted"><span class="fw-semibold">4</span> of <span
+                                            class="fw-semibold">10</span> remaining</div>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-success"><i
+                                        class="ri-add-line align-middle me-1"></i> Add Task</button>
+                            </div>
+
+                            <div data-simplebar="init" style="max-height: 500px;">
+                                <div class="simplebar-wrapper" style="margin: 0px;">
+                                    <div class="simplebar-height-auto-observer-wrapper">
+                                        <div class="simplebar-height-auto-observer"></div>
+                                    </div>
+                                    <div class="simplebar-mask">
+                                        <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                            <div class="simplebar-content-wrapper" tabindex="0" role="region"
+                                                aria-label="scrollable content"
+                                                style="height: auto; overflow: hidden scroll;">
+                                                <div class="simplebar-content" style="padding: 0px;">
+                                                    <ul class="list-group list-group-flush border-dashed px-3">
+                                                        <li class="list-group-item ps-0">
+                                                            <div class="d-flex align-items-start">
+                                                                <div class="form-check ps-0 flex-sharink-0">
+                                                                    <a href="javascript:void(0);"
+                                                                        class="link-success fs-15"><i
+                                                                            class="ri-edit-2-line"></i></a>
+                                                                </div>
+                                                                <div class="flex-grow-1">
+                                                                    <label class="form-check-label mb-0 ps-2"
+                                                                        for="task_one">Review and make sure nothing slips
+                                                                        through cracks
+                                                                        <footer class="blockquote-footer mt-0">15 Sep, 2021
+                                                                            <i class="ri-user-3-fill  d-inline-block"></i>
+                                                                            Manish Upadhyay</footer>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="flex-shrink-0 ms-2">
+                                                                    <span
+                                                                        class="badge badge-soft-warning">Inprogress</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="list-group-item ps-0">
+                                                            <div class="d-flex align-items-start">
+                                                                <div class="form-check ps-0 flex-sharink-0">
+                                                                    <a href="javascript:void(0);"
+                                                                        class="link-success fs-15"><i
+                                                                            class="ri-edit-2-line"></i></a>
+                                                                </div>
+                                                                <div class="flex-grow-1">
+                                                                    <label class="form-check-label mb-0 ps-2"
+                                                                        for="task_one">Review and make sure nothing slips
+                                                                        through cracks
+                                                                        <p class="text-muted fs-12 mb-0">15 Sep, 2021 <i
+                                                                                class="ri-user-3-fill  d-inline-block"></i>
+                                                                            Manish Upadhyay</p>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="flex-shrink-0 ms-2">
+                                                                    <span
+                                                                        class="badge badge-soft-warning">Inprogress</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="list-group-item ps-0">
+                                                            <div class="d-flex align-items-start">
+                                                                <div class="form-check ps-0 flex-sharink-0">
+                                                                    <a href="javascript:void(0);"
+                                                                        class="link-success fs-15"><i
+                                                                            class="ri-edit-2-line"></i></a>
+                                                                </div>
+                                                                <div class="flex-grow-1">
+                                                                    <label class="form-check-label mb-0 ps-2"
+                                                                        for="task_one">Review and make sure nothing slips
+                                                                        through cracks
+                                                                        <p class="text-muted fs-12 mb-0">15 Sep, 2021 <i
+                                                                                class="ri-user-3-fill  d-inline-block"></i>
+                                                                            Manish Upadhyay</p>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="flex-shrink-0 ms-2">
+                                                                    <span class="badge badge-soft-danger">Pending</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="list-group-item ps-0">
+                                                            <div class="d-flex align-items-start">
+                                                                <div class="form-check ps-0 flex-sharink-0">
+                                                                    <a href="javascript:void(0);"
+                                                                        class="link-success fs-15"><i
+                                                                            class="ri-edit-2-line"></i></a>
+                                                                </div>
+                                                                <div class="flex-grow-1">
+                                                                    <label class="form-check-label mb-0 ps-2"
+                                                                        for="task_one">Review and make sure nothing slips
+                                                                        through cracks
+                                                                        <p class="text-muted fs-12 mb-0">15 Sep, 2021 <i
+                                                                                class="ri-user-3-fill  d-inline-block"></i>
+                                                                            Manish Upadhyay</p>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="flex-shrink-0 ms-2">
+                                                                    <span class="badge badge-soft-danger">Pending</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="list-group-item ps-0">
+                                                            <div class="d-flex align-items-start">
+                                                                <div class="form-check ps-0 flex-sharink-0">
+                                                                    <a href="javascript:void(0);"
+                                                                        class="link-success fs-15"><i
+                                                                            class="ri-edit-2-line"></i></a>
+                                                                </div>
+                                                                <div class="flex-grow-1">
+                                                                    <label class="form-check-label mb-0 ps-2"
+                                                                        for="task_one">Review and make sure nothing slips
+                                                                        through cracks
+                                                                        <p class="text-muted fs-12 mb-0">15 Sep, 2021 <i
+                                                                                class="ri-user-3-fill  d-inline-block"></i>
+                                                                            Manish Upadhyay</p>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="flex-shrink-0 ms-2">
+                                                                    <span class="badge badge-soft-success">Completed</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="simplebar-placeholder" style="width: auto; height: 303px;"></div>
+                                </div>
+                                <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+                                    <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+                                </div>
+                                <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+                                    <div class="simplebar-scrollbar simplebar-visible"
+                                        style="height: 158px; transform: translate3d(0px, 61px, 0px); display: block;">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-5">
+                    <div class="card card-height-100">
+                        <div class="card-header align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">Document Repository</h4>
+                            <div>
+                                <a type="button" href="dms.html" class="btn btn-soft-primary btn-sm">
+                                    View all
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-0">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\CAGBEMS\resources\views/dashboard/index.blade.php ENDPATH**/ ?>

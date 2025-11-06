@@ -1,0 +1,94 @@
+<header>
+    <div class="header_parent_cust">
+        <div class="container-fluid main_header">
+            <div class="logo_cust logo_cust">
+                <?php if(auth()->user() && auth()->user()->hasRole('Recruitment User')): ?>
+                <a href="<?php echo e(route('recruitment-portal.recruitment.dashboard')); ?>"> <img class="" src="<?php echo e(asset('public/images/logo.png')); ?>" alt="logo"></a>
+                <?php else: ?>
+                <a href="<?php echo e(url('/')); ?>"> <img class="" src="<?php echo e(asset('public/images/logo.png')); ?>" alt="logo"></a>
+                <?php endif; ?>
+                <div class="logo_content ">
+                    <h4 class=""><?php echo e(session('moduleName') ?? 'Recruitment Portal'); ?></h4>
+                    
+                </div>
+                <div class="logo-details">
+                    <i class='fa fa-bars' id="btn"></i>
+                </div>
+            </div>
+            <?php if(auth()->user() && auth()->user()->hasRole('Recruitment User')): ?>
+            <div class="flex flex-col justify-between">
+                <div class="pb-3 mt-2">
+                    <ul class="header_li">
+                        <li><a target="_blank" href="https://www.nhidcl.com/sites/default/files/Circular/nhidcl_rectt._seniority_and_promotion_rules-2025_1.pdf">NHIDCL Cadre Rules 2025</a></li>
+                        <li><a target="_blank" href="<?php echo e(asset('public/pdf/RP_USER_MANUAL.pdf')); ?>">User Manual</a></li>
+                        <li><a target="_blank" href="<?php echo e(route(name: 'recruitment.help.desk')); ?>">Help Desk</a></li>
+                        <li><a target="_blank" href="<?php echo e(route('recruitment.faqs')); ?>">FAQ</a></li>
+                        <li><a target="_blank" href="javascript:void(0);">Explainer Video</a></li>
+                    </ul>
+                </div>
+            </div>
+            <?php endif; ?>
+            <div class="cust_notif_prf_">
+                <div class="drop_profile_bg" id="dropdownAvatarNameButton" data-dropdown-toggle="dropdownAvatarName">
+                    <button class="" type="button">
+                        <img class="" src="<?php echo e(asset('public/images/user-sample.png')); ?>" alt="user photo">
+                    </button>
+                    <a class="drop_cont_cust">
+                        <?php echo e(ucwords(@Auth::user()->name)); ?>
+
+                        <span class="">Profile</span>
+                    </a>
+                    <div id="dropdownAvatarName" class="z-10 hidden divide-y divide-gray-100 shadow-xl w-44  ">
+                        <ul class="after_dropdown">
+                            <?php if(auth()->user() && auth()->user()->hasRole('Recruitment User')): ?>
+                            <li><a href="<?php echo e(route('recruitment-portal.recruitment.profile')); ?>">View Profile</a></li>
+                            <li><a href="<?php echo e(route('recruitment-portal.recruitment.change.password')); ?>">Change Password</a></li>
+                            <li><a href="<?php echo e(route('recruitment-portal.recruitment.login.history')); ?>">Login History</a></li>
+                            <li>
+                                <a href="<?php echo e(route('recruitment-portal.recruitment.logout')); ?>"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                                <form id="logout-form" class="d-none" action="<?php echo e(route('recruitment-portal.recruitment.logout')); ?>" method="POST">
+                                    <?php echo csrf_field(); ?>
+                                </form>
+                            </li>
+                            <?php elseif(auth()->user() && auth()->user()->getRoleNames()->isEmpty()): ?>
+                                <li><a href="<?php echo e(route('candidate.applicantProfile')); ?>">View Profile</a></li>
+                                <li><a href="<?php echo e(route('candidate.change-password')); ?>">Change Password</a></li>
+                                <li><a href="<?php echo e(route('candidate.login-history')); ?>">Login History</a></li>
+                                <li> <a href="<?php echo e(route('candidate.logout')); ?>"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        Logout</a>
+                                    <form id="logout-form" class="d-none" action="<?php echo e(url('/logout')); ?>" method="POST">
+                                        <?php echo e(csrf_field()); ?>
+
+                                    </form>
+                                </li>
+                            <?php else: ?>
+                                <?php if(auth()->guard()->check()): ?>
+                                    <li>
+                                        <a href="<?php echo e(route('user-config.show', Crypt::encrypt(Auth::id()))); ?>">Profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?php echo e(route('change-password', Crypt::encrypt(Auth::id()))); ?>"
+                                            class="">Change Password</a>
+                                    </li>
+                                    <li><a href="<?php echo e(route('user.login.history')); ?>" class="">Login History</a></li>
+                                    <li>
+                                        <a href="<?php echo e(route('logout')); ?>"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            Logout
+                                        </a>
+                                        <form id="logout-form" class="d-none" action="<?php echo e(url('/logout')); ?>" method="POST">
+                                            <?php echo csrf_field(); ?>
+                                        </form>
+                                    </li>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/shared/header.blade.php ENDPATH**/ ?>

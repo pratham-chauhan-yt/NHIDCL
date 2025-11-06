@@ -1,0 +1,28 @@
+
+<?php $__env->startSection('content'); ?>
+    <div class="cutom_flex_p">
+    <?php echo $__env->make('shared.header2', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <div class="flex flex-col justify-between md:h-[100%]">
+        <div class="bg_main_">
+            <div class="container" style="height: 100%;">
+                <div class="banner_cust_m">
+                    <div class="left_side">
+                        <div class="banner_heading">
+                            <p>NHIDCL's Recruitment Portal is a dedicated digital platform where applicants can apply for various career opportunities. It is designed to ensure a fair, transparent, and merit-based recruitment process that attracts the best talent to serve the public interest. </p>
+                        </div>
+                    </div>
+                    <div class="right_form">                  
+                        <?php echo $__env->yieldContent('auth_content'); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="bg-footer-color p-4">
+            <div class="container">
+                <p>@ <?php echo e(now()->year); ?> NHIDCL </p>
+            </div>
+        </footer>
+    </div>
+    </div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/layouts/recruitment-auth.blade.php ENDPATH**/ ?>

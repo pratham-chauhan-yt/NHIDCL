@@ -1,0 +1,76 @@
+
+
+<?php $__env->startSection('dashboard_content'); ?>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="parrent_dahboard_">
+                <div class="text"><?php echo e(__('Create User')); ?></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="bg_chart_card">
+            <?php if(count($errors) > 0): ?>
+                <div class="alert alert-danger">
+                    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                    <ul>
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li><?php echo e($error); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+
+            <?php echo Form::open([
+                'route' => 'user-config.store',
+                'method' => 'POST',
+            ]); ?>
+
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="mb-3">
+                        <label class="form-label aster"><?php echo e(__('Employee Id')); ?></label>
+                        <input type="text" class="form-control" name="user_id" id="user_id" maxlength="100" required>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="mb-3">
+                        <label class="form-label aster"><?php echo e(__('Employee Name')); ?></label>
+                        <input type="text" class="form-control" id="name" name="name" value="<?php echo e(old('name')); ?>"
+                            maxlength="100" required>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="mb-3">
+                        <label class="form-label aster"><?php echo e(__('Email')); ?></label>
+                        <input type="email" class="form-control" name="email" id="email" value="<?php echo e(old('email')); ?>"
+                            maxlength="100" required>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="mb-3">
+                        <label for="" class="form-label aster"><?php echo e(__('Status')); ?></label>
+                        <select name="userid_status" class="form-select" id="userid_status" required>
+                            <option value=""><?php echo e(__('Choose...')); ?></option>
+                            <option <?php echo e(old('userid_status') == '1' ? 'selected' : ''); ?> value="1">Active</option>
+                            <option <?php echo e(old('userid_status') == '2' ? 'selected' : ''); ?> value="2">Inactive
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="end-buttons">
+                <button type="submit" class="quick-btn"><?php echo e(__('Create')); ?></button>
+            </div>
+            <?php echo Form::close(); ?>
+
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+    <script src="<?php echo e(asset('js/chart-loader.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/custom.js')); ?>"></script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\nhidcl\resources\views/user-config/create.blade.php ENDPATH**/ ?>

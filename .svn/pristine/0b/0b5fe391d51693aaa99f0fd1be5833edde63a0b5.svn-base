@@ -1,0 +1,46 @@
+<?php $__env->startSection('dashboard_content'); ?>
+    <div class="container-fluid md:p-0">
+        <div class="top_heading_dash__">
+            <div class="main_hed">Advertisement Details</div>
+            <div class="plain_dlfex bg_elips_ic">
+                <button type="button" onclick="history.back();" class="hover-effect-btn fill_btn"><?php echo e(__('Back')); ?></button>
+            </div>
+        </div>
+    </div>
+    <div class="inner_page_dash__">
+        <div class="my-4 ">
+            <div class="view-data">
+                <div class="candidat_cust-dates">
+                    <p><strong>Advertisement Title:</strong> <?php echo e($edit_record->advertisement_title); ?></p>
+                    <p><strong>As on Date:</strong> <?php echo e(\Carbon\Carbon::parse($edit_record->as_on_date)->format('d-m-Y')); ?>
+
+                    </p>
+                </div>
+                <div class="candidat_cust-dates">
+                    <p><strong>Start Date & Time:</strong>
+                        <?php echo e(\Carbon\Carbon::parse($edit_record->start_datetime)->format('d-m-Y h:i A')); ?> </p>
+                    <p><strong>Expiry Date & Time:</strong>
+                        <?php echo e(\Carbon\Carbon::parse($edit_record->expiry_datetime)->format('d-m-Y h:i A')); ?> </p>
+                    <p><strong>Uploaded File:</strong>
+                        <?php if(!empty($edit_record->advertisement_file)): ?>
+                            <a href="<?php echo e(route('recruitment-portal.advertisement.viewFiles', [
+                                'pathName' => 'uploads/recruitment/advertisement/',
+                                'fileName' => $edit_record->advertisement_file,
+                            ])); ?>"
+                                target="_blank" class="btn btn-sm btn-primary">
+                                View File
+                            </a>
+                        <?php else: ?>
+                            <span class="text-muted">No file uploaded</span>
+                        <?php endif; ?>
+                    </p>
+                </div>
+                <div class="candidat_cust-dates">
+                    <p><strong>Note Instruction:</strong> <?php echo e($note_instruction); ?></p>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/recurement_advertisement/show.blade.php ENDPATH**/ ?>

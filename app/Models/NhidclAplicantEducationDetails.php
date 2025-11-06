@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class NhidclAplicantEducationDetails extends Model
+{
+    use HasFactory;
+    protected $table="nhidcl_applicant_education_details";
+
+    protected $fillable=[
+        "ref_applicant_personal_details_id",
+        "ref_qualification_id",
+        "other_qualification",
+        "ref_course_id",
+        "ref_board_university_college_id",
+        "other_board_university_collage",
+        "ref_main_subject_id",
+        "other_main_subject",
+        "ref_course_mode_id",
+        "other_course",
+        "passing_year",
+        "cgpa",
+        "percentage",
+        "marksheet_degree",
+        "ref_users_id",
+        "created_at",
+        "marksheet_degree_filepath",
+    ];
+
+    public function qualification()
+    {
+        return $this->belongsTo(RefQualification::class, 'ref_qualification_id');
+    }
+    public function course()
+    {
+        return $this->belongsTo(RefCourse::class, 'ref_course_id');
+    }
+
+    public function ref_passing_year()
+    {
+        return $this->belongsTo(RefPassingYear::class, 'passing_year');
+    }
+
+    public function course_mode()
+    {
+        return $this->belongsTo(RefCourseMode::class, 'ref_course_mode_id');
+    }
+
+    public function main_subject()
+    {
+        return $this->belongsTo(RefMainSubject::class, 'ref_main_subject_id');
+    }
+
+    public function board_university_college()
+    {
+        return $this->belongsTo(RefBoardUniversityCollege::class, 'ref_board_university_college_id');
+    }
+
+
+}

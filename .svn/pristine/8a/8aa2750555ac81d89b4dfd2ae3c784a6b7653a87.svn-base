@@ -1,0 +1,87 @@
+<?php
+    $user = user();
+?>
+<form id="payment-form" method="POST" action="<?php echo e(route('payment.pay')); ?>" class="form_grid_cust"
+    enctype="multipart/form-data">
+    <?php echo csrf_field(); ?>
+    <div class="inpus_cust_cs form_grid_dashboard_cust_">
+
+        <input type="hidden" name="from" value="<?php echo e($from); ?>">
+        <input type="hidden" name="id" value="<?php echo e($id); ?>">
+        <input type="hidden" name="totalpay" value="<?php echo e(Crypt::encrypt($record?->amount)); ?>">
+        <div class="form-input">
+            <label class="required-label">Name</label>
+            <input type="text" id="name" name="name" value="<?php echo e(old('name', $previewData?->user?->name)); ?>" placeholder="Enter your Name" readonly>
+            <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                <span class="text-danger"><?php echo e($message); ?></span>
+            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+        </div>
+
+        <div class="form-input">
+            <label class="required-label">Mobile</label>
+            <input type="text" id="mobile" name="mobile" value="<?php echo e(old('mobile', $previewData?->user?->mobile)); ?>" placeholder="Enter your mobile" readonly>
+            <?php $__errorArgs = ['mobile'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                <span class="text-danger"><?php echo e($message); ?></span>
+            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+        </div>
+
+        <div class="form-input">
+            <label class="required-label">Email</label>
+            <input type="text" id="email" name="email" value="<?php echo e(old('email', $previewData?->user?->email)); ?>" placeholder="Enter your email" readonly>
+            <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                <span class="text-danger"><?php echo e($message); ?></span>
+            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+        </div>
+    </div>
+
+    <div class="inpus_cust_cs form_grid_dashboard_cust_">
+        <div class="form-input">
+            <label class="required-label">Amount to be paid</label>
+            <input type="text" id="amount" name="amount" value="<?php echo e($record->amount); ?>" readonly>
+            <?php $__errorArgs = ['amount'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                <span class="text-danger"><?php echo e($message); ?></span>
+            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+        </div>
+    </div>
+    <?php if(!$order || !$order->response_code || $order->response_code !== "E000"): ?>
+        <div class="button_flex_cust_form">
+            <button type="submit" class="hover-effect-btn border_btn">Proceed for Payment</button>
+        </div>
+    <?php endif; ?>
+    <input type="hidden" name="response_code" id="response_code" value="<?php echo e($order?->response_code); ?>">
+</form>
+
+
+<?php $__env->startPush('scripts'); ?>
+    <script src="<?php echo e(asset('public/js/validate-method.js')); ?>"></script>
+    <script src="<?php echo e(asset('/public/validation/payment.js')); ?>"></script>
+<?php $__env->stopPush(); ?>
+<?php /**PATH C:\xampp\htdocs\NHIDCL\recruitment\resources\views/payment/from.blade.php ENDPATH**/ ?>

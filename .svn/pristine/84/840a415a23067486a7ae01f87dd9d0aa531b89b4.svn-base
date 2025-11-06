@@ -1,0 +1,198 @@
+
+<?php $__env->startSection('dashboard_content'); ?>
+<section class="home-section">
+    <div class="container-fluid md:p-0">
+        <div class="top_heading_dash__">
+            <div class="main_hed">Dashboard</div>
+        </div>
+    </div>
+    <div class="dashbord_main_content_rigt">
+        <div class="one_cut">
+            <?php if(auth()->user()->hasRole('Recruitment User')): ?>
+            <div class="welcome-card">
+                <div class="welcome-icon">👋</div>
+                <div class="welcome-content">
+                    <h1>Welcome to NHIDCL, <?php echo e(Auth::user()->name); ?>!</h1>
+                    <p>This dashboard is your personal hub — built to keep you informed, in control, and moving forward with confidence.</p>
+                    <p>It's great to see you back. Everything is running smoothly, and your connection is secure. Let’s make progress together!</p>
+                    <p><strong>Logged in IP Address:</strong> <?php echo e(Auth::user()->last_login_ip); ?></p>
+                </div>
+            </div>
+            <?php else: ?>
+            <div class="card_cust_parnet_dash">
+                <div class="first_card_dash">
+                    <div class="bg_card_1">
+                        <a href="javascript:void(0);">
+                            <div class="inner_flex_card">
+                                <div>
+                                    <p>Total Number of Advertisements</p>
+                                    <h5><?php echo e($counts['total']); ?></h5>
+                                </div>
+                                <div class="bg_elips_ic">
+                                    <img src="<?php echo e(url('public/images/arrow-right.svg')); ?>" alt="Audit Query">
+                                </div>
+                            </div>
+                            <div class="inner_span_custom">
+                                <span class="bg_span">+2.9%</span>
+                                <span>The Last Month</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="second_card_dash">
+                    <div class="hover-effect-dash coman_bg_card_dash">
+                        <a href="javascript:void(0);">
+                            <div class="inner_bg_images_cust card_dash_5">
+                                <img src="<?php echo e(url('public/images/handshake.png')); ?>" alt="Answer Para Query">
+                            </div>
+                            <div class="content_card_dash content_card_dash5 ">
+                                <h5><?php echo e($counts['active'] ?? 0); ?></h5>
+                                <p>Total Number of Active Advertisements</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="hover-effect-dash coman_bg_card_dash">
+                        <a href="javascript:void(0);">
+                            <div class="inner_bg_images_cust card_dash_6">
+                                <img src="<?php echo e(url('public/images/recruitment.png')); ?>" alt="Dropped Para Query">
+                            </div>
+                            <div class="content_card_dash content_card_dash6 ">
+                                <h5 class=""><?php echo e($counts['closed'] ?? 0); ?></h5>
+                                <p class="">Total Number of Closed Advertisements</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="hover-effect-dash coman_bg_card_dash">
+                        <a href="javascript:void(0);">
+                            <div class="inner_bg_images_cust card_dash_4">
+                                <img src="<?php echo e(url('public/images/skills.png')); ?>" alt="Pending Para Query">
+                            </div>
+                            <div class="content_card_dash content_card_dash4 ">
+                                <h5><?php echo e($post); ?></h5>
+                                <p>Total Number of Posts</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="hover-effect-dash coman_bg_card_dash">
+                        <a href="javascript:void(0);">
+                            <div class="inner_bg_images_cust card_dash_3">
+                                <img src="<?php echo e(url('public/images/shortlist.png')); ?>" alt="Dropped Query">
+                            </div>
+                            <div class="content_card_dash content_card_dash3 ">
+                                <h5><?php echo e(count($users)); ?></h5>
+                                <p>Total Number of Registrations</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="hover-effect-dash coman_bg_card_dash">
+                        <a href="javascript:void(0);">
+                            <div class="inner_bg_images_cust card_dash_1">
+                                <img src="<?php echo e(url('public/images/company-vision.png')); ?>" alt="Pending Query">
+                            </div>
+                            <div class="content_card_dash content_card_dash1 ">
+                                <h5><?php echo e(count($application)); ?></h5>
+                                <p>Total Number of Post Applications</p>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="hover-effect-dash coman_bg_card_dash">
+                        <a href="javascript:void(0);">
+                            <div class="inner_bg_images_cust card_dash_2">
+                                <img src="<?php echo e(url('public/images/request-for-proposal.png')); ?>" alt="Total Para Query">
+                            </div>
+                            <div class="content_card_dash content_card_dash2 ">
+                                <h5><?php echo e($incompleteCount); ?></h5>
+                                <p>InProgress Profiles</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart_grid_custom">
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <div class="space-y-4 mb-6 inpus_cust_cs">
+                            <div class="ruby gap-[10px]">
+                                <?php if (isset($component)) { $__componentOriginal5a8c2f7be39be27ec791b2034cff2725 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.filter-input','data' => ['label' => 'Advertisement ID','name' => 'advertisementId','type' => 'select','class' => 'advertisement_filter js-single','required' => 'required']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('filter-input'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'Advertisement ID','name' => 'advertisementId','type' => 'select','class' => 'advertisement_filter js-single','required' => 'required']); ?>
+                                    <option value="">--- Select Advertisement ID ---</option>
+                                    <?php $__currentLoopData = $listOfAdvertisement; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dataOfAdvertisement): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($dataOfAdvertisement->id); ?>">
+                                            <?php echo e($loop->iteration); ?> - <?php echo e($dataOfAdvertisement->advertisement_title); ?>
+
+                                        </option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                 <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $attributes = $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $component = $__componentOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="table_over">
+                            <table class="cust_table__ table_sparated" id="applicantDataTable">
+                                <thead class=" ">
+                                    <tr>
+                                        <th>S.No.</th>
+                                        <th>Post Name</th>
+                                        <th>Mode Of Recruitment</th>
+                                        <th>Total Vacancy</th>
+                                        <th>Last Date Time</th>
+                                        <th>Total Application</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th colspan="7">No records found here</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+            
+        </div>
+        <?php if(auth()->user()->hasRole('Recruitment User')): ?>
+
+        <?php else: ?>
+        <div class="second_cust bg_chart_card">
+            <div class="heading_chart_">
+                <h5>Gender / Category Distribution</h5>
+                <div class="flex items-center gap-[12px]">
+                    <div class="bg_elips_ic">
+                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="chart_ chart_2_img">
+                <canvas id="distributionChart" width="300" height="300"></canvas>
+            </div>
+        </div>
+        <?php endif; ?>
+    </div>
+</section>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+<script src="<?php echo e(asset('public/js/chart.js')); ?>"></script>
+<script>
+    window.distributionData = <?php echo json_encode($distribution, 15, 512) ?>;
+</script>
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/recruitment-management/dashboard.blade.php ENDPATH**/ ?>

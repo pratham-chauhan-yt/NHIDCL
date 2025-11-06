@@ -1,0 +1,255 @@
+@extends('layouts.dashboard')
+@section('dashboard_content')
+
+    <div class="container-fluid md:p-0">
+        <div class="top_heading_dash__">
+            <div class="main_hed">Edit User Details</div>
+            <div class="plain_dlfex bg_elips_ic">
+                <a href="{{ route('user-config.view') }}"><button type="button"
+                        class="hover-effect-btn fill_btn">{{ __('Back') }}</button></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="inner_page_dash__">
+        <div class="my-4 ">
+            @include('components.alert')
+            <div class="form-content">
+                <form class="form_grid_cust" action="{{ route('user-config.update', Crypt::encrypt($user->id)) }}"
+                    method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <div class="inpus_cust_cs form_grid_dashboard_cust_">
+                        <div class="">
+                            <label class="required-label">{{ __('ID') }}</label>
+                            <input type="text" class="form-control" value="{{ $user->id ?? '' }}" disabled>
+                        </div>
+
+                        <div class="form-input">
+                            <label class="required-label" for="name">{{ __('Full Name') }}</label>
+                            <input type="text" name="name" class="form-control" value="{{ $user->name ?? '' }}"
+                                disabled>
+                        </div>
+
+                        <div class="form-input">
+                            <label class="required-label">{{ __('Email') }}</label>
+                            <input type="text" class="form-control" value="{{ $user->email ?? '' }}" disabled>
+                        </div>
+
+                        <div class="form-input">
+                            <label class="required-label">{{ __('Mobile No') }}</label>
+                            <input type="text" class="form-control" value="{{ $user->mobile ?? '' }}" disabled>
+                        </div>
+
+                        <div class="form-input">
+                            <label class="form-label aster">{{ __('Is NHIDCL Employee') }}</label>
+                            <select name="is_nhidcl_employee" class="form-select" id="is_nhidcl_employee" required>
+                                <option value="">{{ __('Choose...') }}</option>
+                                <option {{ old('is_nhidcl_employee', $user->is_nhidcl_employee) == '1' ? 'selected' : '' }}
+                                    value="1">Yes</option>
+                                <option {{ old('is_nhidcl_employee', $user->is_nhidcl_employee) == '0' ? 'selected' : '' }}
+                                    value="0">No
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="">
+                            <label class="">Employee ID</label>
+                            <input type="text" class="" placeholder="NHIDCL Employee ID" name="user_code"
+                                id="user_code" value="{{ old('user_code', $user->user_code) }}" maxlength="100">
+                        </div>
+
+                        <div class="">
+                            <label class="form-label aster">{{ __('Designation') }}</label>
+                            <select name="ref_designation_id" class="form-select" id="ref_designation_id">
+                                <option value="">{{ __('Choose...') }}</option>
+                                @foreach ($designation as $val)
+                                    <option value="{{ $val->id }}"
+                                        {{ old('ref_designation_id', $user->ref_designation_id) == $val->id ? 'selected' : '' }}>
+                                        {{ $val->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="">
+                            <label class="form-label aster">{{ __('Department') }}</label>
+                            <select name="ref_department_id" class="form-select" id="ref_department_id">
+                                <option value="">{{ __('Choose...') }}</option>
+                                @foreach ($department as $val)
+                                    <option value="{{ $val->id }}"
+                                        {{ old('ref_department_id', $user->ref_department_id) == $val->id ? 'selected' : '' }}>
+                                        {{ $val->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="">
+                            <label class="form-label aster">{{ __('Employee Type') }}</label>
+                            <select name="ref_employee_type_id" class="form-select" id="ref_employee_type_id">
+                                <option value="">{{ __('Choose...') }}</option>
+                                @foreach ($employee_type as $val)
+                                    <option value="{{ $val->id }}"
+                                        {{ old('ref_employee_type_id', $user->ref_employee_type_id) == $val->id ? 'selected' : '' }}>
+                                        {{ $val->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="">
+                            <label class="form-label aster">{{ __('Date of Joining') }}</label>
+                            <input type="date" class="form-control" name="date_of_joining" id="date_of_joining"
+                                value="{{ old('date_of_joining', $user->date_of_joining) }}">
+                        </div>
+
+                        <div class="">
+                            <label class="form-label aster">{{ __('Office Type') }}</label>
+                            <select name="ref_office_type_id" class="form-select" id="ref_office_type_id">
+                                <option value="">{{ __('Choose...') }}</option>
+                                @foreach ($office_type as $val)
+                                    <option value="{{ $val->id }}"
+                                        {{ old('ref_office_type_id', $user->ref_office_type_id) == $val->id ? 'selected' : '' }}>
+                                        {{ $val->office_type_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="">
+                            <label class="form-label aster">{{ __('Applicant Posted') }}</label>
+                            <select name="state_id" class="form-select" id="state_id">
+                                <option value="">{{ __('Choose...') }}</option>
+                                @foreach ($state as $val)
+                                    <option value="{{ $val->id }}"
+                                        {{ $val->id == $user->currently_posted ? 'selected' : '' }}>{{ $val->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+
+
+                        <div class="form-input">
+                            <label class="form-label aster">{{ __('BG Project State') }}</label>
+                            <select name="bgms_assigned_state" class="form-select js-select2" id="bgms_assigned_state" multiple>
+                                @foreach ($projectState as $ps)
+                                    <option value="{{ $ps->id }}"
+                                        {{ $user->bgms_assigned_state == $ps->id ? 'selected' : '' }}>
+                                        {{ $ps->state_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-input">
+                            <label class="form-label aster">{{ __('Status') }}</label>
+                            <select name="status" id="status" class="form-select">
+                                <option value="">----Select status----</option>
+                                <option {{ old('status', $user->status) == '1' ? 'selected' : '' }} value="1">Active
+                                </option>
+                                <option {{ old('status', $user->status) == '2' ? 'selected' : '' }} value="2">
+                                    InActive</option>
+                            </select>
+                        </div>
+                        <div class="form-input">
+                            <label class="form-label aster">{{ __('Reporting Manager') }}</label>
+                            <select name="reporting_manager_id" id="reporting_manager_id" class="form-select js-select2">
+                                <option value="">----Select Reporting Manager----</option>
+                                @foreach ($manager as $managerval)
+                                    <option value="{{ $managerval->id }}"
+                                        {{ old('reporting_manager_id', $user->reporting_manager_id) == $managerval->id ? 'selected' : '' }}>
+                                        {{ $managerval->name }} ({{ $managerval->email }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class=" inner_page_dash__ mt-[20px]">
+                        <div class="parrent_dahboard_ chart_c inner_body_style inner_pages">
+                            <h4 class="text-[18px] font-semibold">Assign Role</h4>
+                        </div>
+
+                        <div class="">
+                            <div class="grid_rdit_page_user">
+                                <div class="">
+                                    <div class="Cust_toggle_edit">
+                                        <label class="toggle-wrapper">
+                                        </label>
+                                    </div>
+                                    <div class="border_check_box__">
+                                        <p>Roles</p>
+                                        <div
+                                            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-1">
+                                            @if ($roles->isNotEmpty())
+                                                @foreach ($roles as $role)
+                                                    <div class="custom_check_inline-item">
+                                                        <input {{ $hasRoles->contains($role->id) ? 'checked' : '' }}
+                                                            type="radio" id="role-{{ $role->id }}"
+                                                            class="custom_check_inline-checkbox" name="role[]"
+                                                            value="{{ $role->name }}">
+                                                        <label class="custom_check_inline-label"
+                                                            for="role-{{ $role->id }}">{{ $role->name }}</label>
+
+                                                    </div>
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class=" inner_page_dash__ mt-[10px]">
+                        <div class="parrent_dahboard_ chart_c inner_body_style inner_pages">
+                            <h4 class="text-[18px] font-semibold">Module Wise Data</h4>
+                        </div>
+                        <div class="grid_rdit_page_user">
+                            <div class="border_check_box__">
+                                <p>BGMS</p>
+                                <div class="inpus_cust_cs form_grid_dashboard_cust_" style="margin-top: 0">
+                                    <div class="">
+                                        <label class="">Verifier</label>
+                                        <select name="bgms_verifier_id" class="form-select js-select2" id="bgms_verifier_id">
+                                            <option value="">Select Verifier</option>
+                                            @foreach ($bgms_verifiers as $val)
+                                                <option value="{{ $val->id }}"
+                                                    {{ old('bgms_verifier_id', $user->bgms_verifier_id) == $val->id ? 'selected' : '' }}>
+                                                    {{ $val->name }} ({{ $val->email }})</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid_rdit_page_user">
+                            <div class="border_check_box__">
+                                <p>Document Management</p>
+                                <div class="inpus_cust_cs form_grid_dashboard_cust_" style="margin-top: 0">
+                                    <div class="">
+                                        <label class="">Approver (Sharing of Document)</label>
+                                        <select name="dms_approver_id" class="form-select js-select2" id="dms_approver_id">
+                                            <option value="">Select Approver</option>
+                                            @foreach ($dms_approvers as $val)
+                                                <option value="{{ $val->id }}"
+                                                    {{ old('doc_approver_id', $user->dms_approver_id) == $val->id ? 'selected' : '' }}>
+                                                    {{ $val->name }} ({{ $val->email }})</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="button_flex_cust_form">
+        <button type="submit" class="hover-effect-btn fill_btn">{{ __('Update') }}</button>
+    </div>
+    </form>
+    </div>
+    </div>
+    </div>
+@endsection
+@push('scripts')
+    <script src="{{ asset('public/js/select2.min.js') }}"></script>
+    <script src="{{ asset('public/js/user-management/edit.js') }}"></script>
+@endpush

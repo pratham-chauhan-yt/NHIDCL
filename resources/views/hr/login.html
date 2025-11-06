@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NHIDCL</title>
+    <link rel="stylesheet" href="../../assets/css/output.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/responsive.css">
+</head>
+
+<body>
+    <!-- top header  -->
+    <header>
+        <div class="header_parent_cust">
+            <div class="container main_header">
+                <div class="logo_cust">
+                    <a href="../../index.html"> <img class="" src="../../assets/images/logo.png" alt="logo"></a>
+                    <div class="logo_content ">
+                        <h4 class="">Recruitment Portal</h4>
+                        <p class="">National Highways & Infrastructure Development
+                            Corporation
+                            Ltd.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-between">
+                    <div class="pb-3 mt-2">
+                        <ul class="header_li">
+                            <li><a class="active" href="#">Home</a></li>
+                            <li><a class="" href="#">Jobs</a></li>
+                            <li><a class="" href="#">Companies</a></li>
+                            <li><a class="" href="#">Services</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Edn top header  -->
+    <div class="flex flex-col justify-between md:h-[100%] xl:h-[100vh]">
+        <div class="bg_main_">
+            <div class="container">
+                <div class="banner_cust_m">
+                    <div class="left_side">
+                        <div class="banner_heading">
+                            <h4>This is the <span>Recruitment Portal</span> managed by NHIDCL.</h4>
+                            <p>Getting registered on the portal allows you to become a part of the engagement process
+                                and apply for future job openings as a candidate.</p>
+                        </div>
+                    </div>
+                    <div class="right_form">
+                        <div class="form_bg_inner md:block hidden">
+                        </div>
+                        <div class="bg_form_">
+                            <h1 class="heding_style ">
+                                Login
+                            </h1>
+                            <form class="inpus_cust_cs " action="#">
+                                <div class="">
+                                    <label for="role" class="">Select Your Role</label>
+                                    <select id="role" class="">
+                                        <option value="./login.html">HR</option>
+                                        <option value="../candidate/login.html">Candidate</option>
+                                    </select>
+                                </div>
+                                <div class="relative  items-center">
+                                    <!-- Input Field -->
+                                    <label class="block">Employee ID</label>
+                                    <!-- <i class="fa-regular fa-user absolute ps-2 text-search-bg"></i> -->
+                                    <input type="email" class="w-full" placeholder="Employee ID">
+                                </div>
+                                <div class="relative  items-center">
+                                    <!-- Input Field -->
+                                    <label class="block">Password</label>
+                                    <!-- <i class="fa fa-key absolute ps-2 text-search-bg"></i> -->
+                                    <input type="password" placeholder="••••••••"
+                                        class="w-full" >
+
+
+                                </div>
+                                <div class="">
+                                    <label class="block">Capture</label>
+                                    <div class="flex items-center gap-4">
+                                        <div class="captur">
+                                            <img class="border p-2" src="../../assets/images/capture.png" alt="capture">
+                                        </div>
+                                        <div class="refresh">
+                                            <img class="cursor-pointer" src="../../assets/images/refresh.png"
+                                                alt="refresh">
+                                        </div>
+                                        <div class="input_f">
+                                            <input type="text"                                              placeholder="Verification Code" class="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between pt-2">
+                                    <div class="flex items-start">
+                                        <div class="flex items-center h-5 inpus_cust_cs">
+                                            <input id="remember" aria-describedby="remember" type="checkbox"
+                                                class="w-4 h-4" required="">
+                                        </div>
+                                        <div class="ml-3 text-sm">
+                                            <label for="remember"
+                                                class="text-gray-500 dark:text-gray-600 cursor-pointer">Remember
+                                                me</label>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="forgot_pads_cust">Forgot
+                                        password?</a>
+                                </div>
+                                <button type="submit" onclick="window.location.href='./dashboard.html';"
+                                    class="fill_btn hover-effect-btn">Log in</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- start footer section  -->
+        <footer class="bg-footer-color p-4">
+            <div class="container">
+                <p class="text-white text-center text-[12px]">@ {{ now()->year }} NHIDCL </p>
+            </div>
+        </footer>
+        <!-- Edn footer section  -->
+    </div>
+
+    <script src="../../assets/js/jquery.min.js"></script>
+    <script src="../../assets/js/flowbit.min.js"></script>
+    <script src="../../assets/js/tailwind.js"></script>
+    <script src="../../assets/js/custom.js"></script>
+</body>
+
+</html>

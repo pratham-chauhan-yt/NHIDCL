@@ -1,0 +1,9 @@
+<?php $__env->startSection('content'); ?>
+    <div class="text-center mt-10">
+        <h1 class="text-3xl font-bold text-red-600">Something went wrong</h1>
+        <p class="mt-4 text-gray-700">There was an internal component configuration issue. Please try again later.</p>
+        <a href="<?php echo e(url('/')); ?>" class="text-blue-500 underline mt-6 inline-block">Back to Home</a>
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\recruitment\resources\views/errors/binding-resolution.blade.php ENDPATH**/ ?>

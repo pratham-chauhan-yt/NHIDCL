@@ -1,0 +1,421 @@
+<?php $__env->startSection('dashboard_content'); ?>
+    <div class="container-fluid md:p-0">
+        <div class="top_heading_dash__">
+            <div class="main_hed">Recruitment Post</div>
+        </div>
+    </div>
+    <div class="inner_page_dash__">
+        <div class="my-4 ">
+            <div class="tab_custom_c">
+                <button class="tablink" onclick="openPage('Post', this, '#373737')" id="defaultOpen">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                    </svg>Create Post
+                </button>
+                <button class="tablink" onclick="openPage('News', this, '#373737')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                    </svg>Post List
+                </button>
+            </div>
+            <?php echo $__env->make('components.alert', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <div id="Post" class="tabcontent" style="display: block;">
+                <div class="parrent_dahboard_ chart_c inner_body_style inner_pages mt-0">
+                    <div class="">Post Details</div>
+                </div>
+                <form class="form_grid_cust" id="recruitmentPostJobForm" method="POST" action="<?php echo e(route('recruitment-portal.post.store')); ?>">
+                    <?php echo csrf_field(); ?>
+                    <div class="form-data">
+                        <label class="required-label">Mode of Recruitment</label>
+                        <div class="custom_check_inline-container">
+                            <?php $__empty_1 = true; $__currentLoopData = $refModeRecruitment; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $refModeData): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <div class="custom_check_inline-item">
+                                    <input type="radio" name="mode_of_requirement" id="mode_of_requirement<?php echo e($refModeData->id); ?>" value="<?php echo e($refModeData->id); ?>"
+                                        class="custom_check_inline-checkbox"
+                                        <?php if($loop->first): ?> checked <?php endif; ?>>
+                                    <label for="mode_of_requirement<?php echo e($refModeData->id); ?>"
+                                        class="custom_check_inline-label"><?php echo e($refModeData->name); ?></label>
+                                </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="inpus_cust_cs form_grid_dashboard_cust_">
+                        <div class="form-input">
+                            <label class="required-label">Year</label>
+                            <select name="advertisement_year" id="advertisement_year" onchange="getAdvertisement(this.value)" data-validate="required" data-error="Please choose year." required>
+                                <option value="">---- choose year ----</option>
+                                <?php $__empty_1 = true; $__currentLoopData = $year; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                    <option value="<?php echo e($data); ?>" <?php echo e(old('advertisement_year') === $data ? 'selected' : ''); ?>><?php echo e($data); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                <?php endif; ?>
+                            </select>
+                            <?php $__errorArgs = ['advertisement_year'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+                        <div class="form-input">
+                            <label class="required-label">Select Advertisement</label>
+                            <select name="recruitment_advertisement_id" id="recruitment_advertisement_id" data-validate="required" data-error="Please choose advertisement." required>
+                                <option value="">---- Select Advertisement ----</option>
+                                <?php $__currentLoopData = $adslist; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $adsdata): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($adsdata->id); ?>" <?php echo e(old('recruitment_advertisement_id') === $adsdata->id ? 'selected' : ''); ?>><?php echo e($adsdata->advertisement_title); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                            <?php $__errorArgs = ['recruitment_advertisement_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+                        <div class="form-input">
+                            <label class="required-label">Post Name</label>
+                            <input type="text" name="post_name" id="post_name" value="<?php echo e(old('post_name')); ?>" placeholder="Consultant" data-validate="required" data-error="Please enter post name." required>
+                            <?php $__errorArgs = ['post_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+                        <div class="form-input">
+                            <label class="required-label">Status</label>
+                            <select name="is_active" id="is_active" data-validate="required" data-error="Please choose post status." required>
+                                <option value="">---- Choose post status ----</option>
+                                <option value="1" <?php echo e(old('is_active') === 1 ? 'selected' : ''); ?>>Active</option>
+                                <option value="0" <?php echo e(old('is_active') === 0 ? 'selected' : ''); ?>>InActive</option>
+                                <option value="2" <?php echo e(old('is_active') === 2 ? 'selected' : ''); ?>>Cancelled</option>
+                            </select>
+                            <?php $__errorArgs = ['is_active'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+                        <?php
+						$now = \Carbon\Carbon::now()->format('Y-m-d\TH:i');
+						?>
+                        <div class="form-input">
+							<label class="required-label">Last Date and Time</label>
+							<input type="datetime-local" name="last_datetime" id="last_datetime" value="<?php echo e(old('last_datetime')); ?>" min="<?php echo e($now); ?>" data-validate="required" data-error="Please enter post apply last date and time." required />
+							<span id="last_datetime" class="last_datetime_err candidateErr"></span>
+							<?php $__errorArgs = ['last_datetime'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+								<div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+							<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+						</div>
+                        <div class="form-input">
+                            <label class="required-label">Total Vacancy</label>
+                            <input type="text" name="total_vacancy" id="total_vacancy" value="<?php echo e(old('total_vacancy')); ?>" placeholder="Enter total number of vacancy for this post..." data-validate="required" data-error="Please enter total number of vacancy." min="1" required>
+                            <?php $__errorArgs = ['total_vacancy'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+                    </div>
+
+                    <div class="parrent_dahboard_ chart_c inner_body_style inner_pages mt-5">
+                        <div class="">Required Document</div>
+                    </div>
+                    <div class="inpus_cust_cs form_grid_dashboard_cust_">
+                        <div class="form-input">
+                            <label class="required-label">Require Gate Details?</label>
+                            <select name="required_gate_detail" id="required_gate_detail" data-validate="required" data-error="Please choose require gate options." required>
+                                <option value="">---- choose required gate details ----</option>
+                                <option value="0" <?php echo e(old('required_gate_detail') === '0' ? 'selected' : ''); ?>>No</option>
+                                <option value="1" <?php echo e(old('required_gate_detail') === '1' ? 'selected' : ''); ?>>Yes</option>
+                            </select>
+                            <?php $__errorArgs = ['required_gate_detail'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+
+                        <div class="form-input div_gate_year">
+                            <label>Year of Gate Exam</label>
+                            <select id="required_gate_exam_year" name="required_gate_exam_year[]" multiple
+                                data-courses='<?php echo json_encode($gate_years, 15, 512) ?>' class="required_gate_exam_year"
+                                <?php if(old('required_gate_detail') === '0'): ?> disabled <?php else: ?> required <?php endif; ?>>
+                                <?php $__currentLoopData = $gate_years; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $gate_year): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($gate_year->id); ?>"
+                                        <?php if(is_array(old('required_gate_exam_year')) && in_array($gate_year->id, old('required_gate_exam_year'))): ?> selected <?php endif; ?>>
+                                        <?php echo e($gate_year->passing_year); ?>
+
+                                    </option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                            <?php $__errorArgs = ['required_gate_exam_year'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+
+                        <div class="form-input div_gate_discipline">
+                            <label>Gate Discipline</label>
+                            <select id="required_gate_discipline" name="required_gate_discipline[]" multiple
+                                data-courses='<?php echo json_encode($gate_disciplines, 15, 512) ?>' class="required_gate_discipline"
+                                <?php if(old('required_gate_detail') === '0'): ?> disabled <?php else: ?> required <?php endif; ?>>
+                                <?php $__currentLoopData = $gate_disciplines; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $gate_discipline): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($gate_discipline->id); ?>"
+                                        <?php if(is_array(old('required_gate_discipline')) && in_array($gate_discipline->id, old('required_gate_discipline'))): ?> selected <?php endif; ?>>
+                                        <?php echo e($gate_discipline->discipline_name); ?>
+
+                                    </option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                            <?php $__errorArgs = ['required_gate_discipline'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+                    </div>
+
+                    <div class="parrent_dahboard_ chart_c inner_body_style inner_pages mt-5">
+                        <div>Eligibility Details</div>
+                    </div>
+                    <div class="inpus_cust_cs form_grid_dashboard_cust_">
+                        <div class="form-input">
+                            <label class="required-label">Age Limit</label>
+                            <div class="grid grid-cols-2 gap-[10px]">
+                                <input type="number" name="min_age_limit" id="min_age_limit" value="<?php echo e(old('min_age_limit')); ?>" placeholder="18" data-validate="required" data-error="Please enter minimum age limit." required>
+                                <?php $__errorArgs = ['min_age_limit'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+
+                                <input type="number" name="max_age_limit" id="max_age_limit" value="<?php echo e(old('max_age_limit')); ?>" placeholder="60" data-validate="required" data-error="Please enter maximum age limit." required>
+                                <?php $__errorArgs = ['max_age_limit'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
+                        </div>
+                        <div class="form-input" style="display:none">
+                            <label>Required Education</label>
+                            <select name="required_education" id="required_education" class="form-control required_education">
+                                <option value="">--Select Required Education --</option>
+                                <?php $__empty_1 = true; $__currentLoopData = $refQualification; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                    <option value="<?php echo e($val->id); ?>" ><?php echo e($val->qualification_name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                <?php endif; ?>
+                            </select>
+                            <?php $__errorArgs = ['required_education'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+                        <div class="form-input" style="display:none">
+                            <label>Desirable Education</label>
+                            <select name="desire_education" id="desire_education" class="form-control desire_education">
+                                <option value="">--Select Education --</option>
+                                <?php $__empty_1 = true; $__currentLoopData = $refQualification; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                    <option value="<?php echo e($val->id); ?>"><?php echo e($val->qualification_name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                <?php endif; ?>
+                            </select>
+                            <?php $__errorArgs = ['desire_education'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+                        <div class="form-input">
+                            <label class="required-label">Required Experience</label>
+                            <input type="number" name="required_experience" id="required_experience" value="<?php echo e(old('required_experience')); ?>" placeholder="3" data-validate="required" data-error="Please enter total required experience." required>
+                            <?php $__errorArgs = ['required_experience'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+                        <div class="form-input" style="display:none">
+                            <label>Required Experience Detail</label>
+                            <input type="text" name="required_experience_detail" id="required_experience_detail" placeholder="3 Years of experience in Banking">
+                        </div>
+                        <div class="form-input" style="display:none">
+                            <label>Desirable Experience</label>
+                            <input type="text" name="desire_experience" id="desire_experience" placeholder="5">
+                        </div>
+                        <div class="form-input" style="display:none">
+                            <label>Desirable Experience Detail</label>
+                            <input type="text" name="desire_experience_detail" id="desire_experience_detail" placeholder="5 Years of experience in Banking">
+                        </div>
+                        <div class="form-input" style="display:none">
+                            <label>Eligibility Criteria</label>
+                            <textarea name="eligibility_criteria" id="eligibility_criteria" rows="2"
+                                placeholder="Holding analogous post on regular basis in the pay Level-8 (pre revised PB-2(Rs.9300-34,800) with Grade Pay of Rs.4800/-) in CDA pattern or equivalent in IDA pattern in the parent cadre/department."></textarea>
+                            <?php $__errorArgs = ['eligibility_criteria'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+                    </div>
+
+
+                    
+
+                    <div class="inpus_cust_cs form_grid_dashboard_cust_ items-end">
+                        <div class="form-input">
+                            <label class="required-label">Post Type</label>
+                            <select name="post_payment_type" id="post_payment_type" data-validate="required" data-error="Please enter employee full name." required>
+                                <option value="">---- choose post type ----</option>
+                                <option value="Unpaid" <?php echo e(old('post_payment_type') === 'Unpaid' ? 'selected' : ''); ?>>Un-paid</option>
+                                <option value="Paid" <?php echo e(old('post_payment_type') === 'Paid' ? 'selected' : ''); ?>>Paid</option>
+                            </select>
+                        </div>
+
+                        <div class="form-input" id="amount_field">
+                            <label for="amount">Amount</label>
+                            <input type="number" name="amount" id="amount" value="<?php echo e(old('amount')); ?>" placeholder="3" required>
+                        </div>
+
+                    </div>
+                    
+
+
+                    <div class="button_flex_cust_form">
+                        <button type="submit" name="submit" id="recruitmentPostJobSave" class="hover-effect-btn fill_btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <div id="News" class="tabcontent" style="display:none;">
+                <form class="form_grid_cus">
+                    <div class="inpus_cust_cs form_grid_dashboard_cust_ items-end">
+                        <div class="form-input">
+                            <label for="filter_year">Select Year</label>
+                            <select name="filter_year" id="filter_year">
+                                <?php $__empty_1 = true; $__currentLoopData = $year; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                    <option value="<?php echo e($data); ?>"><?php echo e($data); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                    <option value="2025">2025</option>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                        <div class="form-input">
+                            <label for="filter_advertisement">Select advertisement</label>
+                            <select class="filter_advertisement" id="filter_advertisement">
+                                <option value="">---- Select advertisement ----</option>
+                                <?php $__currentLoopData = $adslist; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $adsdata): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($adsdata->id); ?>"><?php echo e($adsdata->advertisement_title); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <div class="table_over mt-4">
+                    <h4>Post Details</h4>
+                    <table class="cust_table__ table_sparated" id="advertisementPostDataTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Post name</th>
+                                <th>Post Created Date</th>
+                                <th>Post Created By</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startPush('scripts'); ?>
+    <script>
+        const advertismentPostDataUrl = "<?php echo e(route('recruitment-portal.post.index')); ?>";
+    </script>
+    <script src="<?php echo e(asset('public/js/recruitment-management/hr/post.js')); ?>"></script>
+    <script src="<?php echo e(asset('public/js/select2.min.js')); ?>"></script>
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\recruitment\resources\views/recruitment-management/recruitment-post/index.blade.php ENDPATH**/ ?>

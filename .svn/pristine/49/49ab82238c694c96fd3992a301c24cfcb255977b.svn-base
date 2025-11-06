@@ -1,0 +1,59 @@
+
+<?php $__env->startSection('auth_content'); ?>
+<div class="form_bg_inner md:block hidden">
+    </div>
+    <div class="bg_form_">
+        <h1 class="heding_style ">
+            2-Step Verification
+        </h1>
+
+            <?php echo $__env->make('components.alert', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <form class="inpus_cust_cs " method="POST" action="<?php echo e(route('recruitment.twoFactor.verify')); ?>">
+            <?php echo csrf_field(); ?>
+            <div class="relative  items-center">
+                <label class="block">Enter OTP code</label>
+                <input type="text" maxlength="6" minlength="6" class="form-control login-input <?php $__errorArgs = ['code'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" name="code"
+                id="code" value="<?php echo e(old('code')); ?>" aria-describedby="emailHelp" placeholder="<?php echo e(__('Enter otp code here')); ?>"
+                autofocus autocomplete="off" required>
+             
+            </div>
+
+            <?php if (isset($component)) { $__componentOriginal3cb5d874ceea31eabe9d1d788ecdbaa3 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal3cb5d874ceea31eabe9d1d788ecdbaa3 = $attributes; } ?>
+<?php $component = App\View\Components\Admin\Captcha::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.captcha'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Captcha::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal3cb5d874ceea31eabe9d1d788ecdbaa3)): ?>
+<?php $attributes = $__attributesOriginal3cb5d874ceea31eabe9d1d788ecdbaa3; ?>
+<?php unset($__attributesOriginal3cb5d874ceea31eabe9d1d788ecdbaa3); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal3cb5d874ceea31eabe9d1d788ecdbaa3)): ?>
+<?php $component = $__componentOriginal3cb5d874ceea31eabe9d1d788ecdbaa3; ?>
+<?php unset($__componentOriginal3cb5d874ceea31eabe9d1d788ecdbaa3); ?>
+<?php endif; ?>
+            <button type="submit" id="login-btn" class="fill_btn hover-effect-btn">
+                <span class="btn-text"><?php echo e(__('Verify')); ?></span>
+                <span class="spinner" style="display: none; margin-left: 8px;">
+                    <span class="spinner-border"></span>
+                </span>
+            </button>
+            <div id="countdown" class="text-muted small text-center" data-seconds="<?php echo e($remainingSeconds); ?>" data-otp-url="<?php echo e(route('recruitment.twoFactor.index')); ?>"></div>
+        </form>
+    </div>
+</div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.recruitment-auth', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/auth/recruitment-twofa.blade.php ENDPATH**/ ?>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Recruitment Portal | Password Reset</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f2f4f6; color: #51545E; margin: 0; padding: 0;">
+    <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+            <td align="center">
+                <table width="570" cellpadding="0" cellspacing="0" style="background-color: #ffffff; margin: 20px auto; padding: 20px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <tr>
+                        <td style="background:#f5f5f5;text-align: center; padding: 20px; font-size: 20px; font-weight: bold; color: #333;">
+                            {{ config('app.name') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px; font-size: 16px; color: #333;">
+                            <p><strong>Hello!</strong></p>
+                            <p>You are receiving this email because we received a password reset request for your account.</p>
+                            <p style="text-align: center; margin: 30px 0;">
+                                <a href="{!! $resetlink !!}" target="_blank" 
+                                   style="display: inline-block; background-color: #2d3748; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold;">
+                                    Reset Password
+                                </a>
+                            </p>
+                            <p>This password reset link will expire in 60 minutes.</p>
+                            <p>If you did not request a password reset, no further action is required.</p>
+                            <p>Regards,<br>NHIDCL</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-top: 1px solid #eaeaea; padding: 20px; font-size: 14px; color: #6b7280;">
+                            <p>If you're having trouble clicking the "Reset Password" button, copy and paste the URL below into your web browser:</p>
+                            <p style="word-break: break-all;">
+                                <a href="{{ $resetlink }}" target="_blank">{!! $resetlink !!}</a>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr style="background:#f5f5f5;">
+                        <td style="text-align: center; padding: 20px; font-size: 20px; font-weight: bold; color: #333;">
+                            <p style="font-size: 12px; color: #999; margin: 20px 0;">
+                                &copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

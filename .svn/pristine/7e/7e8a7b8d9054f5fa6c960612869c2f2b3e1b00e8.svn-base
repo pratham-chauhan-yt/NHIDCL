@@ -1,0 +1,260 @@
+<?php $__env->startSection('dashboard_content'); ?>
+
+    <div class="container-fluid md:p-0">
+        <div class="top_heading_dash__">
+            <div class="main_hed">Edit User Details</div>
+            <div class="plain_dlfex bg_elips_ic">
+                <a href="<?php echo e(route('user-config.view')); ?>"><button type="button"
+                        class="hover-effect-btn fill_btn"><?php echo e(__('Back')); ?></button></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="inner_page_dash__">
+        <div class="my-4 ">
+            <?php echo $__env->make('components.alert', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <div class="form-content">
+                <form class="form_grid_cust" action="<?php echo e(route('user-config.update', Crypt::encrypt($user->id))); ?>"
+                    method="POST">
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('PATCH'); ?>
+                    <div class="inpus_cust_cs form_grid_dashboard_cust_">
+                        <div class="">
+                            <label class="required-label"><?php echo e(__('ID')); ?></label>
+                            <input type="text" class="form-control" value="<?php echo e($user->id ?? ''); ?>" disabled>
+                        </div>
+
+                        <div class="form-input">
+                            <label class="required-label" for="name"><?php echo e(__('Full Name')); ?></label>
+                            <input type="text" name="name" class="form-control" value="<?php echo e($user->name ?? ''); ?>"
+                                disabled>
+                        </div>
+
+                        <div class="form-input">
+                            <label class="required-label"><?php echo e(__('Email')); ?></label>
+                            <input type="text" class="form-control" value="<?php echo e($user->email ?? ''); ?>" disabled>
+                        </div>
+
+                        <div class="form-input">
+                            <label class="required-label"><?php echo e(__('Mobile No')); ?></label>
+                            <input type="text" class="form-control" value="<?php echo e($user->mobile ?? ''); ?>" disabled>
+                        </div>
+
+                        <div class="form-input">
+                            <label class="form-label aster"><?php echo e(__('Is NHIDCL Employee')); ?></label>
+                            <select name="is_nhidcl_employee" class="form-select" id="is_nhidcl_employee" required>
+                                <option value=""><?php echo e(__('Choose...')); ?></option>
+                                <option <?php echo e(old('is_nhidcl_employee', $user->is_nhidcl_employee) == '1' ? 'selected' : ''); ?>
+
+                                    value="1">Yes</option>
+                                <option <?php echo e(old('is_nhidcl_employee', $user->is_nhidcl_employee) == '0' ? 'selected' : ''); ?>
+
+                                    value="0">No
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="">
+                            <label class="">Employee ID</label>
+                            <input type="text" class="" placeholder="NHIDCL Employee ID" name="user_code"
+                                id="user_code" value="<?php echo e(old('user_code', $user->user_code)); ?>" maxlength="100">
+                        </div>
+
+                        <div class="">
+                            <label class="form-label aster"><?php echo e(__('Designation')); ?></label>
+                            <select name="ref_designation_id" class="form-select" id="ref_designation_id">
+                                <option value=""><?php echo e(__('Choose...')); ?></option>
+                                <?php $__currentLoopData = $designation; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($val->id); ?>"
+                                        <?php echo e(old('ref_designation_id', $user->ref_designation_id) == $val->id ? 'selected' : ''); ?>>
+                                        <?php echo e($val->name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+
+                        <div class="">
+                            <label class="form-label aster"><?php echo e(__('Department')); ?></label>
+                            <select name="ref_department_id" class="form-select" id="ref_department_id">
+                                <option value=""><?php echo e(__('Choose...')); ?></option>
+                                <?php $__currentLoopData = $department; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($val->id); ?>"
+                                        <?php echo e(old('ref_department_id', $user->ref_department_id) == $val->id ? 'selected' : ''); ?>>
+                                        <?php echo e($val->name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+
+                        <div class="">
+                            <label class="form-label aster"><?php echo e(__('Employee Type')); ?></label>
+                            <select name="ref_employee_type_id" class="form-select" id="ref_employee_type_id">
+                                <option value=""><?php echo e(__('Choose...')); ?></option>
+                                <?php $__currentLoopData = $employee_type; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($val->id); ?>"
+                                        <?php echo e(old('ref_employee_type_id', $user->ref_employee_type_id) == $val->id ? 'selected' : ''); ?>>
+                                        <?php echo e($val->name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+
+                        <div class="">
+                            <label class="form-label aster"><?php echo e(__('Date of Joining')); ?></label>
+                            <input type="date" class="form-control" name="date_of_joining" id="date_of_joining"
+                                value="<?php echo e(old('date_of_joining', $user->date_of_joining)); ?>">
+                        </div>
+
+                        <div class="">
+                            <label class="form-label aster"><?php echo e(__('Office Type')); ?></label>
+                            <select name="ref_office_type_id" class="form-select" id="ref_office_type_id">
+                                <option value=""><?php echo e(__('Choose...')); ?></option>
+                                <?php $__currentLoopData = $office_type; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($val->id); ?>"
+                                        <?php echo e(old('ref_office_type_id', $user->ref_office_type_id) == $val->id ? 'selected' : ''); ?>>
+                                        <?php echo e($val->office_type_name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+
+                        <div class="">
+                            <label class="form-label aster"><?php echo e(__('Applicant Posted')); ?></label>
+                            <select name="state_id" class="form-select" id="state_id">
+                                <option value=""><?php echo e(__('Choose...')); ?></option>
+                                <?php $__currentLoopData = $state; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($val->id); ?>"
+                                        <?php echo e($val->id == $user->currently_posted ? 'selected' : ''); ?>><?php echo e($val->name); ?>
+
+                                    </option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+
+
+
+                        <div class="form-input">
+                            <label class="form-label aster"><?php echo e(__('BG Project State')); ?></label>
+                            <select name="bgms_assigned_state" class="form-select js-select2" id="bgms_assigned_state" multiple>
+                                <?php $__currentLoopData = $projectState; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ps): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($ps->id); ?>"
+                                        <?php echo e($user->bgms_assigned_state == $ps->id ? 'selected' : ''); ?>>
+                                        <?php echo e($ps->state_name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                        <div class="form-input">
+                            <label class="form-label aster"><?php echo e(__('Status')); ?></label>
+                            <select name="status" id="status" class="form-select">
+                                <option value="">----Select status----</option>
+                                <option <?php echo e(old('status', $user->status) == '1' ? 'selected' : ''); ?> value="1">Active
+                                </option>
+                                <option <?php echo e(old('status', $user->status) == '2' ? 'selected' : ''); ?> value="2">
+                                    InActive</option>
+                            </select>
+                        </div>
+                        <div class="form-input">
+                            <label class="form-label aster"><?php echo e(__('Reporting Manager')); ?></label>
+                            <select name="reporting_manager_id" id="reporting_manager_id" class="form-select js-select2">
+                                <option value="">----Select Reporting Manager----</option>
+                                <?php $__currentLoopData = $manager; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $managerval): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($managerval->id); ?>"
+                                        <?php echo e(old('reporting_manager_id', $user->reporting_manager_id) == $managerval->id ? 'selected' : ''); ?>>
+                                        <?php echo e($managerval->name); ?> (<?php echo e($managerval->email); ?>)</option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class=" inner_page_dash__ mt-[20px]">
+                        <div class="parrent_dahboard_ chart_c inner_body_style inner_pages">
+                            <h4 class="text-[18px] font-semibold">Assign Role</h4>
+                        </div>
+
+                        <div class="">
+                            <div class="grid_rdit_page_user">
+                                <div class="">
+                                    <div class="Cust_toggle_edit">
+                                        <label class="toggle-wrapper">
+                                        </label>
+                                    </div>
+                                    <div class="border_check_box__">
+                                        <p>Roles</p>
+                                        <div
+                                            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-1">
+                                            <?php if($roles->isNotEmpty()): ?>
+                                                <?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <div class="custom_check_inline-item">
+                                                        <input <?php echo e($hasRoles->contains($role->id) ? 'checked' : ''); ?>
+
+                                                            type="radio" id="role-<?php echo e($role->id); ?>"
+                                                            class="custom_check_inline-checkbox" name="role[]"
+                                                            value="<?php echo e($role->name); ?>">
+                                                        <label class="custom_check_inline-label"
+                                                            for="role-<?php echo e($role->id); ?>"><?php echo e($role->name); ?></label>
+
+                                                    </div>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class=" inner_page_dash__ mt-[10px]">
+                        <div class="parrent_dahboard_ chart_c inner_body_style inner_pages">
+                            <h4 class="text-[18px] font-semibold">Module Wise Data</h4>
+                        </div>
+                        <div class="grid_rdit_page_user">
+                            <div class="border_check_box__">
+                                <p>BGMS</p>
+                                <div class="inpus_cust_cs form_grid_dashboard_cust_" style="margin-top: 0">
+                                    <div class="">
+                                        <label class="">Verifier</label>
+                                        <select name="bgms_verifier_id" class="form-select js-select2" id="bgms_verifier_id">
+                                            <option value="">Select Verifier</option>
+                                            <?php $__currentLoopData = $bgms_verifiers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($val->id); ?>"
+                                                    <?php echo e(old('bgms_verifier_id', $user->bgms_verifier_id) == $val->id ? 'selected' : ''); ?>>
+                                                    <?php echo e($val->name); ?> (<?php echo e($val->email); ?>)</option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid_rdit_page_user">
+                            <div class="border_check_box__">
+                                <p>Document Management</p>
+                                <div class="inpus_cust_cs form_grid_dashboard_cust_" style="margin-top: 0">
+                                    <div class="">
+                                        <label class="">Approver (Sharing of Document)</label>
+                                        <select name="dms_approver_id" class="form-select js-select2" id="dms_approver_id">
+                                            <option value="">Select Approver</option>
+                                            <?php $__currentLoopData = $dms_approvers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($val->id); ?>"
+                                                    <?php echo e(old('doc_approver_id', $user->dms_approver_id) == $val->id ? 'selected' : ''); ?>>
+                                                    <?php echo e($val->name); ?> (<?php echo e($val->email); ?>)</option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="button_flex_cust_form">
+        <button type="submit" class="hover-effect-btn fill_btn"><?php echo e(__('Update')); ?></button>
+    </div>
+    </form>
+    </div>
+    </div>
+    </div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+    <script src="<?php echo e(asset('public/js/select2.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('public/js/user-management/edit.js')); ?>"></script>
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/user-config/edit.blade.php ENDPATH**/ ?>

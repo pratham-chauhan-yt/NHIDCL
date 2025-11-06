@@ -1,0 +1,53 @@
+
+<?php $__env->startSection('dashboard_content'); ?>
+    <section class="home-section ">
+        <div class="container-fluid md:p-0">
+            <div class="top_heading_dash__">
+                <div class="main_hed">My Application</div>
+            </div>
+        </div>
+        <div class="inner_page_dash__">
+            <div class="my-4 ">
+                <div id="Application">
+                    <div class="table_over">
+                        <table class="cust_table__ table_sparated">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Advertisement</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if(sizeof($application) > 0): ?>
+                                <?php $__currentLoopData = $application; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $applicationData): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <tr>
+                                        <td><?php echo e($loop->iteration); ?></td>
+                                        <td><?php echo e($applicationData?->advertisementPost?->post_name); ?></td>
+                                        <td><?php echo e($applicationData?->users?->name); ?></td>
+                                        <td><?php echo e($applicationData?->users?->email); ?></td>
+                                        <td><?php echo e($applicationData?->users?->mobile); ?></td>
+                                        <td><span class="badge badge-info"><?php echo e($applicationData?->status?->status); ?></span></td>
+                                        <td>
+                                            <a href="<?php echo e(route('recruitment-portal.candidate.advertisement.post', encrypt($applicationData?->nhidcl_recruitment_posts_id))); ?>" class="btn btn-default btn-sm" target="_blank">View Application</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <th colspan="7">No records found here</th>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\recruitment\resources\views/recruitment-management/Candidate/my-application.blade.php ENDPATH**/ ?>

@@ -1,0 +1,30 @@
+<?php
+
+use App\Http\Controllers\QueryManagement\QueryKnowledgeController;
+use App\Http\Controllers\QueryManagement\QueryManagementController;
+use App\Http\Controllers\QueryManagement\QueryReplyController;
+use Illuminate\Support\Facades\Route;
+
+Route::middleware(['auth', 'single.device', 'no.cache', 'secure.headers', 'block.xss'])->prefix('query-management')->as('qms.')->group(function () {
+
+    Route::get('dashboard', [QueryManagementController::class, 'dashboard'])->name('dashboard');
+
+    Route::get('create', [QueryManagementController::class, 'create'])->name('create-query');
+    Route::post('store', [QueryManagementController::class, 'store'])->name('store-query');
+    Route::post('/upload-file', [QueryManagementController::class, 'upload'])->name('upload-file');
+    Route::get('/view-file', [QueryManagementController::class, 'viewFiles'])->name('view-file');
+    Route::get('raised-query', [QueryManagementController::class, 'raisedQuery'])->name('raised-query');
+    Route::get('view/{id}', [QueryManagementController::class, 'view'])->name('view-query');
+
+    #########################   Knowledge Base Query routes Start ############################
+    Route::get('knowledge-base', [QueryKnowledgeController::class, 'create'])->name('knowledge-base-query');
+    Route::post('store/knowledge-base', [QueryKnowledgeController::class, 'store'])->name('store-knowledge-base-query');
+    Route::get('view/knowledge-base/{id}', [QueryKnowledgeController::class, 'view'])->name('view-knowledge-base-query');
+    Route::get('edit/knowledge-base/{id}', [QueryKnowledgeController::class, 'edit'])->name('edit-knowledge-base-query');
+    #########################   Knowledge Base Query routes End ############################
+
+    Route::get('query-details/{id}', [QueryReplyController::class, 'queryDetails'])->name('query-details');
+    Route::post('store/query-reply', [QueryReplyController::class, 'store'])->name('store-query-reply');
+    Route::post('mark-as-resolved', [QueryReplyController::class, 'markAsResolved'])->name('mark-as-resolved');
+
+});

@@ -1,0 +1,134 @@
+@extends('layouts.dashboard')
+@section('dashboard_content')
+    <section class="home-section">
+        <div class="container-fluid md:p-0">
+            <div class="top_heading_dash__">
+                <div class="main_hed">Audit Query Details</div>
+                <div class="plain_dlfex bg_elips_ic">
+                    <a href="{{ route('audit-management.index') }}"><button type="button"
+                            class="hover-effect-btn fill_btn">{{ __('Back') }}</button></a>
+                </div>
+            </div>
+        </div>
+        <div class="inner_page_dash__">
+            <div class="my-4">
+                <div id="Home" class="tabcontent">
+                    <div class="candidat_cust-dates">
+                        <p>Letter No: <br /><span>{{ $auditQuery->letter_no }}</span></p>
+                        <p>Letter Date: <br /><span>{{ \Carbon\Carbon::parse($auditQuery->letter_date)->format('d-m-Y') }}</span></p>
+                        <p>Audit Level: <br /><span>{{ $auditQuery->auditLevel->audit_level }}</span></p>
+                        <p>Audit Year: <br /><span>{{ $auditQuery->audit_year }}</span></p>
+                        <p>Audit Type: <br /><span>{{ $auditQuery->auditType->audit_type }}</span></p>
+                        @php
+                            $statusText = $auditQuery->ref_status_text ?? 'N/A';
+                            $badgeClass = 'badge-danger';
+                            switch ($statusText) {
+                                case 'Pending':
+                                    $badgeClass = 'badge-warning';
+                                    break;
+                                case 'Dropped':
+                                    $badgeClass = 'badge-secondary';
+                                    break;
+                                default:
+                                    $badgeClass = 'badge-danger';
+                                    break;
+                            }
+                        @endphp
+                        <p>Status: <br />
+                            <span class="badge p-2 {{ $badgeClass }}">{{ $statusText }}</span>
+                        </p>
+                        <p>Location: <br /><span>{{ $auditQuery->projectState->state_name }}</span></p>
+                        <p>
+                            File: <br /><span>
+                                @if (isset($auditQuery->word_file))
+                                    @php
+                                        $wordFilePath = 'uploads/audit-management/';
+                                        $wordFileName = basename($auditQuery->word_file);
+                                        $wordFileUrl = route('audit-management.view.files', [
+                                            'pathName' => $wordFilePath,
+                                            'fileName' => $wordFileName,
+                                        ]);
+                                    @endphp
+                                    <a href="{{ $wordFileUrl }}" target="_blank" data-bs-toggle="tooltip"
+                                        title="View word file">
+                                        <i class="fa fa-file-word mx-1" aria-hidden="true"></i>
+                                    </a>
+                                @endif
+
+                                @if (isset($auditQuery->pdf_file))
+                                    @php
+                                        $pdfFilePath = 'uploads/audit-management/';
+                                        $pdfFileName = basename($auditQuery->pdf_file);
+                                        $pdfFileUrl = route('audit-management.view.files', [
+                                            'pathName' => $pdfFilePath,
+                                            'fileName' => $pdfFileName,
+                                        ]);
+                                    @endphp
+                                    <a href="{{ $pdfFileUrl }}" target="_blank" data-bs-toggle="tooltip"
+                                        title="View pdf file">
+                                        <i class="fa fa-file-pdf mx-1" aria-hidden="true"></i>
+                                    </a>
+                                @endif
+
+                            </span>
+                        </p>
+                        @if (isset($auditQuery->status_dropped_date))
+                            <p>Dropped Date: <br /><span>{{ $auditQuery->status_dropped_date }}</span></p>
+                        @endif
+                    </div>
+
+                    <hr class="mt-3" />
+
+                    <h1 class="candidat_cust-title mt-3">
+                        Inspection Report on the Audit of National Highways &
+                        infrastructure Development Corporation Limited (Corporate
+                        Office) for the period April 2021 to March 2022.
+                    </h1>
+
+                    <div class="candidat_cust-container">
+                        @if ($auditQueryPara)
+                            @foreach ($auditQueryPara as $para)
+                                <div class="candidat_cust-item">
+                                    <a
+                                        href="{{ route('audit-management.view-audit-para-details', $auditId = Crypt::encrypt($para->id)) }} }}">
+                                        <div class="candidat_cust-header">
+                                            <span class="candidat_cust-time">PART</span>
+                                            <span class="candidat_cust-time">{{ $para->part->part }}</span>
+                                        </div>
+                                        <h4 class="candidat_cust-title">Introduction</h4>
+
+                                        <div class="candidat_cust-dates">
+                                            <p>Query Type <br /><span>{{ $para->queryType->query_type }}</span></p>
+
+                                            @php
+                                                $statusText = $para->ref_status_text ?? 'N/A';
+                                                $badgeClass = 'badge-danger';
+                                                switch ($statusText) {
+                                                    case 'Reply Pending':
+                                                        $badgeClass = 'badge-warning';
+                                                        break;
+                                                    case 'Replied':
+                                                        $badgeClass = 'badge-success';
+                                                        break;
+                                                    case 'Dropped':
+                                                        $badgeClass = 'badge-secondary';
+                                                        break;
+                                                    default:
+                                                        $badgeClass = 'badge-danger';
+                                                        break;
+                                                }
+                                            @endphp
+                                            <p>Status: <br />
+                                                <span class="badge p-2 {{ $badgeClass }}">{{ $statusText }}</span>
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection

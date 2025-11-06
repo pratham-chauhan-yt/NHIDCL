@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\ServiceProvider;
+use Intervention\Image\ImageManager;
+use Illuminate\Support\Facades\Blade;
+use Symfony\Component\Mailer\Transport\Transports;
+use Symfony\Component\Mailer\Transport\TransportFactory;
+use App\Mail\Transport\CustomSmtpTransportFactory;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+
+class AppServiceProvider extends ServiceProvider
+{
+  /**
+   * Register any application services.
+   */
+  public function register(): void
+  {
+    //
+  }
+
+  /**
+   * Bootstrap any application services.
+   */
+  public function boot()
+  {
+
+    //  DB::listen(function ($query) {
+    //         $sql = $query->sql;
+
+    //     //  Replace placeholders with actual bindings
+    //          foreach ($query->bindings as $binding) {
+    //             $value = is_numeric($binding) ? $binding : "'" . addslashes($binding) . "'";
+    //              $sql = Str::replaceFirst('?', $value, $sql);
+    //         }
+
+    //          Log::info( $sql . ' [' . $query->time . ' ms]');
+    //      });
+    app()->extend(TransportFactory::class, function ($factory, $app) {
+      $factory->register(new CustomSmtpTransportFactory());
+      return $factory;
+    });
+    Paginator::useBootstrapFive();
+    Blade::if('canModule', function ($moduleName) {
+      if (!auth()->check()) return false;
+      $user = auth()->user();
+
+      // If user has Super Admin role, give full access
+      if ($user->hasRole('Super Admin')) {
+        return true;
+      }
+      return $user->getAllPermissions()->where('module', $moduleName)->isNotEmpty();
+    });
+  }
+}

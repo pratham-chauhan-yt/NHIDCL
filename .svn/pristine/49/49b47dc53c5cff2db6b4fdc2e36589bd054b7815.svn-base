@@ -1,0 +1,23 @@
+<?php $__env->startSection('content'); ?>
+    <?php if(isset($header)): ?>
+        <?php echo $__env->make('shared.header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php endif; ?>
+    <div class="main-container flex overflow-hidden bg_main_dash">
+        <?php if(isset($sidebar)): ?>
+            <?php echo $__env->make('shared.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <?php endif; ?>
+        <section class="home-section">
+            <div class="container-fluid">
+                <?php echo $__env->yieldContent('dashboard_content'); ?>
+            </div>
+             <?php echo $__env->yieldContent('dashboard_contents'); ?>
+        </section>
+    </div>
+    <footer class="bg-footer-color p-4">
+        <div class="container">
+            <p>@ <?php echo e(now()->year); ?> NHIDCL </p>
+        </div>
+    </footer>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\recruitment\resources\views/layouts/dashboard.blade.php ENDPATH**/ ?>

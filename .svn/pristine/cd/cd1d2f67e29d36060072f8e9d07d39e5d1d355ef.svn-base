@@ -1,0 +1,453 @@
+
+<?php $__env->startPush('styles'); ?>
+<style>
+#paginationContainer .pagination{justify-content:center;gap:6px;display:flex;}
+#paginationContainer .page-link{background: #fff;border: 1px solid #dee2e6;color: #495057;border-radius: 6px;padding: 5px 12px;transition: all 0.2s ease-in-out;}
+#paginationContainer .page-item.active .page-link{background-color: #5f1eb5;border-color: #5527bd;color: #fff;}
+#paginationContainer .page-item:hover .page-link:not(.active){background-color: #f8f9fa;border-color: #5527bd;color: #5527bd;}
+#paginationContainer .page-item.disabled .page-link{opacity:0.5;pointer-events: none;}
+#paginationContainer .page-link{padding:4px 10px;font-size:14px;}
+</style>
+<?php $__env->stopPush(); ?>
+<?php $__env->startSection('dashboard_content'); ?>
+    <div class="container-fluid md:p-0">
+        <div class="top_heading_dash__">
+            <div class="main_hed">Selection Process</div>
+        </div>
+    </div>
+
+    <div class="inner_page_dash__">
+        <div class="my-4 ">
+            <div class="tab_custom_c">
+                <button class="tablink cursor-pointer" onclick="openPage('Shortlist', this, '#373737')" id="defaultOpen">
+                    <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+                    </svg> Candidate Shortlist
+                </button>
+                <!-- <button class="tablink cursor-pointer" onclick="openPage('Assessment', this, '#373737')">
+                    <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 0 1 9 9v.375M10.125 2.25A3.375 3.375 0 0 1 13.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 0 1 3.375 3.375M9 15l2.25 2.25L15 12" />
+                    </svg> Candidate Assessment
+                </button>
+                <button class="tablink cursor-pointer" onclick="openPage('Selection', this, '#373737')">
+                    <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                    </svg> Candidate Selection
+                </button> -->
+            </div>
+            <div id="Shortlist" class="tabcontent">
+                <div class="header-grey">
+                    <p>Advance Search</p>
+                </div>
+                <form class="form_grid_cus" action="<?php echo e(route('recruitment-portal.candidate.shortlist.process')); ?>" method="post" id="candidateFilterForm">
+                    <?php echo csrf_field(); ?>
+                    <input type="hidden" name="action" value="shortlist">
+                    <div class="space-y-4 mb-6 inpus_cust_cs body-filter">
+                        <div class="ruby gap-[10px]">
+                            <?php if (isset($component)) { $__componentOriginal5a8c2f7be39be27ec791b2034cff2725 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.filter-input','data' => ['label' => 'Advertisement ID','name' => 'advertisementId','type' => 'select','class' => 'advertisement_id js-single','required' => 'required']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('filter-input'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'Advertisement ID','name' => 'advertisementId','type' => 'select','class' => 'advertisement_id js-single','required' => 'required']); ?>
+                                <option value="">--- Select Advertisement ID ---</option>
+                                <?php $__currentLoopData = $listOfAdvertisement; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dataOfAdvertisement): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($dataOfAdvertisement->id); ?>">
+                                        <?php echo e($loop->iteration); ?> - <?php echo e($dataOfAdvertisement->advertisement_title); ?>
+
+                                    </option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $attributes = $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $component = $__componentOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+                            <?php if (isset($component)) { $__componentOriginal5a8c2f7be39be27ec791b2034cff2725 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.filter-input','data' => ['label' => 'Select Post','name' => 'postId','type' => 'select','class' => 'posts_id js-single','required' => 'required']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('filter-input'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'Select Post','name' => 'postId','type' => 'select','class' => 'posts_id js-single','required' => 'required']); ?>
+                                <option value="">Choose posts</option>
+                             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $attributes = $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $component = $__componentOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+                            <?php if (isset($component)) { $__componentOriginal5a8c2f7be39be27ec791b2034cff2725 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.filter-input','data' => ['label' => 'Name','name' => 'name_filter','placeholder' => 'Search candidate name...']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('filter-input'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'Name','name' => 'name_filter','placeholder' => 'Search candidate name...']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $attributes = $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $component = $__componentOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+                            <?php if (isset($component)) { $__componentOriginal5a8c2f7be39be27ec791b2034cff2725 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.filter-input','data' => ['label' => 'Email','name' => 'email_filter','type' => 'email','placeholder' => 'Search candidate email...']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('filter-input'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'Email','name' => 'email_filter','type' => 'email','placeholder' => 'Search candidate email...']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $attributes = $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $component = $__componentOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+                            <?php if (isset($component)) { $__componentOriginal5a8c2f7be39be27ec791b2034cff2725 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.filter-input','data' => ['label' => 'Mobile','name' => 'mobile_filter','minlength' => '10','maxlength' => '10','placeholder' => 'Search candidate mobile...']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('filter-input'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'Mobile','name' => 'mobile_filter','minlength' => '10','maxlength' => '10','placeholder' => 'Search candidate mobile...']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $attributes = $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $component = $__componentOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+                            <?php if (isset($component)) { $__componentOriginal5a8c2f7be39be27ec791b2034cff2725 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.filter-input','data' => ['label' => 'GATE Registration Number','name' => 'gate_registartion_filter','placeholder' => 'Search GATE registration number...']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('filter-input'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'GATE Registration Number','name' => 'gate_registartion_filter','placeholder' => 'Search GATE registration number...']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $attributes = $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $component = $__componentOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+                            <?php if (isset($component)) { $__componentOriginal5a8c2f7be39be27ec791b2034cff2725 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.filter-input','data' => ['label' => 'GATE Year','name' => 'gate_year_filter','type' => 'select','class' => 'js-single']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('filter-input'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'GATE Year','name' => 'gate_year_filter','type' => 'select','class' => 'js-single']); ?>
+                                <option value="">--- Choose GATE year ---</option>
+                                <?php $__empty_1 = true; $__currentLoopData = $years; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $yeardata): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <option value="<?php echo e($yeardata->id); ?>"><?php echo e($yeardata->passing_year); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                <?php endif; ?>
+                             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $attributes = $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $component = $__componentOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+                            <?php if (isset($component)) { $__componentOriginal5a8c2f7be39be27ec791b2034cff2725 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.filter-input','data' => ['label' => 'GATE Score','name' => 'gate_score_filter','placeholder' => 'Search GATE score wise...']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('filter-input'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'GATE Score','name' => 'gate_score_filter','placeholder' => 'Search GATE score wise...']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $attributes = $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $component = $__componentOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+                            <?php if (isset($component)) { $__componentOriginal5a8c2f7be39be27ec791b2034cff2725 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.filter-input','data' => ['label' => 'Age','name' => 'age_filter','placeholder' => 'Search candidate age wise...']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('filter-input'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'Age','name' => 'age_filter','placeholder' => 'Search candidate age wise...']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $attributes = $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $component = $__componentOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+                            <?php if (isset($component)) { $__componentOriginal5a8c2f7be39be27ec791b2034cff2725 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.filter-input','data' => ['label' => 'Category','name' => 'category_filter','type' => 'select','class' => 'js-single']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('filter-input'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'Category','name' => 'category_filter','type' => 'select','class' => 'js-single']); ?>
+                                <option value="">--- Choose category ---</option>
+                                <?php $__empty_1 = true; $__currentLoopData = $category; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $catdata): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <option value="<?php echo e($catdata->id); ?>"><?php echo e($catdata->caste); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                <?php endif; ?>
+                             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $attributes = $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $component = $__componentOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+                            <!-- <?php if (isset($component)) { $__componentOriginal5a8c2f7be39be27ec791b2034cff2725 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.filter-input','data' => ['label' => 'Percentile','name' => 'percentile_filter','placeholder' => 'Search candidate percentile wise...']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('filter-input'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['label' => 'Percentile','name' => 'percentile_filter','placeholder' => 'Search candidate percentile wise...']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $attributes = $__attributesOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__attributesOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725)): ?>
+<?php $component = $__componentOriginal5a8c2f7be39be27ec791b2034cff2725; ?>
+<?php unset($__componentOriginal5a8c2f7be39be27ec791b2034cff2725); ?>
+<?php endif; ?> -->
+                            <div class="w-fit">
+                                <button type="button" name="exportdata" id="exportSelectionData" class="btn btn-primary">Export Data</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <p>Total Application: <span id="total_vacancy_count">0</span></p>
+                    </div>
+                
+                    <div class="table_over">
+                        <table class="cust_table__ table_sparated" id="postDataTable">
+                            <thead class=" ">
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                    <th>Gate Registration Number</th>
+                                    <th>Gate Score</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>View Profile</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div id="paginationContainer" class="mt-3"></div>
+
+                    <div class="inpus_cust_cs form_grid_dashboard_cust_" style="display:none;">
+                        <div class="form-input">
+                            <label>Comment box</label>
+                            <textarea name="remarks" id="remarks" rows="3" placeholder="Add your comment">Candidate Shortlist via HR</textarea>
+                        </div>
+                    </div>
+                
+                    <!-- <div class="button_flex_cust_form">
+                        <button class="hover-effect-btn gray_btn cursor-pointer" type="submit" onclick="event.preventDefault(); confirmShortlistSwal();">Generate Shortlist</button>
+                    </div> -->
+                </form>
+            </div>
+
+            <div id="Assessment" class="tabcontent">
+                <form class="form_grid_cus" id="candidateAssessmentForm" action="<?php echo e(route('recruitment-portal.candidate.assesment.process')); ?>" method="post">
+                    <?php echo csrf_field(); ?>
+                    <input type="hidden" name="action" value="assesment">
+                    <div class="inpus_cust_cs form_grid_dashboard_cust_ items-end">
+                        <div class="form-input">
+                            <label class="required-label">Select Advertisement</label>
+                            <select name="assesmentadsId" id="assesmentadsId" class="js-single assesment_ads_id" required>
+                                <option value="">--- Select Advertisement ID ---</option>
+                                <?php $__currentLoopData = $listOfAdvertisement; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dataOfAdvertisement): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($dataOfAdvertisement->id); ?>">
+                                        <?php echo e($loop->iteration); ?> - <?php echo e($dataOfAdvertisement->advertisement_title); ?>
+
+                                    </option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                        <div class="form-input">
+                            <label class="required-label">Select Post</label>
+                            <select name="assesment_post_id" id="assesment_post_id" class="js-single assesment_posts_id" required>
+                                <option>Choose Advertisement posts</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table_over">
+                        <table class="cust_table__ table_sparated" id="assesmentDataTable">
+                            <thead class=" ">
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                    <th>Gate Registration Number</th>
+                                    <th>Gate Score</th>
+                                    <th>Gate Percentile</th>
+                                    <th>Status</th>
+                                    <th>View</th>
+                                    <th>Select</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="inpus_cust_cs form_grid_dashboard_cust_">
+                        <div class="form-input">
+                            <label class="required-label">Schedule assessment</label>
+                            <div class="custom_check_inline-container">
+                                <div class="custom_check_inline-item">
+                                    <input type="radio" name="assesment" id="assesment1" value="exam" class="custom_check_inline-checkbox">
+                                    <label for="assesment1" class="custom_check_inline-label">Exam</label>
+                                </div>
+                                <div class="custom_check_inline-item">
+                                    <input type="radio" name="assesment" id="assesment2" value="interview" class="custom_check_inline-checkbox" checked>
+                                    <label for="assesment2" class="custom_check_inline-label">Interview</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-input">
+                            <label>Choose Exam/Interview Date</label>
+                            <input type="date" name="assesment_date" id="assesment_date" required>
+                        </div>
+                        <div class="form-input" style="display:none;">
+                            <label>Comment box</label>
+                            <textarea name="assesment_remarks" id="assesment_remarks" rows="3" placeholder="Add your comment">Candidate assessment Schedule via HR</textarea>
+                        </div>
+                    </div>
+                    <div class="button_flex_cust_form">
+                        <button class="hover-effect-btn border_btn cursor-pointer" type="submit" onclick="event.preventDefault(); confirmAssessmentSwal();"> Generate Assessment</button> 
+                    </div>
+                </form>
+            </div>
+
+            <div id="Selection" class="tabcontent">
+                <form class="form_grid_cus" action="" method="post">
+                    <?php echo csrf_field(); ?>
+                    <input type="hidden" name="action" value="selection">
+                    <div class="inpus_cust_cs form_grid_dashboard_cust_ items-end">
+                        <div class="form-input">
+                            <label class="required-label">Select Advertisement</label>
+                            <select name="selectionadsId" id="selectionadsId" class="js-single selection_ads_id" required>
+                                <option value="">--- Select Advertisement ID ---</option>
+                                <?php $__currentLoopData = $listOfAdvertisement; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dataOfAdvertisement): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($dataOfAdvertisement->id); ?>">
+                                        <?php echo e($loop->iteration); ?> - <?php echo e($dataOfAdvertisement->advertisement_title); ?>
+
+                                    </option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                        <div class="form-input">
+                            <label class="required-label">Select Post</label>
+                            <select name="selection_post_id" id="selection_post_id" class="js-single selection_post_id" required>
+                                <option>Choose Advertisement posts</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table_over">
+                        <table class="cust_table__ table_sparated" id="selectionDataTable">
+                            <thead class=" ">
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                    <th>Gate Registration Number</th>
+                                    <th>Gate Score</th>
+                                    <th>Gate Percentile</th>
+                                    <th>Status</th>
+                                    <th>View</th>
+                                    <th>Select</th>
+                                    <th>Upload Offer Latter</th>
+                                    <th>Date of Joining</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+    <script src="<?php echo e(asset('public/js/recruitment-portal.js')); ?>"></script>
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/recruitment-management/selection-process.blade.php ENDPATH**/ ?>

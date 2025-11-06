@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Models\QueryManagement;
+
+use App\Models\NhidclApplicationStatus;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class QmsKnowledgeBase extends Model
+{
+    use HasFactory;
+    use SoftDeletes;
+
+    protected $table = "nhidcl_qms_knowledge_base";
+    protected $fillable = ['query_id', 'title', 'description', 'meta_title', 'meta_description', 'image',  'nhidcl_application_status_id', 'created_by'];
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+}

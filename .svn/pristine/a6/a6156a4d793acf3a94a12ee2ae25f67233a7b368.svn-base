@@ -1,0 +1,131 @@
+
+<?php $__env->startSection('auth_content'); ?>
+    <div class="bg_form_">
+        <h1 class="heding_style ">Login</h1>
+        <?php echo $__env->make('components.alert', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        <form class="inpus_cust_cs" id="login-form" method="POST" action="<?php echo e(route('recruitment.auth.login')); ?>">
+            <?php echo csrf_field(); ?>
+            <input type="hidden" name="action" value="recruitment">
+            <div class="relative  items-center">
+                <label class="block">Email ID</label>
+                <input type="email" class="form-control login-input <?php $__errorArgs = ['login'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" name="login"
+                    id="login" value="<?php echo e(old('login')); ?>" aria-describedby="emailHelp"
+                    placeholder="<?php echo e(__('Email ID')); ?>" autofocus autocomplete="off" required>
+                <div class="invalid-feedback" id="emailError">
+                    <?php $__errorArgs = ['login'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <?php echo e($message); ?>
+
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                </div>
+            </div>
+
+            <div class="relative items-center">
+                <label class="block">Password</label>
+
+                <div class="relative">
+                    <input type="password" autocomplete="off"
+                        class="form-control login-input-password pr-10 <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                        id="password" name="password" aria-describedby="textHelp"
+                        placeholder="********" required>
+
+                    <!-- Eye Icon -->
+                    <span onclick="togglePassword()" class="absolute inset-y-0 right-5 flex items-center pr-3 cursor-pointer">
+                        <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" class="w-4 h-4 text-black-500">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 
+                                4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </span>
+                </div>
+
+                <div class="invalid-feedback" id="passwordError">
+                    <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <?php echo e($message); ?>
+
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                </div>
+            </div>
+
+            <?php if (isset($component)) { $__componentOriginal3cb5d874ceea31eabe9d1d788ecdbaa3 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal3cb5d874ceea31eabe9d1d788ecdbaa3 = $attributes; } ?>
+<?php $component = App\View\Components\Admin\Captcha::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('admin.captcha'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(App\View\Components\Admin\Captcha::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal3cb5d874ceea31eabe9d1d788ecdbaa3)): ?>
+<?php $attributes = $__attributesOriginal3cb5d874ceea31eabe9d1d788ecdbaa3; ?>
+<?php unset($__attributesOriginal3cb5d874ceea31eabe9d1d788ecdbaa3); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal3cb5d874ceea31eabe9d1d788ecdbaa3)): ?>
+<?php $component = $__componentOriginal3cb5d874ceea31eabe9d1d788ecdbaa3; ?>
+<?php unset($__componentOriginal3cb5d874ceea31eabe9d1d788ecdbaa3); ?>
+<?php endif; ?>
+
+            <div class="flex items-center justify-between pt-2">
+                <div class="flex items-start">
+                    <div class="flex items-center h-5 inpus_cust_cs">
+                        <input type="checkbox" class="w-4 h-4" name="remember" id="remember">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="remember" class="text-gray-500 dark:text-gray-600 cursor-pointer">Remember me</label>
+                    </div>
+                </div>
+                <a href="<?php echo e(route('recruitment.password.request')); ?>" class="forgot_pads_cust">Forgot password?</a>
+            </div>
+
+            <button type="submit" id="login-btn" class="fill_btn hover-effect-btn">
+                <span class="btn-text"><?php echo e(__('Login')); ?></span>
+                <span class="spinner" style="display: none; margin-left: 8px;">
+                    <span class="spinner-border"></span>
+                </span>
+            </button>
+
+           <span class="text-red-500 dark:text-red-500 custom_font_size">If you are not registered, kindly register yourself first.</span>
+            <a href="<?php echo e(route('recruitment.auth.registration')); ?>" class="gray_btn hover-effect-btn bg-[#AEAAA6]"
+                style="text-align:center;">Registration</a>
+        </form>
+    </div>
+    </div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+    <script src="<?php echo e(asset('public/js/crypto-js.min.js')); ?>"></script>
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.recruitment-auth', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/auth/recruitment-login.blade.php ENDPATH**/ ?>

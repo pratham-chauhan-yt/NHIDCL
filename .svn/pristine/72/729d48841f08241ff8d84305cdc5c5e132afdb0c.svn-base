@@ -1,0 +1,13 @@
+<?php
+
+use App\Http\Controllers\DirectoryManagement\DirectoryManagerController;
+use Illuminate\Support\Facades\Route;
+
+Route::middleware(['auth', 'single.device', 'no.cache', 'secure.headers', 'block.xss', 'role:NHIDCL Employee|HQ/RO Employee,web'])->prefix('directory-management')->name('directory-management.')->group(function () {
+    Route::get('/directory/stakeholder/list', [DirectoryManagerController::class, 'stakeholderList'])->name('directory.stakeholder.list');
+    Route::get('/external/employees/create', [DirectoryManagerController::class, 'externalEmployeeCreate'])->name('external.employees.create');
+    Route::post('/external/employees/store', [DirectoryManagerController::class, 'externalEmployeeStore'])->name('external.employees.store');
+    Route::get('/external/employees/edit/{id}', [DirectoryManagerController::class, 'externalEmployeeEdit'])->name('external.employees.edit');
+    Route::put('/external/employees/update/{id}', [DirectoryManagerController::class, 'externalEmployeeUpdate'])->name('external.employees.update');
+    Route::get('/internal/employees/table/data', [DirectoryManagerController::class, 'internalEmployeeDataList'])->name('internal.employees.table.data');
+});

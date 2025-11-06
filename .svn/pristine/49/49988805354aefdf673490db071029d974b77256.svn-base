@@ -1,0 +1,268 @@
+<?php
+
+namespace App\Models;
+
+use App\Models\ResourcePool\NhidclRequisitionApplicantShortlistChairPerson;
+use App\Models\ResourcePool\NhidclRequisitionApplicantShortlistCommittee;
+use App\Models\ResourcePool\NhidclResourceRequisitionFinalShortlistApplicant;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
+
+
+
+
+class User extends Authenticatable
+{
+    use HasApiTokens, HasFactory, Notifiable, LogsActivity, HasRoles;
+    protected static $logAttributes = ['roles'];
+    protected static $logOnlyDirty = true;
+    protected static $logName = 'user_roles';
+    protected $guard = 'admin';
+
+    // Specify default guard for Spatie
+    protected $guard_name = 'web'; // default
+
+    // But for recruitment guard, you can check dynamically:
+    public function getGuardName()
+    {
+        return session()->has('recruitment_login') ? 'recruitment' : 'web';
+    }
+
+    protected $table = "ref_users";
+
+    protected $fillable = [
+        'user_code',
+        'name',
+        'email',
+        'password',
+        'remember_token',
+        'is_logged',
+        'is_deleted',
+        'is_nhidcl_employee',
+        'ref_department_id',
+        'mobile_otp',
+        'email_otp',
+        'ref_employee_type_id',
+        'ref_designation_id',
+        'address',
+        'ref_office_type_id',
+        'date_of_joining',
+        'currently_posted',
+        'date_of_birth',
+        'mobile',
+        'status',
+        'state_id',
+        'ref_users_id',
+        'last_login_token',
+        'last_login_at',
+        'last_login_ip',
+        'created_by',
+        'updated_by',
+        'bgms_assigned_state',
+        'module_name',
+        'dms_approver_id',
+        'reporting_manager_id',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'is_logged' => 'boolean',
+        'is_deleted' => 'boolean',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    // Define the relationship with UserActivity
+    public function activities()
+    {
+        return $this->hasMany(UserActivity::class, 'ref_user_id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updater()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    // Define the relationship with the RefState model
+    public function state()
+    {
+        return $this->belongsTo(RefState::class);
+    }
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "User roles have been {$eventName}";
+    }
+
+    // Method to log role changes
+    public function syncRolesWithLogging(array $roles)
+    {   //dd($roles);
+        $oldRoles = $this->roles->pluck('name')->toArray();
+        //   $this->syncRoles($roles);
+        $this->syncRoles(array_column($roles, 'role_id'));
+
+        $newRoles = $this->roles->pluck('name')->toArray();
+
+
+        activity('model_has_roles')
+            ->performedOn($this)
+            ->causedBy(auth()->user())
+            ->withProperties([
+                'old_roles' => $oldRoles,
+                'new_roles' => $newRoles,
+                'roles_with_parents' => $roles,
+
+            ])
+            ->log('Roles updated for user');
+
+
+        $roles = $request->roles ?? [];
+        // If it's a single role (string or int), wrap it in an array of arrays
+        if (!is_array($roles) || (is_array($roles) && isset($roles['role_id']))) {
+            $roles = [$roles];
+        }
+
+        foreach ($roles as $role) {
+            // Handle both "array format" and "single id format"
+            if (is_array($role)) {
+                $roleId = $role['role_id'] ?? null;
+                $parentRoleId = $role['parent_role_id'] ?? null;
+            } else {
+                $roleId = $role;          // role is string/int
+                $parentRoleId = null;     // default if not provided
+            }
+
+            if ($roleId) {
+                $roleModel = Role::find($roleId);
+                if ($roleModel) {
+                    $roleModel->parent_role_id = $parentRoleId;
+                    $roleModel->save();
+                }
+            }
+        }
+
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->useLogName('users-table');
+    }
+
+    /* public function roles(): BelongsToMany
+       {
+           return $this->belongsToMany(Role::class, 'role_user', 'ref_user_id', 'role_id')
+                       ->withTimestamps();  // This is the pivot table name and foreign keys
+       } */
+
+    public function interviewStatuses()
+    {
+        return $this->belongsToMany(RefInterviewStatus::class, 'user_status', 'ref_user_id', 'ref_interview_status_id')
+            ->withTimestamps();
+    }
+
+    // Helper function to check if the user has a specific role
+
+    public function personalDetails()
+    {
+        return $this->hasOne(RefApplicantPersonalDetails::class, 'ref_users_id', 'id');
+    }
+
+    public function educationalDetails()
+    {
+        return $this->hasOne(NhidclAplicantEducationDetails::class, 'ref_users_id', 'id');
+    }
+
+    public function workExperience()
+    {
+        return $this->hasOne(NhidclApplicantWorkExperienceDetails::class, 'ref_users_id', 'id');
+    }
+
+    public function examData()
+    {
+        return $this->hasOne(NhidclCompetitiveExams::class, 'ref_users_id', 'id');
+    }
+
+    public function userStatus()
+    {
+        return $this->hasOne(UserStatus::class, 'ref_users_id', 'id');
+    }
+
+
+
+    // Define the relationship between User and RefInterviewStatus via UserStatus
+    public function interviewStatus()
+    {
+        return $this->hasOneThrough(RefInterviewStatus::class, UserStatus::class, 'ref_users_id', 'ref_interview_status_id', 'id');
+    }
+
+    // public function roles()
+    // {
+    //     return $this->belongsToMany(Role::class, 'role_users', 'ref_users_id', 'role_id');
+    // }
+
+    public function shortlists()
+    {
+        return $this->hasMany(NhidclRequisitionApplicantShortlistCommittee::class, 'ref_users_id', 'id');
+    }
+
+    public function shortlistByChairperson()
+    {
+        return $this->hasMany(NhidclRequisitionApplicantShortlistChairPerson::class, 'ref_users_id', 'id');
+    }
+
+    public function finalShortlist()
+    {
+        return $this->hasMany(NhidclResourceRequisitionFinalShortlistApplicant::class, 'ref_users_id', 'id');
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(DepartmentMaster::class, 'ref_department_id')->select('id', 'name');
+    }
+
+    public function employeeType()
+    {
+        return $this->belongsTo(RefEmployeeType::class, 'employee_type_id');
+    }
+
+    public function designation()
+    {
+        return $this->belongsTo(DesignationMaster::class, 'ref_designation_id')->select('id', 'name');
+    }
+
+    public function posting()
+    {
+        return $this->belongsTo(RefState::class, 'currently_posted')->select('id', 'name');
+    }
+
+    public function officeType()
+    {
+        return $this->belongsTo(RefOfficeType::class, 'ref_office_type_id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'created_by');
+    }
+}

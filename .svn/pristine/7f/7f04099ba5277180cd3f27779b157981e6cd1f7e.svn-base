@@ -1,0 +1,32 @@
+<header>
+    <div class="header_parent_cust">
+        <div class="container main_header">
+            <div class="logo_cust">
+                <?php if(session('moduleName')): ?>
+                    <a href="<?php echo e(route('recruitment.login')); ?>"> <img src="<?php echo e(asset('public/images/logo.png')); ?>"
+                            alt="NHIDCL Logo"></a>
+                <?php else: ?>
+                    <a href="<?php echo e(route('auth.login')); ?>"> <img src="<?php echo e(asset('public/images/logo.png')); ?>"
+                            alt="NHIDCL Logo"></a>
+                <?php endif; ?>
+
+
+                <div class="logo_content ">
+                    <h4 class=""><?php echo e(session('moduleName') ?? 'Resource Pool Portal'); ?></h4>
+                    <p class="">National Highways & Infrastructure Development Corporation Ltd.</p>
+                </div>
+            </div>
+            <div class="flex flex-col justify-between">
+                <div class="pb-3 mt-2">
+                    <ul class="header_li">
+                        <li><a target="_blank" href="<?php echo e(asset('public/pdf/Scheme.pdf')); ?>">Scheme</a></li>
+                        <li><a target="_blank" href="<?php echo e(asset('public/pdf/RPP_User_Manual.pdf')); ?>">User Manual</a></li>
+                        <li><a target="_blank" href="<?php echo e(route(name: 'help.desk')); ?>">Help Desk</a></li>
+                        <li><a target="_blank" href="<?php echo e(route('faqs')); ?>">FAQ</a></li>
+                        <li><a target="_blank" href="<?php echo e(asset('public/video/sample.mp4')); ?>">Explainer Video</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/shared/header1.blade.php ENDPATH**/ ?>

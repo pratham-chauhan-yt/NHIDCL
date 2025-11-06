@@ -1,0 +1,30 @@
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Application Id</th>
+            <th>Name</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>IP Address</th>
+            <th>Application Date Time</th>
+            <th>Status</th>
+            <th>Comment</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <tr>
+                <td><?php echo e($index+1); ?></td>
+                <td><?php echo e('NHIDCL/' . date('Y') . '/' . ($item->nhidcl_recruitment_applications_id ?? '') . '/' . ($item?->updated_by ?? $item?->created_by)); ?></td>
+                <td><?php echo e($item->name ?? ''); ?></td>
+                <td><?php echo e($item->latitude ?? ''); ?></td>
+                <td><?php echo e($item->longitude ?? ''); ?></td>
+                <td><?php echo e($item->ip_address ?? ''); ?></td>
+                <td><?php echo e($item->datetime ?? ''); ?></td>
+                <td><?php echo e($item->status ?? ''); ?></td>
+                <td><?php echo e($item->comment ?? ''); ?></td>
+            </tr>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    </tbody>
+</table><?php /**PATH C:\xampp\htdocs\NHIDCL\recruitment\resources\views/recruitment-management/Candidate/export-applicant-logs.blade.php ENDPATH**/ ?>

@@ -1,0 +1,27 @@
+@extends('layouts.app')
+@section('content')
+    <div class="cutom_flex_p">
+    @include('shared.header1')
+    <div class="flex flex-col justify-between md:h-[100%]">
+        <div class="bg_main_">
+            <div class="container md:h-[100%]">
+                <div class="banner_cust_m">
+                    <div class="left_side">
+                        <div class="banner_heading">
+                            <p>Resource Pool Portal is a digital platform where applicants interested in being engaged by NHIDCL can register their profile in the prescribed format and which will be maintained by NHIDCL, or any agency authorized by it. This portal shall be in compliance with the principles of equal access, and open competition and facilitate transparent selection of Young Professionals and Expert Professionals. Interested participants are requested to study the User Manual for this Portal and the Scheme for Young Professionals, Expert Professionals, Empanelment of Person(s) of Eminence, NHIDCL, February 2025.</p>
+                        </div>
+                    </div>
+                    <div class="right_form">                  
+                        @yield('auth_content')
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="bg-footer-color p-4">
+            <div class="container">
+                <p>@ {{ now()->year }} NHIDCL </p>
+            </div>
+        </footer>
+    </div>
+    </div>
+@endsection

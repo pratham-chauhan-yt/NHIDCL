@@ -1,0 +1,411 @@
+<div class="sidebar">
+    <ul class="nav-list ">
+        <li
+            class="menu-item {{ request()->is('dashboard') || request()->is('resource-pool-portal/hr/dashboard') || request()->is('recruitment-portal/dashboard') ? 'active' : '' }}">
+            @if (auth()->user() && auth()->user()->getRoleNames()->isEmpty())
+                <a href="{{ route('candidate.dashboard') }}">
+            @elseif(auth()->user() && auth()->user()->hasRole('HR Resource Pool'))
+                <a href="{{ route('hr.dashboard') }}">
+            @elseif(auth()->user() && auth()->user()->hasRole('Recruitment User'))
+                <a href="{{ route('recruitment-portal.recruitment.dashboard') }}">
+            @else
+                <a href="{{ route('admin.dashboard') }}">
+            @endif
+            <img src="{{ asset('public/images/dashboard.svg') }}" alt="Dashboard">
+            <span class="links_name">Dashboard</span>
+            </a>
+        </li>
+        @unlessrole('Super Admin')
+        @canModule('Resource Pool Portal')
+        @canany(['resource-pool-users'])
+            <li class="menu-item {{ request()->is('resource-pool/users/view/data') ? 'active' : '' }}">
+                <a href="{{ route('resource-pool.hr.listOfCandidates') }}">
+                    <img src="{{ asset('public/images/status.svg') }}" alt="bank">
+                    <span class="links_name">View Users</span>
+                </a>
+            </li>
+        @endcanany
+        @canany(['resource-pool-advertisement', 'resource-pool-advertisement-create',
+            'resource-pool-advertisement-edit', 'resource-pool-advertisement-view', 'resource-pool-advertisement-delete'])
+            <li class="menu-item dropdown {{ request()->is(['resource-pool-portal/advertisement/*']) ? 'active' : '' }}">
+                <a href="javascript:void(0);" class="menu-link">
+                    <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="user">
+                    <span class="links_name">Resource Advertisement</span>
+                </a>
+                <ul class="dropdown-menu cust_drop">
+                    @can('resource-pool-advertisement-view')
+                        <li><a class="dropdown-item" href="{{ route('candidate.candidateAdvertisement') }}">View Advertisement</a></li>
+                    @endcan
+                    @hasrole(['HR', 'HR Resource Pool'])
+                    @can('resource-pool-advertisement-create')
+                        <li><a class="dropdown-item" href="{{ route('hr.create.advertisement') }}">Create Advertisement</a></li>
+                    @endcan
+                    @endhasrole
+                </ul>
+            </li>
+        @endcanany
+
+        @hasrole('Resource Pool User')
+        @canany(['resource-pool-applicant-profile'])
+            <li class="menu-item {{ request()->is('resource-pool-portal/candidate/applicant/profile') ? 'active' : '' }}">
+                <a href="{{ route('candidate.applicantProfile') }}">
+                    <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="Union">
+                    <span class="links_name">Applicant Profile</span>
+                </a>
+            </li>
+        @endcanany
+        @endhasrole
+
+        @can('resource-pool-selection-process')
+            <li class="menu-item dropdown {{ request()->is(['resource-pool/hr/*']) ? 'active' : '' }}">
+                <a href="javascript:void(0);" class="menu-link">
+                    <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="user">
+                    <span class="links_name">Selection Process</span>
+                </a>
+                <ul class="dropdown-menu cust_drop">
+                    @can('resource pool - view HR shortlist')
+                        <li><a class="dropdown-item" href="{{ route('hr.selection-process') }}">HR Selection Process</a></li>
+                        <li><a class="dropdown-item" href="{{ route('hr.manual.selection-process') }}">HR Manual Selection Process</a></li>
+                    @endcanany
+                    @canany(['resource pool - create chairperson shortlist', 'resource pool - view chairperson shortlist'])
+                        <li><a class="dropdown-item" href="{{ route('chairperson.selection-process') }}">ChairPerson Selection Process</a></li>
+                    @endcanany
+                    @canany(['resource pool - create committee shortlist', 'resource pool - view committee shortlist'])
+                        <li><a class="dropdown-item" href="{{ route('committee-member.selection-process') }}">Committee Selection Process</a></li>
+                    @endcanany
+                </ul>
+            </li>
+        @endcan
+        @endcanModule
+        @endunlessrole
+
+        @hasrole('Super Admin')
+        @canModule('User Management')
+        <li class="menu-item dropdown {{ request()->is(['user-config*', 'roles*', 'permissions*']) ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link">
+                <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="User Management">
+                <span class="links_name">User Management</span>
+            </a>
+            <ul class="dropdown-menu cust_drop">
+                @canany(['user config - view user', 'user config - view role'])
+                    <li><a class="dropdown-item" href="{{ route('user-config.index') }}">Dashboard</a></li>
+                @endcanany
+                @can('user config - create user')
+                    <li><a class="dropdown-item" href="{{ route('user-config.create') }}">Create User</a></li>
+                @endcan
+                @canany(['user config - view user', 'user config - edit user'])
+                    <li><a class="dropdown-item" href="{{ route('user-config.view') }}">View Users</a></li>
+                @endcanany
+                @canany(['roles-create', 'roles-view', 'roles-edit', 'roles-delete'])
+                    <li><a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a></li>
+                @endcan
+                @canany(['permissions-create', 'permissions-view', 'permissions-edit', 'permissions-delete'])
+                    <li><a class="dropdown-item" href="{{ route('permissions.index') }}">Permissions</a></li>
+                @endcan
+            </ul>
+        </li>
+        @endcanModule
+        @endhasrole
+
+        @unlessrole('Super Admin')
+        @canModule('MD Task Management System')
+        <li class="menu-item dropdown {{ request()->is('task-management*') ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link">
+                <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="MD Task Management">
+                <span class="links_name">MD Task Management</span>
+            </a>
+            <ul class="dropdown-menu cust_drop">
+                @can('md-task-create')
+                    <li><a class="dropdown-item" href="{{ route('task-management.create') }}">Create MD Task</a></li>
+                @endcan
+                @canany(['md-task-view', 'md-task-edit', 'md-task-delete', 'md-task-responder'])
+                    <li><a class="dropdown-item" href="{{ route('task-management.index') }}">View MD Task</a></li>
+                @endcanany
+            </ul>
+        </li>
+        @endcanModule
+        
+        @canModule('Bank Guarantee Management')
+        <li class="menu-item dropdown {{ request()->is('bgms*') ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link">
+                <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="BG">
+                <span class="links_name">Bank Guarantee</span>
+            </a>
+            <ul class="dropdown-menu cust_drop">
+                @can('bgms-bg-create')
+                    <li><a class="dropdown-item" href="{{ route('bgms.bg.create') }}">Create BG</a></li>
+                    
+                @endcan
+                <li><a class="dropdown-item" href="{{ route('bgms.bg.encashment') }}">BG Encashment</a></li>
+                <li><a class="dropdown-item" href="{{ route('bgms.bg.claimlodge') }}">Claim Lodge</a></li>
+                
+                @canany(['bgms-bg-view', 'bgms-bg-edit', 'bgms-bg-delete'])
+                    <li><a class="dropdown-item" href="{{ route('bgms.bg.index') }}">BG List</a></li>
+                @endcanany
+                @canany(['bgms-bg-receive'])
+                    <li><a class="dropdown-item" href="{{ route('bgms.bg.receive') }}">Received BG</a></li>
+                @endcanany
+                @canany(['bgms-bg-frt'])
+                    <li><a class="dropdown-item" href="{{ route('bgms.bg.frt') }}">Finance Returned</a></li>
+                @endcanany
+                @canany(['bgms-bg-archive'])
+                    <li><a class="dropdown-item" href="{{ route('bgms.bg.archive') }}">Archive BG</a></li>
+                @endcanany
+                @canany(['bgms-verifier-view', 'bgms-verifier-reject', 'bgms-verifier-verify'])
+                    <li><a class="dropdown-item" href="{{ route('bgms.verifier.index') }}">Verify BG or Renewal</a></li>
+                @endcanany
+                @canany(['bgms-finance-receive', 'bgms-finance-receivelist', 'bgms-finance-referback'])
+                    <li><a class="dropdown-item" href="{{ route('bgms.finance.receive.refer') }}">Receive or Refer Back
+                            BG</a></li>
+                @endcanany
+                @canany(['bgms-finance-accept'])
+                    <li><a class="dropdown-item" href="{{ route('bgms.finance.accept') }}">Accept or Refer Back BG</a>
+                    </li>
+                @endcanany
+                @canany(['bgms-finance-accepted'])
+                    <li><a class="dropdown-item" href="{{ route('bgms.finance.accepted') }}">Accepted</a></li>
+                @endcanany
+                @canany(['bgms-project-view', 'bgms-project-edit', 'bgms-project-create', 'bgms-project-delete',
+                    'bgms-project-dashboard'])
+                    <li><a class="dropdown-item" href="{{ route('bgms.project.create') }}">Project Application</a></li>
+                @endcanany
+            </ul>
+        </li>
+        @endcanModule
+
+        @canModule('Audit Management System')
+            <li class="menu-item dropdown {{ request()->is('audit-management*') ? 'active' : '' }}">
+                <a href="javascript:void(0);" class="menu-link">
+                    <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="Audit Management">
+                    <span class="links_name">Audit Management</span>
+                </a>
+                <ul class="dropdown-menu cust_drop">
+                    @can('ams-dashboard')
+                        <li><a class="dropdown-item" href="{{ route('audit-management.dashboard') }}">Dashboard</a></li>
+                    @endcan
+                    @can('ams-create')
+                        <li><a class="dropdown-item" href="{{ route('audit-management.create') }}">Create Audit Query</a>
+                        </li>
+                    @endcan
+                    @canany(['ams-view', 'ams-edit', 'ams-delete', 'ams-responder'])
+                        <li><a class="dropdown-item" href="{{ route('audit-management.index') }}">View Audit Query</a></li>
+                    @endcanany
+                </ul>
+            </li>
+        @endcanModule
+        @endunlessrole
+        
+        @canModule('Recruitment Management')
+        @hasrole('Recruitment User')
+            @can('recruitment-management-advertisement')
+            <li class="menu-item {{ request()->is('recruitment-portal/candidate/advertisement*') ? 'active' : '' }}">
+                <a href="{{ route('recruitment-portal.candidate.advertisement') }}">
+                    <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="Vacancies">
+                    <span class="links_name">Vacancies</span>
+                </a>
+            </li>
+            <li class="menu-item {{ request()->is('recruitment-portal/recruitment/current/vacancies') ? 'active' : '' }}">
+                <a href="{{ route('recruitment-portal.candidate.current.vacancies') }}">
+                    <img src="{{ asset('public/images/MDI-information-outline2.svg') }}" alt="Current Vacancies">
+                    <span class="links_name">Current Vacancies</span>
+                </a>
+            </li>
+            <li class="menu-item {{ request()->is('recruitment-portal/candidate/archieve/advertisement') ? 'active' : '' }}">
+                <a href="{{ route('recruitment-portal.candidate.archieve.advertisement') }}">
+                    <img src="{{ asset('public/images/MDI-information-outline3.svg') }}" alt="Archive Vacancies">
+                    <span class="links_name">Archive Vacancies</span>
+                </a>
+            </li>
+            <li class="menu-item {{ request()->is('recruitment-portal/candidate/application*') ? 'active' : '' }}">
+                <a href="{{ route('recruitment-portal.recruitment.candidate.application') }}">
+                    <img src="{{ asset('public/images/MDI-information-outline4.svg') }}" alt="My Application">
+                    <span class="links_name">My Application</span>
+                </a>
+            </li>
+            @can('recruitment-management-profile')
+            <!-- <li class="menu-item {{ request()->is('recruitment-portal/candidate/profile') ? 'active' : '' }}">
+                    <a href="{{ route('recruitment-portal.candidate.profile') }}">
+                        <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="Applicant Profile">
+                        <span class="links_name">Applicant Profile</span>
+                    </a>
+                </li> -->
+            @endcan
+            @endcan
+        @endhasrole
+        @endcanModule
+
+        @unlessrole('Super Admin')
+        @canModule('Employee Management')
+            <li class="menu-item dropdown {{ request()->is('employee-management*') ? 'active' : '' }}">
+                <a href="javascript:void(0);" class="menu-link">
+                    <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="Employee Management">
+                    <span class="links_name">Employee Management</span>
+                </a>
+                <ul class="dropdown-menu cust_drop">
+                    @can('hr-employee-attendance')
+                        <li><a class="dropdown-item" href="{{ route('employee-management.hr.employee.attendance') }}">Employees Attendance</a></li>
+                    @endcan
+                    @can('hr-assign-asset')
+                        <li><a class="dropdown-item" href="{{ route('employee-management.hr.assign.asset') }}">Assign
+                                Asset</a></li>
+                    @endcan
+                    @can('candidate-mark-attendance')
+                        <li><a class="dropdown-item" href="{{ route('employee-management.mark.attendance.index') }}">Mark
+                                Attendance</a></li>
+                    @endcan
+                    @can('candidate-calendar')
+                        <li><a class="dropdown-item" href="{{ route('employee-management.calendar') }}">Calendar</a></li>
+                    @endcan
+                    @can('candidate-apply-leave')
+                        <li><a class="dropdown-item" href="{{ route('employee-management.apply.leave.index') }}">Apply
+                                Leave</a></li>
+                    @endcan
+                    @can('exit-interview')
+                        <li><a class="dropdown-item" href="{{ route('employee-management.exit.interview.index') }}">Exit
+                                Interview</a></li>
+                    @endcan
+                    @can('other-facilities')
+                        <li><a class="dropdown-item" href="{{ route('employee-management.other.facilities.index') }}">Other
+                                Facilities</a></li>
+                    @endcan
+                    @can('mark-attendance-checker')
+                        <li><a class="dropdown-item" href="{{ route('employee-management.mark.attendance.checker') }}">Mark
+                                Attendance Checker</a></li>
+                    @endcan
+                    @can('mark-attendance-approver')
+                        <li><a class="dropdown-item" href="{{ route('employee-management.mark.attendance.approver') }}">Mark
+                                Attendance Approver</a></li>
+                    @endcan
+                    @can('exit-interview-checker')
+                        <li><a class="dropdown-item" href="{{ route('employee-management.exit.interview.checker') }}">Exit
+                                Interview Checker</a></li>
+                    @endcan
+                    @can('exit-interview-approver')
+                        <li><a class="dropdown-item" href="{{ route('employee-management.exit.interview.approver') }}">Exit
+                                Interview Approver</a></li>
+                    @endcan
+                    @can('candidate-apply-leave-checker')
+                        <li><a class="dropdown-item" href="{{ route('employee-management.apply.leave.checker') }}">Apply
+                                Leave Checker</a></li>
+                    @endcan
+                    @can('candidate-apply-leave-approver')
+                        <li><a class="dropdown-item" href="{{ route('employee-management.apply.leave.approver') }}">Apply
+                                Leave Approver</a></li>
+                    @endcan
+                </ul>
+            </li>
+        @endcanModule
+        @canModule('Grievance Management')
+            <li class="{{ request()->is('grievance-management*') ? 'active' : '' }}">
+                <a href="{{ route('grievance-management.grievance.index') }}">
+                    <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="Grievance Application">
+                    <span class="links_name">Grievance Application</span>
+                </a>
+            </li>
+        @endcanModule
+        
+        @canModule('Document Management')
+            <li class="menu-item dropdown {{ request()->is('document-management*') ? 'active' : '' }}">
+                <a href="javascript:void(0);" class="menu-link">
+                    <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="Document Management">
+                    <span class="links_name">Document Management</span>
+                </a>
+                <ul class="dropdown-menu cust_drop">
+                    @can('dms-dashboard')
+                        <li><a class="dropdown-item" href="{{ route('dms.dashboard') }}">Dashboard</a></li>
+                    @endcan
+                    @can('dms-create')
+                        <li><a class="dropdown-item" href="{{ route('dms.document.create') }}">Add Document</a></li>
+                    @endcan
+                    @can('dms-view')
+                        <li><a class="dropdown-item" href="{{ route('dms.document.index') }}">View Documents</a></li>
+                    @endcan
+                    <li><a class="dropdown-item" href="{{ route('dms.sharing.index') }}">Documents Received</a></li>
+                    @can('dms-share')
+                        <li><a class="dropdown-item" href="{{ route('dms.sharing.create') }}">Share Documents</a></li>
+                    @endcan
+                    @can('dms-approver')
+                        <li><a class="dropdown-item" href="{{ route('dms.sharing.pendingAndApprovedDocuments') }}">Approve Shared Documents</a></li>
+                    @endcan
+                </ul>
+            </li>
+        @endcanModule
+
+         @canModule('Query Management')
+            <li class="menu-item dropdown {{ request()->is('query-management*') ? 'active' : '' }}">
+                <a href="javascript:void(0);" class="menu-link">
+                    <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="Query Management">
+                    <span class="links_name">Query Management</span>
+                </a>
+                <ul class="dropdown-menu cust_drop">
+                    @can('qms-dashboard')
+                        <li><a class="dropdown-item" href="{{ route('qms.dashboard') }}">Dashboard</a></li>
+                    @endcan
+                    @can('qms-add-query')
+                        <li><a class="dropdown-item" href="{{ route('qms.create-query') }}">Add Query</a></li>
+                    @endcan
+                    @can('qms-knowledge-base-query')
+                        <li><a class="dropdown-item" href="{{ route('qms.knowledge-base-query') }}">Knowledge Base Query</a></li>
+                    @endcan
+                    @can('qms-raised-query')
+                        <li><a class="dropdown-item" href="{{ route('qms.raised-query') }}">Query Raised By Employee</a></li>
+                    @endcan
+                </ul>
+            </li>
+        @endcanModule
+        @endunlessrole
+
+        @hasrole('NHIDCL Employee|HQ/RO Employee')
+        @can('directory-view')
+        <li class="{{ request()->is('directory-management/directory/stakeholder/list') ? 'active' : '' }}">
+            <a href="{{ route('directory-management.directory.stakeholder.list') }}">
+                <img src="{{url('public/images/status.svg')}}" alt="Directory of Stakeholders">
+                <span class="links_name">Directory of Stakeholders</span>
+            </a>
+        </li>
+        @endcan
+        @canany(['external-user-create', 'external-user-view'])
+        <li class="{{ request()->is('directory-management/external/employees/create') ? 'active' : '' }}">
+            <a href="{{ route('directory-management.external.employees.create') }}">
+                <img src="{{url('public/images/status.svg')}}" alt="Directory of Stakeholders">
+                <span class="links_name">Add External Employees</span>
+            </a>
+        </li>
+        @endcan
+        @endhasrole
+
+          @canModule('Employee Management')
+        {{-- <li class="menu-item dropdown {{ request()->is('employee-management*') ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link">
+                <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="Document Management">
+                <span class="links_name">Document Management System</span>
+            </a>
+            <ul class="dropdown-menu cust_drop">
+                <li><a class="dropdown-item" href="#">Upload Document</a></li>
+                <li><a class="dropdown-item" href="#">Office Order & Other Documents</a></li>
+                <li><a class="dropdown-item" href="#">Sharing of Documents</a></li>
+                <li><a class="dropdown-item" href="#">Approved Shared Documents</a></li>
+            </ul>
+        </li> --}}
+        @endcanModule
+
+
+        @hasrole('Super Admin')
+            <li class="menu-item {{ request()->is('master-settings*') ? 'active' : '' }}">
+                <a href="{{ route('master-settings.index') }}">
+                    <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="master settings">
+                    <span class="links_name">Master Settings</span>
+                </a>
+            </li>
+        @endcan
+
+        @hasrole('HR')
+            <li class="menu-item {{ request()->is('hr-settings*') ? 'active' : '' }}">
+                <a href="{{ route('hr-settings.index') }}">
+                    <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="hr settings">
+                    <span class="links_name">HR System Setup</span>
+                </a>
+            </li>
+        @endhasrole
+    </ul>
+</div>

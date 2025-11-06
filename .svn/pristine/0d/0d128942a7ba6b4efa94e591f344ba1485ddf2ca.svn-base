@@ -1,0 +1,29 @@
+<?php $__env->startSection('dashboard_content'); ?>
+    <div class="container-fluid md:p-0">
+        <div class="top_heading_dash__">
+            <div class="main_hed"><?php echo e(__('')); ?></div>
+            <div class="plain_dlfex bg_elips_ic">
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('user config - create role')): ?>
+                    <a href="<?php echo e(route('roles.create')); ?>"><button class="hover-effect-btn gray_btn" type="button">Create Role</button></a>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+    <div class="container inner_page_dash__ mt-[20px]" id="rolesContainer" data-roles-url="<?php echo e(route('roles.index')); ?>">
+        <h4 class="text-[24px] py-[10px] font-semibold">Role List</h4>
+        <table id="roleTable" class="data_bg_table cust_table__ table_sparated  table-auto text-wrap cell-border stripe">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Role</th>
+                    <th>Created</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    </section>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/roles/index.blade.php ENDPATH**/ ?>

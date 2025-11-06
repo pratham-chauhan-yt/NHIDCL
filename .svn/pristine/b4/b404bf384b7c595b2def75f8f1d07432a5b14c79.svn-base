@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Set Your Password - NHIDCL <?php echo e(session('moduleName') ?? 'Resource Pool Portal'); ?> </title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #ffffff; color: #333; margin: 0; padding: 20px;">
+
+    <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 30px;">
+
+        <!-- Logo -->
+        <div style="text-align: center; margin-bottom: 30px;">
+            <?php if(isset($message)): ?>
+                <img src="<?php echo e($message->embed(public_path('images/logo.png'))); ?>" style="width: 150px;" alt="NHIDCL Logo">
+            <?php else: ?>
+                <img src="<?php echo e(asset('images/logo.png')); ?>" style="width: 150px;" alt="NHIDCL Logo">
+            <?php endif; ?>
+        </div>
+
+        <!-- Header -->
+        <p style="font-size: 16px;">Thank you for registering on the <strong>NHIDCL <?php echo e(session('moduleName') ?? 'Resource Pool Portal'); ?></strong>.</p>
+
+        <!-- Candidate Details -->
+        <p>Your registration details are as follows:</p>
+
+        <p style="margin: 10px 0;"><strong>Candidate ID - <?php echo e($user->id); ?></strong></p>
+        <p style="margin: 10px 0;">Registered Email ID - <strong><?php echo e($user->email); ?></strong></p>
+        <p style="margin: 10px 0;">Registered Mobile No. - <strong><?php echo e($user->mobile ?? 'N/A'); ?></strong></p>
+
+        <!-- Attachments Info -->
+        <p style="margin-top: 20px; font-weight: bold;">
+           <i>The NHIDCL Recruitment, Seniority and Promotion Rules, 2025 (NHIDCL Cadre Rules, 2025) can be referred via this <a href="https://www.nhidcl.com/sites/default/files/Circular/nhidcl_rectt._seniority_and_promotion_rules-2025_1.pdf">URL</a> for further information. The User Manual of the NHIDCL Recruitment Portal is also attached to assist you in using the portal and submitting the application successfully.
+            The User Manual of the NHIDCL Recruitment Portal is also attached to assist you in using the portal and submitting the application successfully.</i>
+        </p>
+
+        <!-- Steps -->
+        <p style="margin-top: 20px;"><strong>Steps to Log In:</strong></p>
+        <ol style="padding-left: 20px; margin-top: 10px;">
+            <li>Click the link/button below to create your password.</li>
+            <li>After setting your password, you will be redirected to the login page.</li>
+            <li>Use your credentials to log in and complete your application.</li>
+        </ol>
+
+        <!-- Button -->
+        <div style="margin: 30px 0; text-align: center;">
+            <a href="<?php echo e($resetUrl); ?>"
+               style="display: inline-block; background-color: #176589; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+               Create your password
+            </a>
+        </div>
+
+        <p>If the button above doesn’t work, paste the following link into your browser:</p>
+        <p style="word-break: break-all;"><a href="<?php echo e($resetUrl); ?>" target="_blank"><?php echo e($resetUrl); ?></a></p>
+
+        <p style="margin-top: 30px;">Regards,</p>
+        <p><strong>NHIDCL <?php echo e(session('moduleName') ?? 'Resource Pool'); ?> Division</strong></p>
+
+        <hr style="margin: 40px 0; border: none; border-top: 1px solid #ccc;">
+
+        <p style="font-size: 12px; color: #777; text-align: center;">
+            &copy; <?php echo e(date('Y')); ?> NHIDCL. All rights reserved.
+        </p>
+    </div>
+</body>
+</html>
+<?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/emails/new_user_set_password.blade.php ENDPATH**/ ?>

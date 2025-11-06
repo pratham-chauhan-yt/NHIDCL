@@ -1,0 +1,111 @@
+<div class="sidebar">
+
+    <ul class="nav-list ">
+        <!-- List of navigation items -->
+        <li class="menu-item <?php echo e(request()->is('dashboard') ? 'active' : ''); ?>">
+            <a href="<?php echo e(route('admin.dashboard')); ?>">
+                <img src="<?php echo e(asset('images/dashboard.png')); ?>" alt="dashboard.png">
+                <span class="links_name">Dashboard</span>
+            </a>
+        </li>
+
+        <!-- Additional navigation items -->
+        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['user config - view role', 'user config - create role', 'user config - edit role', 'user config - view user', 'user config - create user', 'user config - edit user'])): ?>
+            <li class="menu-item dropdown <?php echo e(request()->is('user-config*') ? 'active' : ''); ?>">
+                <a href="#" class="menu-link">
+                    <img src="<?php echo e(asset('images/user.png')); ?>" alt="user">
+                    <span class="links_name">User Config</span>
+                </a>
+                <!-- Submenu starts here -->
+                <ul class="dropdown-menu cust_drop">
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['user config - view user', 'user config - view role'])): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('user-config.index')); ?>">Dashboard</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('user config - create user')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('user-config.create')); ?>">Create User</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['user config - view user', 'user config - edit user'])): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('user-config.view')); ?>">View Users</a></li>
+                    <?php endif; ?>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['user config - view role', 'user config - create role', 'user config - edit role'])): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('roles.index')); ?>">Roles</a></li>
+                    <?php endif; ?>
+                    <?php if (\Illuminate\Support\Facades\Blade::check('hasrole', 'Super Admin')): ?>
+                        <li><a class="dropdown-item" href="<?php echo e(route('permissions.index')); ?>">Permissions</a></li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        <?php endif; ?>
+        <li class="menu-item dropdown <?php echo e(request()->is('recruitment*') ? 'active' : ''); ?>">
+            <a href="#">
+                <img src="<?php echo e(asset('images/Union.png')); ?>" alt="Union">
+                <span class="links_name">Recruitment</span>
+            </a>
+            <!-- Submenu starts here -->
+            <ul class="dropdown-menu cust_drop">
+                <li><a class="dropdown-item" href="#">Dashboard</a></li>
+                <li><a class="dropdown-item" href="#">Current Openings</a></li>
+                <li><a class="dropdown-item" href="#">Archive Openings</a></li>
+                <li><a class="dropdown-item" href="#">Applied Status</a></li>
+                <li><a class="dropdown-item" href="#">Advertisements</a></li>
+            </ul>
+        </li>
+        <li class="menu-item dropdown <?php echo e(request()->is('attendance*') ? 'active' : ''); ?>">
+            <a href="#">
+                <img src="<?php echo e(asset('images/Union.png')); ?>" alt="Union">
+                <span class="links_name">Attendance</span>
+            </a>
+            <!-- Submenu starts here -->
+            <ul class="dropdown-menu cust_drop">
+                <li><a class="dropdown-item" href="#">Dashboard</a></li>
+                <li><a class="dropdown-item" href="#">Mark Attendance</a></li>
+                <li><a class="dropdown-item" href="#">View Attendance</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">
+                <img src="<?php echo e(asset('images/bank.png')); ?>" alt="bank">
+                <span class="links_name">BGMS</span>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <img src="<?php echo e(asset('images/search.png')); ?>" alt="search">
+                <span class="links_name">Audit Management System</span>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <img src="<?php echo e(asset('images/question.png')); ?>" alt="question">
+                <span class="links_name">Query Management System</span>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <img src="<?php echo e(asset('images/practice.png')); ?>" alt="practice">
+                <span class="links_name">Training & Skill Developments</span>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <img src="<?php echo e(asset('images/folder.png')); ?>" alt="folder">
+                <span class="links_name">Office Documentation Repository</span>
+            </a>
+        </li>
+        <?php if (\Illuminate\Support\Facades\Blade::check('hasrole', 'Super Admin')): ?>
+            <li class="menu-item <?php echo e(request()->is('master-settings*') ? 'active' : ''); ?>">
+                <a href="<?php echo e(route('master-settings.index')); ?>">
+                    <img src="<?php echo e(asset('images/folder.png')); ?>" alt="master settings">
+                    <span class="links_name">Master Settings</span>
+                </a>
+            </li>
+        <?php endif; ?>
+        <li>
+            <a href="#">
+                <img src="<?php echo e(asset('images/folder.png')); ?>" alt="profile">
+                <span class="links_name">Profile</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<?php /**PATH C:\laragon\www\nhidcl\resources\views/shared/sidebar.blade.php ENDPATH**/ ?>

@@ -1,0 +1,127 @@
+<?php $__env->startSection('dashboard_content'); ?>
+    <div class="container-fluid md:p-0">
+        <div class="top_heading_dash__">
+            <div class="main_hed">Advertisement Edit</div>
+        </div>
+    </div>
+    <div class="inner_page_dash__">
+        <div class="my-4 ">
+            <div id="Home">
+                <?php echo e(Form::model($edit_record, ['route' => ['recruitment-portal.advertisement.update', ($id = encrypt($edit_record->id))], 'id' => 'advertisementForm', 'files' => true])); ?>
+
+                <?php echo csrf_field(); ?>
+                <?php echo method_field('put'); ?>
+                <div class="inpus_cust_cs form_grid_dashboard_cust_">
+                    <div>
+                        <label class="required-label">Advertisement Title</label>
+                        <input type="text" class="" name="advertisement_title" id="advertisement_title"
+                            value="<?php echo e($edit_record->advertisement_title ?? ''); ?>" />
+                        <?php $__errorArgs = ['advertisement_title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+
+                    <div>
+                        <label class="required-label">As on date</label>
+                        <input type="date" name="as_on_date" id="as_on_date" value="<?php echo e($edit_record->as_on_date ?? ''); ?>" />
+                        <?php $__errorArgs = ['as_on_date'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+
+                    <div>
+                        <label class="required-label">Start Date and Time</label>
+                        <input type="datetime-local" name="start_datetime" id="start_datetime"
+                            value="<?php echo e($edit_record->start_datetime ?? ''); ?>" />
+                        <?php $__errorArgs = ['start_datetime'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+
+                    <div>
+                        <label class="required-label">Expiry Date and Time</label>
+                        <input type="datetime-local" name="expiry_datetime" id="expiry_datetime"
+                            value="<?php echo e($edit_record->expiry_datetime ?? ''); ?>" />
+                        <?php $__errorArgs = ['expiry_datetime'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+
+                    <div class="attachment_advertisement">
+                        <label class="required-label">Upload Advertisement File</label>
+                        <div class="flex gap-[10px]">
+                            <input id="advertisement_file_txt" name="advertisement_file_txt" type="text"
+                                class="advertisement_file_txt" placeholder="Upload documents">
+                            <label class="upload_cust mb-0 hover-effect-btn hide_upload_photos cursor-pointer"> Upload File
+                                <input id="advertisement_file" name="advertisement_file" type="file"
+                                    class="hidden advertisement_file">
+                            </label>
+                            <input type="hidden" name="upload_file" id="upload_file"
+                                value="<?php echo e($edit_record->advertisement_file ?? ''); ?>">
+                        </div>
+
+                        <span id="advertisement_file" class="advertisement_file_err candidateErr"></span>
+                        <?php $__errorArgs = ['advertisement_file'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+                    <div>
+                        <label class="">Note/Instruction</label>
+                        <textarea name="note_instruction" class="form-control" placeholder="Description" rows="2"><?php echo e($note_instruction); ?></textarea>
+                        <?php $__errorArgs = ['note_instruction'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+                </div>
+
+                <div class="button_flex_cust_form">
+                    <button class="hover-effect-btn fill_btn" type="submit" id="submitButton">Submit
+                    </button>
+                </div>
+                </form>
+            </div>
+        <?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\NHIDCL\resources\views/recurement_advertisement/edit.blade.php ENDPATH**/ ?>

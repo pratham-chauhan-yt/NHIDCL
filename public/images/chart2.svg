@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="432" height="184.44" viewBox="0 0 432 184.44">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="393" height="153.661" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Group_4133" data-name="Group 4133" transform="translate(-784.507 -448.373)">
+    <g id="Repeat_Grid_23" data-name="Repeat Grid 23" transform="translate(823.507 455.813)" opacity="0.25" clip-path="url(#clip-path)">
+      <g transform="translate(-559.5 -335)">
+        <line id="Line_19" data-name="Line 19" x2="390.784" transform="translate(559.5 335.5)" fill="none" stroke="#cecece" stroke-width="1"/>
+      </g>
+      <g transform="translate(-559.5 -307)">
+        <line id="Line_19-2" data-name="Line 19" x2="390.784" transform="translate(559.5 335.5)" fill="none" stroke="#cecece" stroke-width="1"/>
+      </g>
+      <g transform="translate(-559.5 -279)">
+        <line id="Line_19-3" data-name="Line 19" x2="390.784" transform="translate(559.5 335.5)" fill="none" stroke="#cecece" stroke-width="1"/>
+      </g>
+      <g transform="translate(-559.5 -251)">
+        <line id="Line_19-4" data-name="Line 19" x2="390.784" transform="translate(559.5 335.5)" fill="none" stroke="#cecece" stroke-width="1"/>
+      </g>
+      <g transform="translate(-559.5 -223)">
+        <line id="Line_19-5" data-name="Line 19" x2="390.784" transform="translate(559.5 335.5)" fill="none" stroke="#cecece" stroke-width="1"/>
+      </g>
+      <g transform="translate(-559.5 -195)">
+        <line id="Line_19-6" data-name="Line 19" x2="390.784" transform="translate(559.5 335.5)" fill="none" stroke="#cecece" stroke-width="1"/>
+      </g>
+    </g>
+    <g id="Group_3922" data-name="Group 3922" transform="translate(818.839 615.813)">
+      <g id="Group_3769" data-name="Group 3769" transform="translate(12)">
+        <g id="Group_3766" data-name="Group 3766">
+          <text id="Under_Progress" data-name="Under Progress" transform="translate(0 13)" fill="#787878" font-size="12" font-family="NotoSans-Regular, Noto Sans"><tspan x="0" y="0">Under Progress</tspan></text>
+        </g>
+      </g>
+      <circle id="Ellipse_3" data-name="Ellipse 3" cx="4" cy="4" r="4" transform="translate(0 5)" fill="#2541e1"/>
+    </g>
+    <g id="Group_3928" data-name="Group 3928" transform="translate(943.357 615.813)">
+      <g id="Group_3769-2" data-name="Group 3769" transform="translate(12)">
+        <g id="Group_3766-2" data-name="Group 3766">
+          <text id="Hired" transform="translate(0 13)" fill="#787878" font-size="12" font-family="NotoSans-Regular, Noto Sans"><tspan x="0" y="0">Hired</tspan></text>
+        </g>
+      </g>
+      <circle id="Ellipse_3-2" data-name="Ellipse 3" cx="4" cy="4" r="4" transform="translate(0 5)" fill="#0baca1"/>
+    </g>
+    <g id="Group_3929" data-name="Group 3929" transform="translate(1017.002 615.813)">
+      <g id="Group_3769-3" data-name="Group 3769" transform="translate(12)">
+        <g id="Group_3766-3" data-name="Group 3766">
+          <text id="Rejected" transform="translate(0 13)" fill="#787878" font-size="12" font-family="NotoSans-Regular, Noto Sans"><tspan x="0" y="0">Rejected</tspan></text>
+        </g>
+      </g>
+      <circle id="Ellipse_3-3" data-name="Ellipse 3" cx="4" cy="4" r="4" transform="translate(0 5)" fill="#ff7a47"/>
+    </g>
+    <rect id="Rectangle_771" data-name="Rectangle 771" width="63" height="111" transform="translate(901.857 486.312)" fill="#0baca1"/>
+    <rect id="Rectangle_772" data-name="Rectangle 772" width="63" height="56" transform="translate(818.776 541.433)" fill="#2541e1"/>
+    <rect id="Rectangle_773" data-name="Rectangle 773" width="63" height="28" transform="translate(983.912 569.475)" fill="#ff7a47"/>
+    <g id="Group_3939" data-name="Group 3939" transform="translate(792 587.365)">
+      <g id="Group_3766-4" data-name="Group 3766">
+        <text id="_00" data-name="00" transform="translate(-0.493 13.008)" fill="#787878" font-size="12" font-family="NotoSans-Regular, Noto Sans"><tspan x="0" y="0">00</tspan></text>
+      </g>
+    </g>
+    <g id="Group_3940" data-name="Group 3940" transform="translate(792 559.365)">
+      <g id="Group_3766-5" data-name="Group 3766">
+        <text id="_50" data-name="50" transform="translate(13.507 13.008)" fill="#787878" font-size="12" font-family="NotoSans-Regular, Noto Sans"><tspan x="-13" y="0">50</tspan></text>
+      </g>
+    </g>
+    <g id="Group_3941" data-name="Group 3941" transform="translate(785 531.365)">
+      <g id="Group_3766-6" data-name="Group 3766">
+        <text id="_100" data-name="100" transform="translate(20.507 13.008)" fill="#787878" font-size="12" font-family="NotoSans-Regular, Noto Sans"><tspan x="-20" y="0">100</tspan></text>
+      </g>
+    </g>
+    <g id="Group_3942" data-name="Group 3942" transform="translate(785 503.365)">
+      <g id="Group_3766-7" data-name="Group 3766">
+        <text id="_150" data-name="150" transform="translate(20.507 13.008)" fill="#787878" font-size="12" font-family="NotoSans-Regular, Noto Sans"><tspan x="-20" y="0">150</tspan></text>
+      </g>
+    </g>
+    <g id="Group_3943" data-name="Group 3943" transform="translate(785 476.365)">
+      <g id="Group_3766-8" data-name="Group 3766">
+        <text id="_200" data-name="200" transform="translate(20.507 13.008)" fill="#787878" font-size="12" font-family="NotoSans-Regular, Noto Sans"><tspan x="-20" y="0">200</tspan></text>
+      </g>
+    </g>
+    <g id="Group_3944" data-name="Group 3944" transform="translate(785 448.365)">
+      <g id="Group_3766-9" data-name="Group 3766">
+        <text id="_250" data-name="250" transform="translate(20.507 13.008)" fill="#787878" font-size="12" font-family="NotoSans-Regular, Noto Sans"><tspan x="-20" y="0">250</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>

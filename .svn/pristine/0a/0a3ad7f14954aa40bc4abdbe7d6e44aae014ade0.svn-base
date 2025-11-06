@@ -1,0 +1,209 @@
+
+<?php $__env->startSection('content'); ?>
+    <div class="parent_flex_prpertuy">
+        <div class="same_heght_co">
+            <!-- top header  -->
+            <header class="header_botom_border">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="parent_header">
+                                <div class="logo_section">
+                                    <a href="#"> <img src="<?php echo e(asset('/images/logo.png')); ?>" alt="logo"></a>
+                                    <div class="logo_content">
+                                        <h4>Corporate Application</h4>
+                                        <p>National Highways & Infrastructure Development Corporation Ltd.</p>
+                                        <span>Ministry of Road Transport & Highway, Government of India</span>
+                                    </div>
+                                </div>
+                                <div class="parent_right_nav">
+                                    <div class="side_top_bar">
+                                        <ul class="top_bar_giude">
+                                            <li> <a href="#">Skip To Main Content</a></li>
+                                            <li><a href="#"><img
+                                                        src="<?php echo e(asset('/images/Icon awesome-book-reader.svg')); ?>"
+                                                        alt="book-reader"></a></li>
+                                            <li><a href="#"><img src="<?php echo e(asset('/images/Icon awesome-sitemap.svg')); ?>"
+                                                        alt="sitemap"></a></li>
+                                            <li class="social_media">
+                                                <a href="#"><img src="<?php echo e(asset('/images/twitter-x.svg')); ?>"
+                                                        alt="twitter"></a>
+                                                <a href="#"><img src="<?php echo e(asset('/images/instagram.svg')); ?>"
+                                                        alt="instagram"></a>
+                                                <a href="#"><img src="<?php echo e(asset('/images/youtube.svg')); ?>"
+                                                        alt="youtube"></a>
+                                                <a href="#"><img src="<?php echo e(asset('/images/facebook.svg')); ?>"
+                                                        alt="facebook"></a>
+                                            </li>
+                                            <li class="dropdown">
+                                                <button class="" type="button" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    A
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#">A+</a></li>
+                                                    <li><a class="dropdown-item" href="#">A</a></li>
+                                                    <li><a class="dropdown-item" href="#">A-</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="color_body">
+                                                <a title="Normal" href="javascript:void(0)" class="whitebg"
+                                                    data-original-size="12px">A</a>
+                                                <a title="Black" href="javascript:void(0)" class="blackbg"
+                                                    data-original-size="12px">A</a>
+                                            </li>
+                                            <li> <select name="language" id="">
+                                                    <option value="English">English</option>
+                                                    <option value="Hindi">Hindi</option>
+                                                </select></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu_">
+                                        <ul>
+                                            <li><a href="#">Guidelines</a></li>
+                                            <li><a href="#">Help</a></li>
+                                            <li><a href="<?php echo e(route('auth.registration')); ?>">Registration</a></li>
+                                            <li>
+                                                <a href="#" class="search-toggle"><i class="fa fa-search"
+                                                        aria-hidden="true"></i></a>
+                                                <div class="search-container">
+                                                    <input type="text" placeholder="Search..." class="search-input">
+                                                    <button class="search-btn">Search</button>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- Edn top header  -->
+
+            <!-- start banner section  -->
+            <section class="banner_image">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-lg7 col-xl-7 m-auto">
+                            <div class="banner_content observe-element">
+                                <h4>Construction May be Messy, But The Results Are Worth It.</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-lg-4 col-xl-4 offset-md-1">
+                            <div class="mb-2">
+                                <?php echo $__env->make('shared/alerts', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                            </div>
+
+
+                            <?php echo $__env->yieldContent('auth_content'); ?>
+
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Edn banner section  -->
+        </div>
+
+        <!-- start user management section  -->
+        <section class="color_bg_grident">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-xl-6 col-lg-6">
+                        <div class="links_user_management_bg">
+                            <div class="disp_grid">
+                                <ul>
+                                    <li>
+                                        <a href="#">
+                                            <img src="<?php echo e(asset('/images/fund.svg')); ?>" alt="User Management">
+                                            <p>User Management</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="<?php echo e(asset('/images/employee.png')); ?>" alt="Employee Portal">
+                                            <p>Employee Portal</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="<?php echo e(asset('/images/bank-man.png')); ?>" alt="Bank Guarantwee Management">
+                                            <p>Bank Guarantwee Management</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="<?php echo e(asset('/images/audit.png')); ?>" alt="Audit Management System">
+                                            <p>Audit Management System</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="<?php echo e(asset('/images/traning.png')); ?>"
+                                                alt="Training & Skill Development">
+                                            <p>Training & Skill Development</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="<?php echo e(asset('/images/ask.png')); ?>" alt="Query Management">
+                                            <p>Query Management</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xl-3 col-xl-3">
+                        <div class="documentation_content">
+                            <div class="heading_cions_document">
+                                <img src="<?php echo e(asset('/images/off-doct.png')); ?>" alt="Query Management">
+                                <h4>Office Documentation Repository</h4>
+                            </div>
+                            <p>Office Orders, Board Meetings, Circulars, Policies etc.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-xl-3 col-lg-3">
+                        <div class="nhidcl_cont">
+                            <div class="heading_main">
+                                <h5>NHIDCL</h5>
+                            </div>
+                            <p>National Highways and Infrastructure Development Corporation is a fully owned company of the
+                                Ministry of Road Transport & Highways, Government of India</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Edn user management section  -->
+        <footer>
+            <div class="footer_content">
+                <p>@ 2024 NHIDCL </p>
+            </div>
+        </footer>
+    </div>
+
+
+    <script src="<?php echo e(asset('js/custom.js')); ?>"></script>
+
+    <script>
+        // search icons script 
+        // Get references to elements
+        const searchToggle = document.querySelector('.search-toggle');
+        const searchContainer = document.querySelector('.search-container');
+        const searchIcon = document.querySelector('.search-toggle i');
+
+        // Toggle search bar visibility and icon change
+        searchToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            searchContainer.style.display = searchContainer.style.display === 'block' ? 'none' : 'block';
+            searchIcon.classList.toggle('fa-search'); // Toggle search icon
+            searchIcon.classList.toggle('fa-times'); // Toggle close icon
+        });
+        // Edn search script
+    </script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\nhidcl\resources\views/layouts/auth.blade.php ENDPATH**/ ?>

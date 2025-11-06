@@ -1,0 +1,523 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\TaskManagementReplyRequest;
+use App\Http\Requests\TaskManagementRequest;
+use App\Models\TaskManagement\{Bucket, TaskSource, Priority, TaskDetail, TaskRepeat, TaskReply, ModuleActivity};
+use App\Models\User;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use RealRashid\SweetAlert\Facades\Alert;
+use Yajra\DataTables\Facades\DataTables;
+use App\Enums\TaskStatus;
+use Illuminate\Support\Facades\Crypt;
+
+class TaskManagementController extends Controller
+{
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('module.permission:md-dashboard')->only(['dashboard']);
+        $this->middleware('module.permission:md-task-list')->only(['index']);
+        $this->middleware('module.permission:md-task-create')->only(['create', 'store']);
+        $this->middleware('module.permission:md-task-edit')->only(['edit', 'update']);
+        $this->middleware('module.permission:md-task-view')->only(['show']);
+        $this->middleware('module.permission:md-task-delete')->only(['destroy']);
+    }
+
+    public $path = 'uploads/task-management/';
+
+    public function dashboard()
+    {
+        $header = true;
+        $sidebar = true;
+        $taskTotal = TaskDetail::count();
+        $taskNotStart = TaskDetail::where('status', '0')->count();
+        return view("task-management.dashboard", compact("header", "taskTotal", "taskNotStart", "sidebar"));
+    }
+
+    public function index(Request $request)
+    {
+
+        $header = true;
+        $sidebar = true;
+        if ($request->ajax()) {
+            $user = auth()->user();
+            $userId = $user->id;
+
+            // Check user roles
+            $isMd = $user->roles->contains('name', 'MD-Role');
+            $isSuperAdmin = $user->roles->contains('name', 'Super Admin');
+
+            $query = TaskDetail::with([
+                'priority',
+                'bucket',
+                'assignedTo',
+                'childTasks' => function ($query) {
+                    $query->where('status', TaskStatus::Pending);
+                }
+            ]);
+
+            // If user is Super Admin, skip filtering — show all tasks
+            if (!$isSuperAdmin) {
+                $query->where(function ($q) use ($userId, $isMd) {
+                    $q->where('created_by', $userId)
+                        ->orWhere('updated_by', $userId)
+                        ->orWhere('assigned_to', $userId);
+
+                    if ($isMd) {
+                        // You can expand this if MD should see more than just related tasks
+                        $q->orWhereRaw('1 = 1'); // Optional: or add logic specific to MD
+                    }
+                });
+            }
+
+            // Status filter
+            $statusFilter = $request->get('status');
+            if ($statusFilter === TaskStatus::Completed->value) {
+                $query->where('status', TaskStatus::Completed);
+            } else {
+                $query->where('status', '!=', TaskStatus::Completed);
+            }
+
+            $task_detail = $query->get();
+
+            $datatables = DataTables::of($task_detail)
+                ->addColumn('task_name', function ($row) {
+                    $name = $row->task_name;
+                    if (is_null($row->parent_task_id)) {
+                        $name .= ' <span class="badge badge-primary">Primary</span>';
+                    }
+                    return $name;
+                })
+                ->addColumn('pending', function ($row) {
+                    return $row->childTasks->count(); // pending child tasks
+                })
+                ->editColumn('due_date', function ($row) {
+                    return $row->due_date->format('d-m-Y');
+                })
+                ->addColumn('status', function ($row) {
+                    return $row->status?->label() ?? 'Pending';
+                })
+                ->addColumn('priority_name', function ($row) {
+                    return $row->priority->priority_name ?? 'N/A';
+                })
+
+                ->addColumn('repeat_interval', function ($row) {
+                    return $row->repeat->repeat_interval ?? 'N/A';
+                })
+
+                ->addColumn('assigned_to', function ($row) {
+                    return $row->assignedTo ? $row->assignedTo->name . ' (' . $row->assignedTo->email . ')' : 'N/A';
+                })
+                ->editColumn('created_at', function ($row) {
+                    return format_datetime($row->created_at);
+                })
+                ->addColumn('action', function ($row) {
+                    return view('components.action-buttons', [
+                        'id' => $row->id,
+                        'creator_id' => $row->created_by,
+                        'status' => $row->status?->label() ?? 'Unknown',
+                        'buttons' => ['edit', 'show', 'delete', 'status'],
+                        'routePrefix' => 'task-management',
+                        'role' => 'MD-Role',
+                        "module" => "md-task"
+                    ])->render();
+                })
+                ->rawColumns(['action', 'task_name']);
+
+            return $datatables->make(true);
+        }
+
+        $header = TRUE;
+        $sidebar = TRUE;
+        return view("task-management.index", compact("header", "sidebar"));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+
+        $header = true;
+        $sidebar = true;
+        $user_responders = User::select("id", "name", "email")
+        ->where(function ($query) {
+            $query->whereHas('roles', function ($subQuery) {
+                $subQuery->whereIn('name', ['MD-DRO', 'MD-RA']);
+            });
+        })
+        ->where('id', '!=', auth()->id()) // Exclude logged-in user
+        //->where('is_nhidcl_employee', true)
+        ->get();
+        return view("task-management.create", compact("header", "sidebar", 'user_responders'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(TaskManagementRequest $request)
+    {
+        try {
+
+            $inputs = $request->all();
+            $combined = $request->input('frequency'); // e.g. "2|weekly"
+            [$frequencyId, $frequency] = explode('|', $combined); // ["2", "weekly"]
+            $taskId = "MDTASK/" . rand(00000, 99999);
+            $task = TaskDetail::create([
+                "task_id" => $taskId,
+                "task_name" => $inputs['task_name'],
+                "ref_bucket_id" => $inputs['ref_bucket_id'],
+                "division" => $inputs['division'],
+                "ref_priority_id" => $inputs['ref_priority_id'],
+                "start_date" => $inputs['start_date'] ?? now(),
+                "due_date" => $inputs['due_date'],
+                "ref_task_repeat_id" => $frequencyId,
+                "frequency" => $frequency, // 'daily', 'weekly', 'monthly' or null
+                "note" => $inputs['note'],
+                "ref_task_source_id" => $inputs['ref_task_source_id'],
+                "assigned_to" => $inputs['assigned_to'],
+                "upload_attachment" => $inputs['attachment'],
+                "other_task_source" => $inputs['other_task_source'] ?? '',
+                "created_by" => user_id(),
+                "status" => 'pending', // optional default
+                "is_recurring" => !empty($inputs['frequency']), // true if frequency is selected
+                "parent_task_id" => null, // top-level task
+                "created_at" => now()
+            ]);
+
+            ModuleActivity::create([
+                "module" => "md task",
+                "ref_users_id" => $inputs['assigned_to'],
+                "description" => "new task created successfully and task id " . $task->id,
+                "ip_address" => $request->ip(),
+                "event" => "created",
+                "created_by" => auth()->user()->id,
+            ]);
+
+            Alert::success('Success', 'Task created successfully');
+            return redirect()->route("task-management.index")->with('success', 'Task created successfully');
+        } catch (Exception $e) {
+            return redirect()->route("task-management.index")->with("error", $e->getMessage());
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $id = decryptId($id);
+        $header = true;
+        $sidebar = true;
+
+        $result = TaskDetail::with(['priority', 'bucket', 'repeat', 'assignedTo'])->where("id", $id)->first();
+        $task_detail = [];
+        if ($result) {
+            $array = $result->toArray();
+            $task_detail = array_merge($task_detail, Arr::except($array, ['priority', 'bucket', 'repeat']));
+            $task_detail['upload_attachment'] = $task_detail['file_url'] = route('task-management.view', [
+                'pathName' => $this->path,
+                'fileName' => $task_detail['upload_attachment'],
+            ]);
+            $priority = $array['priority'];
+            $repeat = $array['repeat'];
+            $bucket = $array['bucket'];
+            $assigned_to = $array['assigned_to'];
+            $task_detail['priority'] = $priority['priority_name'] ?? 'N/A';
+            $task_detail['repeat'] = $repeat['repeat_interval'] ?? 'N/A';
+            $task_detail['assignedTo'] = $assigned_to ? $assigned_to['name'] . ' (' . $assigned_to['email'] . ')' : 'N/A';
+
+            $task_detail['bucket'] = $bucket['bucket_type'] ?? 'N/A';
+        }
+        $childresult = TaskDetail::with(['priority', 'bucket', 'repeat', 'assignedTo'])->where("parent_task_id", $id)->get();
+        return view("task-management.show", compact("header", "sidebar", 'task_detail', 'childresult'));
+    }
+
+
+    public function repeatCalculator($currentDate, $repeatType)
+    {
+        switch ($repeatType) {
+            case 'daily':
+                return Carbon::parse($currentDate)->addDay();
+            case 'weekly':
+                return Carbon::parse($currentDate)->addWeek();
+            case 'weekend':
+                $next = Carbon::parse($currentDate)->addDay();
+                while (!in_array($next->dayOfWeek, [Carbon::SATURDAY, Carbon::SUNDAY])) {
+                    $next->addDay();
+                }
+                return $next;
+            case 'monthly':
+                return Carbon::parse($currentDate)->addMonth();
+            default:
+                return null;
+        }
+    }
+
+
+    public function reply(TaskManagementReplyRequest $request)
+    {
+        try {
+            $inputs = $request->all();
+
+            $task = TaskReply::create([
+                "nhidcl_mdtm_task_details_id" => $inputs['nhidcl_mdtm_task_details_id'],
+                "remarks" => $inputs['remarks'],
+                "file" => $inputs['file'],
+                "created_by" => user_id(),
+                'created_at' => now()
+            ]);
+
+            ModuleActivity::create([
+                "module" => "md task",
+                "ref_users_id" => user_id(),
+                "description" => "Task Remarks added successfully on task id " . $inputs['nhidcl_mdtm_task_details_id'],
+                "ip_address" => $request->ip(),
+                "event" => "reply",
+                "created_by" => auth()->user()->id,
+            ]);
+            Alert::success('Success', 'Remarks added successfully');
+            return redirect()->route("task-management.index")->with('success', 'Remarks added successfully');
+        } catch (Exception $e) {
+            return redirect()->route("task-management.index")->with("error", $e->getMessage());
+        }
+    }
+
+    public function getReplies($id)
+    {
+        $id = decryptId($id);
+
+        $replies = TaskReply::with('createdBy')->where('nhidcl_mdtm_task_details_id', $id)->orderByDesc('id')->get();
+
+
+        $datatables = DataTables::of($replies)
+
+            ->addColumn('created_by', function ($row) {
+
+                return $row->createdBy ? $row->createdBy->name . ' (' . $row->createdBy->email . ')' : 'N/A';
+            })
+            ->editColumn('remarks', function ($row) {
+                return $row->remarks
+                    ? nl2br(wordwrap($row->remarks, 70, "\n", true))
+                    : '';
+            })
+            ->editColumn('file', function ($row) {
+                return $row->file ? route('task-management.view', [
+                    'pathName' => $this->path,
+                    'fileName' => $row->file,
+                ]) : '';
+            })
+            ->editColumn('created_at', function ($row) {
+                return format_datetime($row->created_at);
+            })
+            ->rawColumns(['remarks']);
+
+
+        return $datatables->make(true);
+    }
+
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        try {
+            $taskdata = TaskDetail::findOrFail(Crypt::decrypt($id));
+            $user_responders = User::select("id", "name", "email")
+                ->where(function ($query) {
+                    $query->whereHas('roles', function ($subQuery) {
+                        $subQuery->whereIn('name', ['MD-DRO', 'MD-RA']);
+                    });
+                })
+                //->where('is_nhidcl_employee', true)
+                ->get();
+            $sidebar = True;
+            $header = True;
+            return view('task-management.edit', compact('header', 'sidebar', 'taskdata', 'user_responders'));
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Invalid data provided.');
+            return redirect()->route('task-management.index');
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(TaskManagementRequest $request, string $id)
+    {
+        try {
+
+            $id = Crypt::decrypt($id);
+            $tasks = TaskDetail::findOrFail($id);
+
+            $inputs = $request->all();
+            $combined = $request->input('frequency'); // e.g. "2|weekly"
+            [$frequencyId, $frequency] = explode('|', $combined); // ["2", "weekly"]
+
+            $tasks->task_name = $request->task_name;
+            $tasks->ref_bucket_id = $request->ref_bucket_id;
+            $tasks->division = $request->division;
+            $tasks->ref_priority_id = $inputs['ref_priority_id'];
+            $tasks->start_date = $inputs['start_date'] ?? now();
+            $tasks->due_date = $inputs['due_date'];
+            $tasks->ref_task_repeat_id = $frequencyId;
+            $tasks->frequency = $frequency; // 'daily', 'weekly', 'monthly' or null
+            $tasks->note = $inputs['note'];
+            $tasks->ref_task_source_id = $inputs['ref_task_source_id'];
+            $tasks->assigned_to = $inputs['assigned_to'];
+            $tasks->upload_attachment = $inputs['attachment'];
+            $tasks->other_task_source = $inputs['other_task_source'] ?? '';
+            $tasks->save();
+
+            ModuleActivity::create([
+                "module" => "md task",
+                "ref_users_id" => $inputs['assigned_to'],
+                "description" => "Task update successfully and task id " . $tasks->id,
+                "ip_address" => $request->ip(),
+                "event" => "updated",
+                "created_by" => auth()->user()->id,
+            ]);
+
+            Alert::success('Success', 'Task updated successfully');
+            return redirect()->route('task-management.index');
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Oops, something went wrong. Please try again later.');
+            return redirect()->route('task-management.index');
+        }
+    }
+    public function complete(Request $request, $id)
+    {
+        try {
+            $inputs = $request->all();
+            $id = decryptId($id);
+            $result = TaskDetail::where("id", $id)->first();
+            $result->status = $inputs['status'];
+            $result->save();
+
+            TaskReply::create([
+                "nhidcl_mdtm_task_details_id" => $id,
+                "remarks" => $inputs['remarks'],
+                "file" => '',
+                "created_by" => user_id(),
+                'created_at' => now()
+            ]);
+
+            ModuleActivity::create([
+                "module" => "md task",
+                "ref_users_id" => $result->assigned_to,
+                "description" => "Task status completed and task id " . $id,
+                "ip_address" => $request->ip(),
+                "event" => "updated",
+                "created_by" => user_id(),
+            ]);
+
+            Alert::success('Success', 'Status updated successfully');
+            return redirect()->route("task-management.index")->with('success', 'Status updated successfully');
+        } catch (Exception $e) {
+            return redirect()->route("task-management.index")->with('error', 'OOPS, Something went wrong, please try again later');
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        try {
+            $tasks = TaskDetail::find(Crypt::decrypt($id));
+            if (!$tasks) {
+                Alert::error('Error', 'Something went wrong, Please try again.');
+                return redirect()->route('task-management.index');
+            }
+            ModuleActivity::create([
+                "module" => "md task",
+                "ref_users_id" => $tasks->assigned_to,
+                "description" => "Task deleted successfully and task id " . $tasks->id,
+                "ip_address" => $tasks->ip_address,
+                "event" => "deleted",
+                "created_by" => user_id(),
+            ]);
+
+            $tasks->delete();
+            Alert::success('Success', 'Task deleted successfully');
+            return redirect()->route('task-management.index');
+        } catch (\Exception $e) {
+            Alert::error('Error', $e->getMessage());
+            return redirect()->route('task-management.index');
+        }
+    }
+
+
+    public function upload(Request $request)
+    {
+
+        $ext = (isset($request->ext) && !empty($request->ext)) ? explode(',', $request->ext) : ['pdf', 'jpeg', 'jpg', 'png', 'avi', 'mov', 'quicktime', 'mp4', 'kml', 'kmz'];
+
+        try {
+
+            if ($request->ajax()) {
+
+                if ($request->hasFile('attachment')) {
+                    return  storeMedia($request, $this->path, $ext, 'attachment');
+                }
+
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Invalid Request'
+                ]);
+            }
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid Request'
+            ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'status' => false,
+                'message' => 'OOPS, Something went wrong, please try again later'
+            ]);
+        }
+    }
+
+    public function status($id = 0)
+    {
+        $status = [
+            '0' => 'Pending',
+            '1' => 'In Progress',
+            '2' => 'Completed',
+            '3' => 'On Hold',
+            '4' => 'Cancelled',
+        ];
+        return $status[$id] ?? 'Unknown';
+    }
+
+    public function view(Request $request)
+    {
+        $pathName = $request->pathName;
+        $fileName = $request->fileName;
+        $file = viewFilePath($pathName) . urldecode($fileName);
+
+
+
+        if (file_exists($file)) {
+            header("Cache-Control: public");
+            header("Content-Description: File Transfer");
+            header("Content-Disposition: inline; filename=" . basename($file));
+            header("Content-Type: " . mime_content_type($file));
+            header("Content-Length: " . filesize($file));
+            header("Content-Transfer-Encoding: binary");
+            readfile($file);
+            exit;
+        } else {
+            abort(404);
+            return redirect()->route('task-management.view');
+        }
+    }
+}

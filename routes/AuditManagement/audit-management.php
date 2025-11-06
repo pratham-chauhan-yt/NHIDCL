@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuditManagement\AuditController;
+use App\Http\Controllers\AuditManagement\AuditParaController;
+use App\Http\Controllers\AuditManagement\AuditParaReplyController;
+
+Route::middleware(['auth', 'single.device', 'no.cache', 'secure.headers', 'block.xss'])->prefix('audit-management')->as('audit-management.')->group(function () {
+    Route::get('/dashboard', [AuditController::class, 'dashboard'])->name('dashboard');
+    Route::resource('/', AuditController::class);
+
+    Route::post('/upload', [AuditController::class, 'upload'])->name('upload');
+    Route::post('/upload', [AuditController::class, 'upload'])->name('upload');
+    Route::get('/view-audit-query-details/{id}', [AuditController::class, 'show'])->name('view');
+    Route::get('/edit-audit-query/{id}', [AuditController::class, 'edit'])->name('edit');
+    Route::get('/view/files', [AuditController::class, 'viewFiles'])->name('view.files');
+    Route::post('/check-letter-no', [AuditController::class, 'checkLetterNo'])->name('check-letter-no');
+
+    #######################  Audit Para routes start #####################
+    Route::get('/get-letterNo', [AuditParaController::class, 'getLetterNo'])->name('getLetterNo');
+    Route::post('/upload/para', [AuditParaController::class, 'uploadFile'])->name('uploadPara');
+    Route::get('/get-users-by-department', [AuditParaController::class, 'getUsersByDepartment'])->name('get-users-by-department');
+    Route::post('/store-audit-para', [AuditParaController::class, 'storeAuditPara'])->name('store-audit-para');
+    Route::post('/drop-para', [AuditParaController::class, 'dropPara'])->name('drop-para');
+    #######################  Audit Para routes end #####################
+
+    #######################  Audit Para Reply routes start #####################
+    Route::get('/view-audit-para-details/{id}', [AuditParaReplyController::class, 'index'])->name('view-audit-para-details');
+    Route::post('/store-audit-para-reply', [AuditParaReplyController::class, 'storeAuditParaReply'])->name('store-audit-para-reply');
+    Route::post('/upload/para/reply', [AuditParaReplyController::class, 'uploadFile'])->name('uploadParaReply');
+    #######################  Audit Para Reply routes end   #####################
+
+});
+

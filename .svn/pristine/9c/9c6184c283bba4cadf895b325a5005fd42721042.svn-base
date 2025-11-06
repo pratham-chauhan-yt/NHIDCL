@@ -1,0 +1,20 @@
+<?php echo $__env->yieldPushContent('style_start'); ?>
+
+<link rel="stylesheet" href="<?php echo e(asset('public/css/select2.min.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('public/css/dataTables.dataTables.min.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('public/css/dataTables.tailwindcss.min.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('public/css/output.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('public/css/responsive.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('public/css/all.min.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('public/css/style.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('public/css/sweetalert2.min.css')); ?>">
+
+<script src="<?php echo e(asset('public/js/fetchWrapper.js')); ?>"></script>
+<script src="<?php echo e(asset('public/js/jquery-3.7.1.min.js')); ?>"></script>
+<script src="<?php echo e(asset('public/js/jquery.validate.min.js')); ?>"></script>
+<script src="<?php echo e(asset('public/js/ajaxHandler.js')); ?>"></script>
+
+<?php echo $__env->yieldPushContent('styles'); ?>
+
+<?php echo $__env->yieldPushContent('style_end'); ?>
+<?php /**PATH C:\xampp\htdocs\NHIDCL\recruitment\resources\views/partials/admin/styles.blade.php ENDPATH**/ ?>
