@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /NHIDCL/
+    RewriteBase BackEnd/NHIDCL/
 
     # Redirect to index.php if file or directory does not exist
     RewriteCond %{REQUEST_FILENAME} !-f
@@ -12,8 +12,8 @@
     # --- Security Headers ---
 
     # Prevent content injection
-    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https:; frame-ancestors 'self';"
-    
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https:; frame-ancestors 'self';"
+
     # Prevent MIME type sniffing
     Header set X-Content-Type-Options "nosniff"
 
@@ -33,3 +33,29 @@
     Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
 </IfModule>
 
+# ======================================
+# Deny direct access to sensitive files
+# ======================================
+<FilesMatch "^(composer\.lock|README\.md|phpunit\.xml)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+
+# ======================================
+# Protect vendor-specific files
+# ======================================
+<FilesMatch "^(LICENSE|phpunit)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
