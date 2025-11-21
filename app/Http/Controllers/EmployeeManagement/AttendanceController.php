@@ -12,6 +12,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Crypt;
 use Exception;
+use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 
 
@@ -122,6 +123,30 @@ class AttendanceController extends Controller
         }
         return view("employee-management.attendance.index", compact("header", "sidebar", "manager", "gmanager"));
     }
+   public function reverseGeo(Request $request)
+{
+    $lat = $request->lat;
+    $lon = $request->lon;
+
+    $url = "https://nominatim.openstreetmap.org/reverse?format=json&lat={$lat}&lon={$lon}";
+
+    try {
+        $response = Http::withHeaders([
+            'User-Agent' => 'YourAppName/1.0'
+        ])->withOptions([
+            'verify' => false, // Disable SSL verification (local only)
+        ])->get($url);
+
+        return response()->json($response->json(), 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Server error fetching location',
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+}
+
 
     public function store(Request $request){
         try {

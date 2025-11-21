@@ -4,9 +4,11 @@
         <div class="container-fluid md:p-0">
             <div class="top_heading_dash__">
                 <div class="main_hed">Session List</div>
+                @if(auth()->user()->hasRole('HR'))
                 <div class="plain_dlfex bg_elips_ic">
                     <a href="{{ route('sessions.create') }}"><button class="hover-effect-btn gray_btn" type="button">Create Sessions</button></a>
                 </div>
+                @endif
             </div>
         </div>
         <div class="inner_page_dash__">

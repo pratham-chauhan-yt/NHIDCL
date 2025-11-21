@@ -431,7 +431,7 @@
                     enctype="multipart/form-data">
                     @csrf
 
-                    <input type="hidden" name="para_id" value="{{ $auditPara->id }}">
+                    <input type="hidden" name="para_id" value="{{ $auditPara->id ?? '' }}">
 
 
                     <div class="inpus_cust_cs form_grid_dashboard_cust_">

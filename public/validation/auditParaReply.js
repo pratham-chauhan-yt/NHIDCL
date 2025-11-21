@@ -298,6 +298,7 @@ $(document).ready(function () {
         console.error('❌ Summernote is not loaded. Check JS path.');
         return;
     }
+    
 
     console.log('✅ Summernote initialized');
 
@@ -317,7 +318,7 @@ $(document).ready(function () {
             ['para', ['ul', 'ol', 'paragraph']],
             ['height', ['height']],
             ['table', ['table']],
-            ['insert', ['link', 'picture', 'video', 'hr']],
+            ['insert', ['link', 'hr']],
             ['view', ['fullscreen', 'codeview', 'help']],
             ['history', ['undo', 'redo']]
         ]

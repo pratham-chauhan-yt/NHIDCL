@@ -306,6 +306,9 @@ $(document).ready(function () {
             age_filter: $form.find("#age_filter").val(),
             category_filter: $form.find("#category_filter").val(),
             percentile_filter: $form.find("#percentile_filter").val(),
+            gender_filter: $form.find("#gender_filter").val(),
+            marital_status_filter: $form.find("#marital_status_filter").val(),
+            pwbd_filter: $form.find("#pwbd_filter").val(),
             page: page // added for pagination
         };
 
@@ -1155,6 +1158,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const email = $("#email_filter").val().trim();
         const mobile = $("#mobile_filter").val().trim();
         const gateRegNumber = $("#gate_registartion_filter").val().trim();
+        const gateYear = $("#gate_year_filter").val().trim();
+        const gateScore = $("#gate_score_filter").val().trim();
+        const age = $("#age_filter").val().trim();
+        const category = $("#category_filter").val().trim();
+        const gender = $("#gender_filter").val().trim();
+        const marital = $("#marital_status_filter").val().trim();
+        const pwbd = $("#pwbd_filter").val().trim();
 
         // Validations
         if (!advertisementId) {
@@ -1179,6 +1189,14 @@ document.addEventListener("DOMContentLoaded", function () {
             email: email,
             mobile: mobile,
             gate_reg_number: gateRegNumber,
+
+            gate_year: gateYear,
+            gate_score: gateScore,
+            age: age,
+            category: category,
+            gender: gender,
+            marital: marital,
+            pwbd: pwbd,
         }).toString();
         const websiteMeta = document.querySelector('meta[name="website-url"]');
         const websiteUrl = websiteMeta

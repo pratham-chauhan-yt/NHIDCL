@@ -1,15 +1,28 @@
 $(document).ready(function () {
-    const initDataTable = (selector, ajaxUrl, columns) => {
+    const initDataTable = (selector, ajaxUrl, columns, pageLength = 25) => {
         if ($(selector).length && typeof ajaxUrl !== "undefined") {
-            // Destroy existing DataTable if initialized
+
             if ($.fn.DataTable.isDataTable(selector)) {
                 $(selector).DataTable().clear().destroy();
             }
+
             $(selector).DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: ajaxUrl,
+                ajax: {
+                url: ajaxUrl,
+                    data: function (d) {
+                        // send filter values to server
+                        d.name = $('#name_filter').val();
+                        d.email = $('#email_filter').val();
+                        d.mobile = $('#mobile_filter').val();
+                        d.designation = $('#designation_filter').val();
+                        d.department = $('#department_filter').val();
+                    }
+                },
                 columns: columns,
+                pageLength: pageLength,
+                lengthMenu: [10, 25, 50, 100]
             });
         }
     };
@@ -35,7 +48,7 @@ $(document).ready(function () {
 
     // Conditionally initialize each table
     if (typeof sessionsDataUrl !== "undefined") {
-        initDataTable("#sessionsTable", sessionsDataUrl, sessionsViewColumns);
+        initDataTable("#sessionsTable", sessionsDataUrl, sessionsViewColumns, 25);
     }
 
     // Request Training Table Columns
@@ -55,7 +68,7 @@ $(document).ready(function () {
     ];
 
     if (typeof requestDataUrl !== "undefined") {
-        initDataTable("#requestTable", requestDataUrl, requestViewColumns);
+        initDataTable("#requestTable", requestDataUrl, requestViewColumns, 25);
     }
 
     // Training Budget Table Columns
@@ -77,8 +90,40 @@ $(document).ready(function () {
     ];
 
     if (typeof budgetDataUrl !== "undefined") {
-        initDataTable("#budgetTable", budgetDataUrl, budgetViewColumns);
+        initDataTable("#budgetTable", budgetDataUrl, budgetViewColumns, 25);
     }
+
+    // Employee Table Columns
+    const employeeViewColumns = [
+        {
+            data: "DT_RowIndex",
+            name: "DT_RowIndex",
+            orderable: false,
+            searchable: false,
+            className: "text-center",
+        },
+        { data: "name", name: "name" },
+        { data: "email", name: "email" },
+        { data: "mobile", name: "mobile" },
+        { data: "department_master", name: "department_master" },
+        { data: "employee_type", name: "employee_type" },
+        { data: "action", name: "action", className: "text-center" },      
+    ];
+
+    if (typeof employeeDataUrl !== "undefined") {
+        initDataTable("#employeeTable", employeeDataUrl, employeeViewColumns, 50);
+    }
+
+    let typingTimer;      // Timer holder
+    const typingDelay = 300; // 3 seconds
+
+    $('.filter-input').on('keyup change', function () {
+        clearTimeout(typingTimer); // reset timer
+        
+        typingTimer = setTimeout(function () {
+            $('#employeeTable').DataTable().ajax.reload();
+        }, typingDelay);
+    });
 });
 
 $(document).on("click", "#upload-guide-btn", function (e) {

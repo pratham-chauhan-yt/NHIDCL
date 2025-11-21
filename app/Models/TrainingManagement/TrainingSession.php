@@ -5,9 +5,11 @@ namespace App\Models\TrainingManagement;
 use App\Models\RefStatus;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TrainingSession extends Model
 {   
+    use SoftDeletes;
     protected $table = 'nhidcl_ems_training_sessions';
     protected $fillable = [
         'nhidcl_ems_trainers_id', 'name', 'agenda', 'address', 'date', 'duration', 'ref_status_id', 'type', 'created_by', 'updated_by', 'deleted_at'

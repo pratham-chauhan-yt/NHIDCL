@@ -7,7 +7,7 @@ use App\Services\FileService;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Exception;
-use App\Models\Recruitment\{Advertisement,AdvertisementPost,NhidclRecruitmentApplications,NhidclRecruitmentCandidateTimeline,NhidclRpGateScoreDetails, NhidclRecruitmentApplicationsLogs};
+use App\Models\Recruitment\{Advertisement,AdvertisementPost,NhidclRecruitmentApplications,NhidclRecruitmentCandidateTimeline,NhidclRpGateScoreDetails, NhidclRPUpscExam, NhidclRecruitmentApplicationsLogs};
 use App\Models\{RefState,User,RefCaste,RefModeOfRecruitment,RefApplicantPersonalDetails,RefGateDiscipline,RefPassingYear};
 use App\Models\{NhidclAplicantEducationDetails,NhidclApplicantWorkExperienceDetails,NhidclApplicantAdditionalDetails};
 use App\Models\Order;
@@ -261,9 +261,10 @@ class CandidateController extends Controller
         $castes = RefCaste::orderBy('caste', 'asc')->get();
         $states = RefState::orderBy('name', 'asc')->get();
         $discipline = RefGateDiscipline::orderBy('discipline_name')->get();
-        $previewData = NhidclRpApplicantPersonalDetails::with('user', 'education.passingYear', 'gatescore.passingYear', 'gatescore.gateDiscpline', 'experience', 'caste', 'correspondenceState', 'permanentState')->where('ref_users_id', $userId)->first();
-        
+        $previewData = NhidclRpApplicantPersonalDetails::with('user', 'education.passingYear', 'upscscore', 'upscscore.passingYear', 'gatescore.passingYear', 'gatescore.gateDiscpline', 'experience', 'caste', 'correspondenceState', 'permanentState')->where('ref_users_id', $userId)->first();
         $gateScoreData = NhidclRpGateScoreDetails::where('ref_users_id', $userId)->first();
+
+        $upscScoreData = NhidclRPUpscExam::where('ref_users_id', $userId)->where('nhidcl_recruitment_posts_id', $record->id)->first();
         //dd($previewData->caste->caste);
         // Example: Check if Step 1 (Personal Details) is completed
         $step1Completed = !empty($previewData) && !empty($previewData->user->name);
@@ -360,7 +361,7 @@ class CandidateController extends Controller
         }
 
         $refModeRecruitment = RefModeOfRecruitment::whereIn('id', $ModeRecruitment)->orderBy('id')->get();
-        return view("recruitment-management.advertisement-post", compact("header", "sidebar", "record", "stateList", "applicant", "applicantedu", "applicantexp", "applicantadd", "applicantLocation", "refModeRecruitment", "recordApplication", "gateYears", "disciplines", "applicantState", "applicantGateData", "passing_years", "castes", "states", "disciplines", "previewData", "step1Completed", "step2Completed", "step3Completed", "step4Completed", "gateScoreData", "discipline", "order"));
+        return view("recruitment-management.advertisement-post", compact("header", "sidebar", "record", "stateList", "applicant", "applicantedu", "applicantexp", "applicantadd", "applicantLocation", "refModeRecruitment", "recordApplication", "gateYears", "disciplines", "applicantState", "applicantGateData", "passing_years", "castes", "states", "disciplines", "previewData", "step1Completed", "step2Completed", "step3Completed", "step4Completed", "gateScoreData", "upscScoreData", "discipline", "order"));
     }
 
     private function submitApplication($request, $userId, $postId, $record, $withResume = false)
@@ -472,6 +473,10 @@ class CandidateController extends Controller
     public function candidateAdvertisementPostApplication(Request $request){
         if($request->method() == "POST"){
             $userId = auth()->id();
+            $postId  = $request->postid;
+            $userId  = auth()->id();
+            $record = AdvertisementPost::with(['getPostLocation', 'gateDisciplines', 'gateExamYears'])
+                        ->findOrFail($postId);
 
             // Check personal details
             $personalDetails = NhidclRpApplicantPersonalDetails::where('ref_users_id', $userId)->first();
@@ -486,12 +491,20 @@ class CandidateController extends Controller
                 Alert::error('Error', 'Please fill in your education details first.');
                 return redirect($request->input('redirect_url', route('recruitment-portal.candidate.profile')));
             }
-
-            // Check gate score details
-            $gateScoreDetails = NhidclRpGateScoreDetails::where('ref_users_id', $userId)->first();
-            if (!$gateScoreDetails) {
-                Alert::error('Error', 'Please fill in your gate score details first.');
-                return redirect($request->input('redirect_url', route('recruitment-portal.candidate.profile')));
+            if($record?->post_examination=="UPSC"){
+                // Check UPSC score details
+                $upscScoreDetails = NhidclRPUpscExam::where('ref_users_id', $userId)->first();
+                if (!$upscScoreDetails) {
+                    Alert::error('Error', 'Please fill in your UPSC score details first.');
+                    return redirect($request->input('redirect_url', route('recruitment-portal.candidate.profile')));
+                }
+            }else{
+                // Check gate score details
+                $gateScoreDetails = NhidclRpGateScoreDetails::where('ref_users_id', $userId)->first();
+                if (!$gateScoreDetails) {
+                    Alert::error('Error', 'Please fill in your gate score details first.');
+                    return redirect($request->input('redirect_url', route('recruitment-portal.candidate.profile')));
+                }
             }
             
             // Validation
@@ -501,10 +514,7 @@ class CandidateController extends Controller
                 'consent_three' => 'required|string',
                 'place_of_application' => 'required|string',
             ]);
-            $postId  = $request->postid;
-            $userId  = auth()->id();
-            $record = AdvertisementPost::with(['getPostLocation', 'gateDisciplines', 'gateExamYears'])
-                        ->findOrFail($postId);
+            
 
             // Application submit logic
             $applicationId = $this->submitApplication($request, $userId, $postId, $record, true);
@@ -686,10 +696,10 @@ class CandidateController extends Controller
         }
     }
     public function profilePDF(Request $request)
-    {
+    {   
         $user = User::findOrFail(auth()->user()->id);
         $record = AdvertisementPost::with(['getPostLocation', 'gateDisciplines', 'gateExamYears'])->find($request->postid ?? '0');
-        $previewData = NhidclRpApplicantPersonalDetails::with('user', 'education.passingYear', 'gatescore.passingYear', 'gatescore.gateDiscpline', 'experience')->where('ref_users_id', $user->id)->first();
+        $previewData = NhidclRpApplicantPersonalDetails::with('user', 'education.passingYear', 'upscscore', 'upscscore.passingYear', 'gatescore.passingYear', 'gatescore.gateDiscpline', 'experience')->where('ref_users_id', $user->id)->first();
         $recordApplication = NhidclRecruitmentApplications::where([
             'ref_users_id' => $user->id,
             'nhidcl_recruitment_posts_id' => $request->postid,

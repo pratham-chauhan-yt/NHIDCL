@@ -10,6 +10,7 @@
 .quill-rendered h6 {
     margin: 0;
     padding: 0;
+    overflow-wrap: anywhere;
 }
 
 @supports (counter-set: none) {

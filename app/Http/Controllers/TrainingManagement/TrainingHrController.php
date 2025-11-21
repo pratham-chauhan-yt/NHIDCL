@@ -103,4 +103,11 @@ class TrainingHrController extends Controller
 
         return back()->with('error', 'Training request rejected.');
     }
+
+    public function attendance(Request $request){
+        $header = true;
+        $sidebar = true;
+        $session = TrainingSession::with('trainer')->latest()->get();
+        return view('training-management.hr.attendance', compact('header', 'sidebar', 'session'));
+    }
 }

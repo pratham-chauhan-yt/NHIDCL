@@ -234,7 +234,7 @@
             </table>
             <label><input type="checkbox" style="margin-top:2px" checked disabled> I hereby undertake to submit the documents regarding education qualification at the time of document verification, if shortlisted. I do understand that my documents are liable for scrutiny/ verification and any discrepancies in the genuineness of the documents will lead to cancellation of my candidature/ offer of appointment/ appointment; at any time.</label>
         </div>
-        @if ($record->required_gate_detail == '1')
+        @if ($record?->required_gate_detail == '1' && $record?->post_examination == 'GATE')
         <h4 class="applicat_cust-title mt-3">GATE Score Details</h4>
         <div style="position: relative; overflow-x: scroll;">
             <table border="1"
@@ -274,6 +274,58 @@
                 <input type="checkbox" style="margin-top:2px" {{ $gatescoreData->gate_consent == 1 ? 'checked disabled' : 'disabled' }}> 
                 I hereby undertake to submit my GATE Score card at the time of document verification, if shortlisted and give my consent for use of my GATE login credentials for verification/re-verification of my GATE Score by NHIDCL. I do understand that my documents are liable for scrutiny/verification and any discrepancies in the genuineness of the documents will lead to cancellation of my candidature/offer of appointment/ appointment at any time.
             </label>
+        </div>
+        @else
+        <h4 class="applicat_cust-title mt-3">UPSC CSE Details</h4>
+        <div style="position: relative; overflow-x: scroll;">
+            <table border="1" style="width: 100%; font-size: 0.813rem; text-align: start; white-space: nowrap; border-spacing: 1px; border-radius: 8px; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Exam Year</th>
+                        <th>Roll Number</th>
+                        <th>Mains Score</th>
+                        <th>Interview Score</th>
+                        <th>Interview Call Letter</th>
+                        <th>Mains Score Card</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($previewData->upscscore ?? [] as $upscscoreData)
+                        <tr>
+                            <th>{{ $loop->iteration }}</th>
+                            <td style="word-wrap: break-word; white-space: normal;">{{ optional($upscscoreData->passingYear)->passing_year }}</td>
+                            <td style="word-wrap: break-word; white-space: normal;">{{ $upscscoreData->upsc_cse_roll_number }}</td>
+                            <td style="word-wrap: break-word; white-space: normal;">{{ $upscscoreData->upsc_cse_mains_marks }}</td>
+                            <td style="word-wrap: break-word; white-space: normal;">{{ $upscscoreData->upsc_cse_interview_marks }}</td>
+                            <td style="word-wrap: break-word; white-space: normal;"><a href="{{ route('users.view.files', [
+                                'pathName' => $upscscoreData->interview_call_letter_filepath,
+                                'fileName' => $upscscoreData->interview_call_letter_file,
+                            ]) }}"
+                                    class="btn btn-default btn-sm" target="_blank">
+                                    View Call Letter
+                                </a></td>
+                            <td style="word-wrap: break-word; white-space: normal;"><a href="{{ route('users.view.files', [
+                                'pathName' => $upscscoreData->upsc_cse_mains_score_filepath,
+                                'fileName' => $upscscoreData->upsc_cse_mains_score_file,
+                            ]) }}"
+                                    class="btn btn-default btn-sm" target="_blank">
+                                    View Mains Score Card
+                                </a></td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <th colspan="6">No Records found</th>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+            <div class="mt-2 text-sm">
+                <label>
+                    <input type="checkbox" checked disabled>
+                    I hereby undertake to submit all necessary documents regarding UPSC CSE 2024 at the time of document verification, if shortlisted. I also confirm that I have appeared for UPSC CSE 2024 interview and I do understand that selection shall be based on the percentile score obtained in the UPSC CSE 2024 and verification with UPSC Pratibha Setu portal. I do understand that my documents are liable for scrutiny/ verification and any discrepancies in the genuineness of the documents will lead to cancellation of my candidature/ offer of appointment/ appointment at any time.
+                </label>
+            </div>
         </div>
         @endif
         

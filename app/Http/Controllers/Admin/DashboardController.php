@@ -15,6 +15,7 @@ use App\Models\TaskManagement\TaskDetail;
 use App\Models\TrainingManagement\TrainingSession;
 use App\Models\TrainingManagement\TrainingBudget;
 use App\Http\Controllers\TrainingManagement\TrainerController;
+use App\Http\Controllers\AuditManagement\AuditController;
 
 class DashboardController extends Controller
 {
@@ -122,6 +123,9 @@ class DashboardController extends Controller
         }elseif (auth()->user()->hasRole(['Trainer'])){
             session(['moduleName' => 'Training Management System']);
             return redirect()->action([TrainerController::class, 'index']);
+        }elseif (auth()->user()->hasRole(['AMS Candidate', 'Auditor', 'Nodal Officer'])){
+            session(['moduleName' => 'Audit Management System']);
+            return redirect()->action([AuditController::class, 'dashboard']);
         }else{
             session(['moduleName' => 'Resource Pool Portal']);
             return view('resource-pool.Candidate.dashboard', compact('header', 'sidebar', 'ReservedUsers', 'ShortlestedUser', 'rejectedUser', 'selectedUser', 'percentage', 'sections', 'completed', 'totalSections') + [

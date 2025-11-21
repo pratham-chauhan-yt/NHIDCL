@@ -62,20 +62,20 @@
                         <table class="cust_table__ table_sparated" id="audit_dropped_query_table">
                             <thead class="">
                                 <tr>
-                                   @if (auth()->user()->hasRole('Resource Pool User'))
-                                        <th scope="col">#</th>
-                                        <th scope="col">Audit Query</th>
-                                        <th scope="col">Letter No.</th>
-                                        <th scope="col">Letter Date</th>
-                                        <th scope="col">Pending</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Action</th>
-                                    @else
+                                   @if (auth()->user()->hasRole('Nodal Officer'))
                                         <th scope="col">#</th>
                                         <th scope="col">Letter No.</th>
                                         <th scope="col">Letter Date</th>
                                         <th scope="col">Subject</th>
                                         <th scope="col">Created By</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Action</th>
+                                    @else
+                                        <th scope="col">#</th>
+                                        <th scope="col">Audit Query</th>
+                                        <th scope="col">Letter No.</th>
+                                        <th scope="col">Letter Date</th>
+                                        <th scope="col">Pending</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Action</th>
                                     @endif

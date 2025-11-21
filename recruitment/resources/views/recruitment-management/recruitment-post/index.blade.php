@@ -47,9 +47,21 @@
                     </div>
                     <div class="inpus_cust_cs form_grid_dashboard_cust_">
                         <div class="form-input">
+                            <label class="required-label">Post Required Examination</label>
+                            <select name="post_examination" id="post_examination" data-validate="required" data-error="Please choose post required examination." required>
+                                <option value="">---- choose post examination ----</option>
+                                <option value="GATE" {{ old('post_examination') === 'GATE' ? 'selected' : '' }}>GATE</option>
+                                <option value="UPSC" {{ old('post_examination') === 'UPSC' ? 'selected' : '' }}>UPSC</option>
+                            </select>
+                            @error('post_examination')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-input">
                             <label class="required-label">Year</label>
                             <select name="advertisement_year" id="advertisement_year" onchange="getAdvertisement(this.value)" data-validate="required" data-error="Please choose year." required>
                                 <option value="">---- choose year ----</option>
+                                <option value="2024" {{ old('advertisement_year') === '2024' ? 'selected' : '' }}>2024</option>
                                 @forelse ($year as $data)
                                     <option value="{{ $data }}" {{ old('advertisement_year') === $data ? 'selected' : '' }}>{{ $data }}</option>
                                 @empty

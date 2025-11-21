@@ -58,6 +58,7 @@ Route::middleware(['auth:web', 'single.device', 'no.cache', 'secure.headers', 'b
     Route::get('candidate/delete-candidate', [CandidateProfileController::class, 'delete_candidate'])->name('candidate.delete-candidate');
     Route::get('candidate/candidate_details', [CandidateProfileController::class, 'candidate_details'])->name('candidate.details');
     Route::post('candidate/gate/score', [CandidateProfileController::class, 'gateScoreDetails'])->name('candidate.gate.score');
+    Route::post('candidate/upsc/score', [CandidateProfileController::class, 'upscScoreDetails'])->name('candidate.upsc.score');
     Route::get('candidate/gate/score/table', [CandidateProfileController::class, 'gateScoreDataTable'])->name('candidate.gate.score.table');
     Route::delete('candidate/gate/score/delete/{id}', [CandidateProfileController::class, 'deleteGateScore'])->name('candidate.gate.score.delete');
     Route::post('candidate/application/disclosure', [CandidateProfileController::class, 'candidateApplicationDisclosure'])->name('candidate.application.disclosure');

@@ -55,6 +55,21 @@
                                 @empty
                                 @endforelse
                             </x-filter-input>
+                            <x-filter-input label="Gender" name="gender_filter" type="select" class="js-single">
+                                <option value="">--- Choose gender ---</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </x-filter-input>
+                            <x-filter-input label="Marital Status" name="marital_status_filter" type="select" class="js-single">
+                                <option value="">--- Choose marital status ---</option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                            </x-filter-input>
+                            <x-filter-input label="PwBD" name="pwbd_filter" type="select" class="js-single">
+                                <option value="">--- Choose PwBD status ---</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </x-filter-input>
                             <!-- <x-filter-input label="Percentile" name="percentile_filter" placeholder="Search candidate percentile wise..." /> -->
                             <div class="w-fit">
                                 <button type="button" name="exportdata" id="exportSelectionData" class="btn btn-primary">Export Data</button>

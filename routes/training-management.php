@@ -44,5 +44,9 @@ Route::prefix('training-management')->middleware(['auth', 'single.device', 'no.c
         Route::post('/hr/training/requests/update', [TrainingRequestController::class, 'requestApprove'])->name('hr.training.approve');
         Route::get('/hr/training/budget', [TrainingBudgetController::class, 'index'])->name('hr.training.budget');
         Route::post('/hr/training/budget/update', [TrainingBudgetController::class, 'budgetApprove'])->name('hr.training.budget.approve');
+        Route::get('/hr/trainer/sessions/employee/{id}', [TrainingSessionController::class, 'employee'])->name('hr.trainer.sessions.employee');
+        Route::get('/hr/training/participants/employee', [TrainingSessionController::class, 'sessionEmployee'])->name('hr.training.participants.employee');
+        Route::post('/hr/training/participants/employee/save', [TrainingSessionController::class, 'sessionEmployeeRecord'])->name('hr.training.participants.employee.save');
+        Route::get('/hr/training/attendance', [TrainingHrController::class, 'attendance'])->name('hr.training.attendance');
     });
 });

@@ -10,15 +10,15 @@
         <div class="inner_page_dash__">
             {!! Form::open(['route' => 'sessions.store','method' => 'POST']) !!}
                 <div class="inpus_cust_cs grid check_box_input grid-cols-1 gap-[10px] mt-4 mb-4">
-                    <div class="form-input">
+                    <div class="form-input" @if(auth()->user()->hasRole('Trainer')) style="display:none;" @endif>
                         <label class="required-label">{{ __('Choose Trainer') }}</label>
                         <select name="trainer" id="trainer" class="form-control @error('trainer') is-invalid @enderror" required>
                             <option value="">----- Choose session trainer -----</option>
                             @foreach($trainers as $trainerData)
-                            <option value="{{$trainerData->id}}">{{ucwords($trainerData->user->name ?? '')}}</option>
+                            <option value="{{$trainerData->id}}" {{ old('status', $trainerData->ref_users_id ?? null) == auth()->user()->id ? 'selected' : '' }}>{{ucwords($trainerData->user->name ?? '')}}</option>
                             @endforeach
                         </select>
-                        @error('status')
+                        @error('trainer')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

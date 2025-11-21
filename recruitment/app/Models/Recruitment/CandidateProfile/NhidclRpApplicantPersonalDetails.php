@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Recruitment\CandidateProfile\NhidclRpEducationalQualification;
 use App\Models\Recruitment\NhidclRpGateScoreDetails;
 use App\Models\Recruitment\CandidateProfile\NhidclRpWorkExperience;
+use App\Models\Recruitment\NhidclRPUpscExam;
 
 class NhidclRpApplicantPersonalDetails extends Model
 {
@@ -108,6 +109,15 @@ class NhidclRpApplicantPersonalDetails extends Model
     {
         return $this->hasMany(
             NhidclRpGateScoreDetails::class,
+            'ref_users_id', // foreign key in education table
+            'ref_users_id'  // local key in personal details table
+        );
+    }
+
+    public function upscscore()
+    {
+        return $this->hasMany(
+            NhidclRPUpscExam::class,
             'ref_users_id', // foreign key in education table
             'ref_users_id'  // local key in personal details table
         );

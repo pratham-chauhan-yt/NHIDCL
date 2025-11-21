@@ -200,6 +200,15 @@ class BgController extends Controller
         }
     }
 
+    public function type() // New Pratham
+    {
+        $header = true;
+
+        $sidebar = true;
+
+        return view("bank-management.uploader.bg.type", compact("header", "sidebar"));
+    }
+
     /**
      * Display the specified resource.
      */
@@ -956,12 +965,12 @@ public function upload(Request $request)
             $sidebar = true;
 
             if ($request->ajax()) {
-
+                $buttons = ['show', 'delete'];
                 $query = NhidclBankGuarantee::with([
                     'project.projectState',
                     'project.projectType',
                     'guaranteeType'
-                ])->where('status', 'Received')->where('verified_status', 'V')->orderBy('created_at', 'desc');
+                ])->where('status', 'A')->where('verified_status', 'V')->orderBy('created_at', 'desc');
 
 
                 return DataTables::of($query)
@@ -1015,7 +1024,7 @@ public function upload(Request $request)
 
                     ->rawColumns(['no_of_renew', 'track_status', 'track_claim_lodge', 'action'])
                     ->make(true);
-            }
+            } 
 
             return view("bank-management.uploader.bg.search", compact("header", "sidebar"));
         } catch (\Exception $e) {

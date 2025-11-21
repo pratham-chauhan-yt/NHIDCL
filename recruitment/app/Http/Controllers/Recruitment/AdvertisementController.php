@@ -183,6 +183,9 @@ class AdvertisementController extends Controller
             $age             = $request->input('age_filter');
             $category        = $request->input('category_filter');
             $percentile      = $request->input('percentile_filter');
+            $gender          = $request->input('gender_filter');
+            $marital          = $request->input('marital_status_filter');
+            $pwbd          = $request->input('pwbd_filter');
 
             if ($postId) {
                 $application = NhidclApplicationStatus::select('id', 'status')
@@ -261,6 +264,27 @@ class AdvertisementController extends Controller
                 if (!empty($category)) {
                     $query->whereHas('application', function ($q) use ($category) {
                         $q->where('ref_caste_id', $category);
+                    });
+                }
+
+                // Gender filter
+                if (!empty($gender)) {
+                    $query->whereHas('application', function ($q) use ($gender) {
+                        $q->where('gender', $gender);
+                    });
+                }
+
+                // Marital Status filter
+                if (!empty($marital)) {
+                    $query->whereHas('application', function ($q) use ($marital) {
+                        $q->where('marital_status', $marital);
+                    });
+                }
+
+                // PwBd filter
+                if (!empty($pwbd)) {
+                    $query->whereHas('application', function ($q) use ($pwbd) {
+                        $q->where('pwbd', $pwbd);
                     });
                 }
 

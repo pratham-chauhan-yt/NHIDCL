@@ -51,18 +51,6 @@
                                     </button>
                                 </form>
                             </li>
-                            @elseif (auth()->user() && auth()->user()->getRoleNames()->isEmpty())
-                                <li><a href="{{ route('candidate.applicantProfile') }}">View Profile</a></li>
-                                <li><a href="{{ route('candidate.change-password') }}">Change Password</a></li>
-                                <li><a href="{{ route('candidate.login-history') }}">Login History</a></li>
-                                <li>
-                                    <form action="{{ route('candidate.logout') }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
-                                            Logout
-                                        </button>
-                                    </form>
-                                </li>
                             @else
                                 @auth
                                     <li>

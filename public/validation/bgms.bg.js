@@ -1,10 +1,8 @@
 
-
-
 $(document).ready(function () {
     const websiteMeta = document.querySelector('meta[name="website-url"]');
     const websiteUrl = websiteMeta?.getAttribute('content');
-    const finalUrl = websiteUrl ? `${websiteUrl}/bank-guarantee-management-system` : null;
+    const finalUrl = websiteUrl ? `${websiteUrl}bank-guarantee-management-system` : null;
 
 
 
@@ -13,6 +11,29 @@ $(document).ready(function () {
         serverSide: true,
         ajax: {
             url: finalUrl + '/bg',
+        },
+        columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+            { data: 'bg_id', name: 'bg_id' },
+            { data: 'ref_no', name: 'ref_no' },
+            { data: 'sap_id', name: 'sap_id' },
+            { data: 'guarantee_type', name: 'guarantee_type' },
+            { data: 'state', name: 'state' },
+            { data: 'bg_no', name: 'bg_no' },
+            { data: 'no_of_renew', name: 'no_of_renew', orderable: false, searchable: false },
+            { data: 'bg_valid_upto', name: 'bg_valid_upto' },
+            { data: 'track_status', name: 'track_status', orderable: false, searchable: false },
+            { data: 'track_claim_lodge', name: 'track_claim_lodge', orderable: false, searchable: false },
+            { data: 'status', name: 'status' },
+            { data: 'action', name: 'action', orderable: false, searchable: false }
+        ]
+    });
+
+    $('#search-bg-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: finalUrl + '/bg/search',
         },
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
@@ -522,29 +543,6 @@ $(document).on('change', '.upload_attachment', function () {
 //     const section = $(this).closest('.attachment_section_upload_attachment');
 //     section.find('.upload_attachment').click();
 // });
-
-    $('#search-bg-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: {
-            url: finalUrl + '/bg/search',
-        },
-        columns: [
-            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-            { data: 'bg_id', name: 'bg_id' },
-            { data: 'ref_no', name: 'ref_no' },
-            { data: 'sap_id', name: 'sap_id' },
-            { data: 'guarantee_type', name: 'guarantee_type' },
-            { data: 'state', name: 'state' },
-            { data: 'bg_no', name: 'bg_no' },
-            { data: 'no_of_renew', name: 'no_of_renew', orderable: false, searchable: false },
-            { data: 'bg_valid_upto', name: 'bg_valid_upto' },
-            { data: 'track_status', name: 'track_status', orderable: false, searchable: false },
-            { data: 'track_claim_lodge', name: 'track_claim_lodge', orderable: false, searchable: false },
-            { data: 'status', name: 'status' },
-            { data: 'action', name: 'action', orderable: false, searchable: false }
-        ]
-    });
 
 
 });

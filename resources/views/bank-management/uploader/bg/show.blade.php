@@ -1,6 +1,4 @@
 @extends('layouts.dashboard')
-
-
 @section('dashboard_contents')
     <div class="container-fluid md:p-0">
         <div class="top_heading_dash__">

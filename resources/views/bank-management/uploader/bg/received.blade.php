@@ -7,7 +7,6 @@
     </div>
     <div class="inner_page_dash__">
         <div class="my-4 ">
-
             <div id="project" class="tabcontent">
                 <div class="table_over">
                     <table class="cust_table__ table_sparated" id="received-bg-table">
@@ -27,12 +26,8 @@
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
-
-
-
-
                         </thead>
-                        <tbody class=""> </tbody>
+                        <tbody class=""></tbody>
                     </table>
                 </div>
             </div>
@@ -64,7 +59,6 @@
 
                     <input type="hidden" id="uploadUrl" value="{{ route('bgms.bg.upload') }}">
                     <input type="hidden" id="viewUrl" value="{{ route('bgms.bg.view') }}">
-
                 </div>
 
                 <div class="modal-buttons">
@@ -73,9 +67,9 @@
                 </div>
             </div>
         </form>
-
     </div>
 @endsection
+
 @push('scripts')
     <script src="{{ asset('/public/validation/bgms.bg.js') }}"></script>
 @endpush

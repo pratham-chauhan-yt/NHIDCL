@@ -542,7 +542,7 @@
             // Logic for Skip steps button
             if (window.hasEducation === true) {
                 // Save & Next button clicked
-                let nextTab = (window.hasGateDetails === "Yes") ? 3 : 4;
+                let nextTab = (window.hasGateDetails === "Yes") ? 3 : 3;
                 setCookie("selected_tab_candidate", nextTab, 3);
                 location.reload();
             }else{
@@ -772,6 +772,65 @@
             $("#gateScoreDataForm")[0].submit();
         });
 
+        /**************************** UPSC Score Details Form Validation **************************/
+        $(document).on("click", "#upscScoreDataBtn, #upscScoreDataBtnNext", function(e) {
+            e.preventDefault(); // stop default submission
+
+            let id = this.id;
+            let isValid = true;
+            $("#gateClickedFrom").val(id);
+
+            // Remove old errors
+            $(".error-message").remove();
+
+            function showError(input, message) {
+                isValid = false;
+                if (input.next(".error-message").length === 0) {
+                    input.after(`<span class="error-message text-red-600 text-sm">${message}</span>`);
+                } else {
+                    input.next(".error-message").text(message);
+                }
+            }
+
+            // Validate inputs
+            $("#upscExamDataForm").find("input, select, checkbox").each(function() {
+                let input = $(this);
+                let val = input.val().trim();
+                let type = input.data("validate");
+
+                if (type === "required" && val === "") {
+                    showError(input, input.data("error") || "This field is required.");
+                }
+                if (type === "number" && (val === "" || isNaN(val))) {
+                    showError(input, input.data("error") || "Please enter a valid number.");
+                }
+                if (type === "file" && this.files.length === 0) {
+                    showError(input, input.data("error") || "Please upload a file.");
+                }
+                // Validate all checkboxes with data-validate="checkbox"
+                $("#upscExamDataForm").find("input[type='checkbox']").each(function() {
+                    let input = $(this);
+                    let type = input.data("validate"); // e.g. "checkbox"
+
+                    if (!input.is(":checked")) {
+                        showError(input, input.data("error") || "Please accept gate score consent fields.");
+                    }
+                });
+            });
+            // Only proceed if valid
+            if (!isValid) return false;
+            
+            // Save & Next logic before submit
+            if (id === "upscScoreDataBtnNext") {
+                $("#upscExamDataForm")[0].submit();
+                let nextTab = '4';
+                setCookie("selected_tab_candidate", nextTab, 4);
+                //loadStep(nextTab);
+            }
+
+            // Submit form **after everything**
+            $("#upscExamDataForm")[0].submit();
+        });
 
         /**************************** State Group Form Validation **************************/
         $(document).on("click", "#stateGroupDataBtn", function(e) {
@@ -1788,7 +1847,6 @@
             const finalUrl = websiteUrl
                 ? `${websiteUrl}/recruitment-portal/candidate/candidate_details?tab_id=${linkid}`
                 : null;
-
             $("#loader").show();
             $.ajax({
                 url: finalUrl,
@@ -1801,10 +1859,14 @@
                     }
 
                     let tabId = response.data?.tab_id;
-
+                    
                     if (tabId == "1") personalDeatils(response.data);
                     if (tabId == "2") educationalDetails(response.data);
-                    if (tabId == "3") validateGateScoreDetails(response.data);
+                    if (tabId == "3") {
+                        (window.hasGateDetails === "Yes" && window.hasPostExam === "GATE")
+                            ? validateGateScoreDetails(response.data)
+                            : validateUPSCScoreDetails(response.data);
+                    }
                     if (tabId == "4") experienceDetails(response.data);
                     if (tabId == "5") validateStateGroupDetails(response.data);
                     if (tabId == "6") validatePaymentDetails(response.data);
@@ -1821,8 +1883,14 @@
             1: { required: true, validator: validatePersonalDetails },
             2: { required: true, validator: validateEducationDetails },
             3: { 
-                required: (window.hasGateDetails === "Yes"), 
-                validator: validateGateScoreDetails 
+                required: true,
+                validator: () => {
+                    if (window.hasGateDetails === "Yes" && window.hasPostExam === "GATE") {
+                        return validateGateScoreDetails();
+                    } else {
+                        return validateUPSCScoreDetails();
+                    }
+                }
             },
             4: { required: false, validator: validateGateScoreDetails},
             5: { required: true, validator: validateStateGroupDetails },
@@ -1872,10 +1940,22 @@
             let gate_discpline = $("#gate_discpline").val();
             let gate_registration_number = $("#gate_registration_number").val();
             let gate_score = $("#gate_score").val();
-            // let all_india_rank = $("#all_india_rank").val();
-            // let number_of_candidate = $("#number_of_candidate").val();
             let upload_gate_scorecardd = $("#upload_gate_scorecardd").val();
-            return gate_exam_year.trim() !== "" && gate_discpline.trim() !== "" && gate_registration_number.trim() !== "" && gate_score.trim() !== "" && upload_gate_scorecardd.trim() !== "";
+            if(gate_exam_year){
+                return gate_exam_year.trim() !== "" && gate_discpline.trim() !== "" && gate_registration_number.trim() !== "" && gate_score.trim() !== "" && upload_gate_scorecardd.trim() !== "";
+            }else{
+                return null;
+            }
+        }
+
+        function validateUPSCScoreDetails() {
+            let upsc_exam_year = $("#upsc_exam_year").val();
+            let upsc_cse_roll_number = $("#upsc_cse_roll_number").val();
+            let upsc_cse_mains_marks = $("#upsc_cse_mains_marks").val();
+            let upsc_cse_interview_marks = $("#upsc_cse_interview_marks").val();
+            let interview_call_letter_file = $("#interview_call_letter_file_txt").val();
+            let upsc_cse_mains_score_file = $("#upsc_cse_mains_score_file_txt").val();
+            return upsc_exam_year.trim() !== "" && upsc_cse_roll_number.trim() !== "" && upsc_cse_mains_marks.trim() !== "" && upsc_cse_interview_marks.trim() !== "" && interview_call_letter_file.trim() !== "" && upsc_cse_mains_score_file.trim() !== "";
         }
 
         function validateStateGroupDetails() {

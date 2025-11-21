@@ -28,6 +28,8 @@ Route::middleware(['auth', 'single.device', 'no.cache', 'secure.headers', 'block
     Route::match(['get', 'post'], 'mark/attendance/checker/edit/{id}', [AttendanceController::class, 'approverUpdate'])->name('mark.attendance.checker.edit');
     Route::match(['get', 'post'], 'mark/attendance/approver', [AttendanceController::class, 'approver'])->name('mark.attendance.approver');
     Route::match(['get', 'post'], 'mark/attendance/approver/edit/{id}', [AttendanceController::class, 'approverUpdate'])->name('mark.attendance.approver.edit');
+    Route::get('geo/reverse', [AttendanceController::class, 'reverseGeo'])
+    ->name('geo.reverse');
 
     Route::get('calendar', [EmpDashboardController::class, 'calendar'])->name('calendar');
 

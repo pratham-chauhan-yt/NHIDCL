@@ -59,7 +59,7 @@
                             <label class="required-label">Guarantee Type</label>
                             <select name="ref_guarantee_type_id" class="">
                                 <option value="">Select guarantee type</option>
-                                @foreach (RefGuaranteeType::all() as $gt)
+                                @foreach (RefGuaranteeType::where('is_deleted', 'false')->get() as $gt)
                                     <option value="{{ $gt->id }}"
                                         {{ old('ref_guarantee_type_id') == $gt->id ? 'selected' : '' }}>
                                         {{ $gt->guarantee_type }}
@@ -124,25 +124,17 @@
                             @enderror
                         </div>
 
-                        <div class="">
-                            <label class="required-label">Issuing Bank Name</label>
+                        <!-- <div class="">
+                            <label class="">Issuing Bank Name</label>
                             <input type="text" name="issuing_bank_name" placeholder="Enter Issuing bank name"
                                 value="{{ old('issuing_bank_name') }}">
                             @error('bank_name')
                                 <div class="error-message">{{ $message }}</div>
                             @enderror
-                        </div>
+                        </div> -->
+                        
                         <div class="">
-                            <label class="required-label">Issuing Bank Branch</label>
-                            <input type="text" name="issuing_bank_branch" placeholder="Enter issuing bank branch"
-                                value="{{ old('issuing_bank_branch') }}">
-                            @error('issuing_bank_branch')
-                                <div class="error-message">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="">
-                            <label class="required-label">Issuing Bank Mob No</label>
+                            <label class="">Issuing Bank Mob No</label>
                             <input type="text" name="issuing_bank_mob_no"
                                 placeholder="Enter issuing bank mobile number" value="{{ old('issuing_bank_mob_no') }}">
                             @error('issuing_bank_mob_no')
@@ -151,16 +143,25 @@
                         </div>
 
                         <div class="">
-                            <label class="required-label">Issuing Bank Email</label>
+                            <label class="">Issuing Bank Email</label>
                             <input type="email" name="issuing_bank_email" placeholder="Enter issuing bank email"
                                 value="{{ old('issuing_bank_email') }}">
                             @error('issuing_bank_email')
                                 <div class="error-message">{{ $message }}</div>
                             @enderror
                         </div>
+                        
+                        <div class="">
+                            <label class="">Issuing Bank Branch</label>
+                            <input type="text" name="issuing_bank_branch" placeholder="Enter issuing bank branch"
+                                value="{{ old('issuing_bank_branch') }}">
+                            @error('issuing_bank_branch')
+                                <div class="error-message">{{ $message }}</div>
+                            @enderror
+                        </div>
 
                         <div class="">
-                            <label class="required-label">Issuing Bank Address</label>
+                            <label class="">Issuing Bank Address</label>
                             <input type="text" name="issuing_bank_address" placeholder="Enter issuing bank address"
                                 value="{{ old('issuing_bank_address') }}">
                             @error('issuing_bank_address')
@@ -168,18 +169,18 @@
                             @enderror
                         </div>
 
-                        <div class="">
-                            <label class="required-label">Operable Bank Name</label>
+                        <!-- <div class="">
+                            <label class="">Operable Bank Name</label>
                             <input type="text" name="operable_bank_name"
                                 placeholder="Enter operable bank Name"
                                 value="{{ old('operable_bank_name') }}">
                             @error('operable_bank_name')
                                 <div class="error-message">{{ $message }}</div>
                             @enderror
-                        </div>
+                        </div> -->
 
                         <div class="">
-                            <label class="required-label">Operable Bank Mob No</label>
+                            <label class="">Operable Bank Mob No</label>
                             <input type="text" name="operable_bank_mob_no"
                                 placeholder="Enter operable bank mobile number"
                                 value="{{ old('operable_bank_mob_no') }}">
@@ -189,7 +190,7 @@
                         </div>
 
                         <div class="">
-                            <label class="required-label">Operable Bank Email</label>
+                            <label class="">Operable Bank Email</label>
                             <input type="email" name="operable_bank_email" placeholder="Enter operable bank email"
                                 value="{{ old('operable_bank_email') }}">
                             @error('operable_bank_email')
@@ -198,19 +199,19 @@
                         </div>
 
                         <div class="">
-                            <label class="required-label">Operable Bank Address</label>
-                            <input type="text" name="operable_bank_address" placeholder="Enter operable bank address"
-                                value="{{ old('operable_bank_address') }}">
-                            @error('operable_bank_address')
+                            <label class="">Operable Bank Branch</label>
+                            <input type="text" name="operable_bank_branch" placeholder="Enter operable bank branch"
+                                value="{{ old('operable_bank_branch') }}">
+                            @error('operable_bank_branch')
                                 <div class="error-message">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <div class="">
-                            <label class="required-label">Operable Bank Branch</label>
-                            <input type="text" name="operable_bank_branch" placeholder="Enter operable bank branch"
-                                value="{{ old('operable_bank_branch') }}">
-                            @error('operable_bank_branch')
+                            <label class="">Operable Bank Address</label>
+                            <input type="text" name="operable_bank_address" placeholder="Enter operable bank address"
+                                value="{{ old('operable_bank_address') }}">
+                            @error('operable_bank_address')
                                 <div class="error-message">{{ $message }}</div>
                             @enderror
                         </div>
@@ -264,7 +265,7 @@
 </div> -->
 
                         <div class="attachment_section_upload_attachment attachment_preview">
-                            <label>Upload BG</label>
+                            <label class="required-label">Upload BG</label>
                             <div class="flex gap-[10px]">
                                 <input type="text" id="uploaded_attachment" name="uploaded_attachment"
                                     placeholder="Upload Image" class="uploaded_attachment" readonly

@@ -25,10 +25,15 @@
                       <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-120 200-272v-240L40-600l440-240 440 240v320h-80v-276l-80 44v240L480-120Zm0-332 274-148-274-148-274 148 274 148Zm0 241 200-108v-151L480-360 280-470v151l200 108Zm0-241Zm0 90Zm0 0Z"/></svg>
                         </svg> Educational Details
                     </button>
-                    @if ($record?->required_gate_detail == '1')
+                    @if ($record?->required_gate_detail == '1' && $record?->post_examination == 'GATE')
                     <button class="tablink" id="defaultTabs3">
                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q13-36 43.5-58t68.5-22q38 0 68.5 22t43.5 58h168q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm80-80h280v-80H280v80Zm0-160h400v-80H280v80Zm0-160h400v-80H280v80Zm200-190q13 0 21.5-8.5T510-820q0-13-8.5-21.5T480-850q-13 0-21.5 8.5T450-820q0 13 8.5 21.5T480-790ZM200-200v-560 560Z"/></svg>
                         </svg> GATE Score Details
+                    </button>
+                    @else
+                    <button class="tablink" id="defaultTabs3">
+                       <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q13-36 43.5-58t68.5-22q38 0 68.5 22t43.5 58h168q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm80-80h280v-80H280v80Zm0-160h400v-80H280v80Zm0-160h400v-80H280v80Zm200-190q13 0 21.5-8.5T510-820q0-13-8.5-21.5T480-850q-13 0-21.5 8.5T450-820q0 13 8.5 21.5T480-790ZM200-200v-560 560Z"/></svg>
+                        </svg> UPSC 2024 Details
                     </button>
                     @endif
                     <button class="tablink" id="defaultTabs4">
@@ -763,7 +768,7 @@
                     </div>
                 </div>
 
-                @if ($record?->required_gate_detail == '1')
+                @if ($record?->required_gate_detail == '1' && $record?->post_examination == 'GATE')
                 <div id="tab-3" class="tabcontent" style="display: {{ session('active_tab') == 'gateScore' ? 'block' : 'none' }}">
                     <form id="gateScoreDataForm" action="{{ route('recruitment-portal.candidate.gate.score') }}" method="post" enctype="multipart/form-data">
                         @csrf
@@ -917,6 +922,154 @@
                             </thead>
                         </table>
                     </div>
+                </div>
+                @else
+                <div id="tab-3" class="tabcontent" style="display: {{ session('active_tab') == 'upscScore' ? 'block' : 'none' }}">
+                    <form id="upscExamDataForm" action="{{ route('recruitment-portal.candidate.upsc.score') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="postids" value="{{ $record->id }}">
+                        <input type="hidden" name="redirect_url" value="{{ url()->current() }}">
+                        <input type="hidden" id="gateClickedFrom" name="gateClickedFrom" value="">
+                        <div class="inpus_cust_cs form_grid_dashboard_cust_">
+                            <div class="form-input">
+                                <label class="required-label">Year of UPSC CSE</label>
+                                <select name="upsc_exam_year" id="upsc_exam_year" data-validate="number" data-error="Please select upsc exam year.">
+                                    <option value="">--- Select year of UPSC CSE exam ---</option>
+                                    @php
+                                        $currentYear = date('Y');
+                                        $filteredYears = $passing_years->filter(function ($year) use (
+                                            $currentYear,
+                                        ) {
+                                            return $year->passing_year >= $currentYear - 1;
+                                        });
+                                        $filteredYears = $filteredYears->sortByDesc('passing_year');
+                                    @endphp
+
+                                    @foreach ($filteredYears as $passing_year)
+                                    @if($passing_year->passing_year != $currentYear)
+                                        <option value="{{ $passing_year->id }}"
+                                            {{ optional($upscScoreData)->ref_passing_year_id === $passing_year->id ? 'selected' : '' }}>
+                                            {{ $passing_year->passing_year }}
+                                        </option>
+                                    @endif
+                                    @endforeach
+
+                                </select>
+                            </div>
+
+                            <div class="form-input">
+                                <label class="required-label">UPSC CSE Roll Number</label>
+                                <input type="text" id="upsc_cse_roll_number" name="upsc_cse_roll_number" data-validate="required" data-error="Please enter UPSC CSE roll number."
+                                    value="{{ optional($upscScoreData)->upsc_cse_roll_number ?? '' }}" pattern="^[A-Za-z0-9/]+$" placeholder="Enter UPSC CSE roll number">
+                            </div>
+                            <div class="form-input">
+                                <label class="required-label">UPSC CSE Mains Score</label>
+                                <input type="text" id="upsc_cse_mains_marks" name="upsc_cse_mains_marks" data-validate="required" data-error="Please enter UPSC CSE mains score."
+                                    value="{{ optional($upscScoreData)->upsc_cse_mains_marks ?? '' }}" pattern="^[A-Za-z0-9/]+$" placeholder="Enter UPSC CSE mains score">
+                            </div>
+                            <div class="form-input">
+                                <label class="required-label">UPSC CSE Interview Score</label>
+                                <input type="text" id="upsc_cse_interview_marks" name="upsc_cse_interview_marks" data-validate="required" data-error="Please enter UPSE interview score."
+                                    value="{{ optional($upscScoreData)->upsc_cse_interview_marks ?? '' }}" pattern="^[A-Za-z0-9/]+$" placeholder="Enter UPSE CSE interview score">
+                            </div>
+                            <div class="form-input">
+                                <label class="required-label">UPSC CSE Mains Percentile Score (as per UPSC Pratibha Setu portal)</label>
+                                <input type="text" id="upsc_cse_mains_percentile" name="upsc_cse_mains_percentile" data-validate="required" data-error="Please enter UPSE CSE Mains Percentile Score."
+                                    value="{{ optional($upscScoreData)->upsc_cse_mains_percentile ?? '' }}" pattern="^[A-Za-z0-9/]+$" placeholder="Enter UPSE CSE CSE Mains Percentile Score">
+                            </div>
+
+                            <div class="attachment_advertisement attachment_section_advertisement">
+                                <label class="required-label">Upload UPSC CSE Interview/ Call Letter (<small>Max size 2MB & file should be pdf only</small>)</label>
+                                <div class="flex gap-[10px]">
+                                    <input type="text" id="interview_call_letter_file_txt" name="interview_call_letter_file_txt" 
+                                    value="{{ !empty($upscScoreData->interview_call_letter_filepath) && !empty($upscScoreData->interview_call_letter_file) 
+                                    ? route('users.view.files', ['pathName' => $upscScoreData->interview_call_letter_filepath, 'fileName' => $upscScoreData->interview_call_letter_file]) 
+                                    : '' }}"
+                                    class="interview_call_letter_file_txt" placeholder="Upload UPSC CSE interview call letter" data-validate="required" data-error="Please upload UPSC CSE interview call letter." readonly>
+                                    <label class="upload_cust mb-0 hover-effect-btn hide_upload_photos cursor-pointer" @if(!empty($upscScoreData->interview_call_letter_file ?? '') && !empty($upscScoreData->interview_call_letter_filepath ?? '')) style="display:none" @endif>
+                                        Upload File
+                                        <input type="file"
+                                            name="upload_interview_call_letter_file"
+                                            id="upload_interview_call_letter_file"
+                                            class="hidden file-uploader"
+                                            accept=".pdf"
+                                            data-type="pdf"
+                                            data-max-size="2000000"
+                                            data-input-id="interview_call_letter_file_txt"
+                                            data-preview-wrapper="interview_call_letter_file_preview"
+                                            data-hidden-input="upload_interview_call_letter_file_hidden"
+                                            data-upload-url="/users/upload/files/"
+                                            data-view-url="/users/view/files/"
+                                            data-file-path="/uploads/recruitment/applicant/">
+                                    </label>
+                                    <input type="hidden" name="upload_interview_call_letter_file_hidden" id="upload_interview_call_letter_file_hidden">
+                                </div>
+                                <div id="interview_call_letter_file_preview">
+                                    @if(!is_null($upscScoreData) && !is_null($upscScoreData?->interview_call_letter_file) && !is_null($upscScoreData?->interview_call_letter_filepath))
+                                    <a target="_blank" href="{{ route('users.view.files', ['pathName' => $upscScoreData->interview_call_letter_filepath, 'fileName' => $upscScoreData->interview_call_letter_file]) }}" class="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-80 report_preview_support_photo">View</a>
+                                    <a href="javascript:void(0);" class="reupload-btn bg-red-700 hover:bg-red-800 rounded-lg text-sm px-5 py-2.5"
+                                    data-input-id="interview_call_letter_file_txt" data-wrapper-id="interview_call_letter_file_preview" data-hidden-input="upload_interview_call_letter_file_hidden">
+                                    Remove
+                                    </a>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="attachment_advertisement attachment_section_advertisement">
+                                <label class="required-label">Upload UPSC CSE Mains Score Card (<small>Max size 2MB & file should be pdf only</small>)</label>
+                                <div class="flex gap-[10px]">
+                                    <input type="text" id="upsc_cse_mains_score_file_txt" name="upsc_cse_mains_score_file_txt" 
+                                    value="{{ !empty($upscScoreData->upsc_cse_mains_score_filepath) && !empty($upscScoreData->upsc_cse_mains_score_file) 
+                                    ? route('users.view.files', ['pathName' => $upscScoreData->upsc_cse_mains_score_filepath, 'fileName' => $upscScoreData->upsc_cse_mains_score_file]) 
+                                    : '' }}"
+                                    class="upsc_cse_mains_score_file_txt" placeholder="Upload UPSC CSE mains score card" data-validate="required" data-error="Please Upload UPSC CSE mains score card." readonly>
+                                    <label class="upload_cust mb-0 hover-effect-btn hide_upload_photos cursor-pointer" @if(!empty($upscScoreData->upsc_cse_mains_score_file ?? '') && !empty($upscScoreData->upsc_cse_mains_score_filepath ?? '')) style="display:none" @endif>
+                                        Upload File
+                                        <input type="file"
+                                            name="upload_upsc_cse_mains_score_file"
+                                            id="upload_upsc_cse_mains_score_file"
+                                            class="hidden file-uploader"
+                                            accept=".pdf"
+                                            data-type="pdf"
+                                            data-max-size="2000000"
+                                            data-input-id="upsc_cse_mains_score_file_txt"
+                                            data-preview-wrapper="upsc_cse_mains_score_file_preview"
+                                            data-hidden-input="upload_upsc_cse_mains_score_file_hidden"
+                                            data-upload-url="/users/upload/files/"
+                                            data-view-url="/users/view/files/"
+                                            data-file-path="/uploads/recruitment/applicant/">
+                                    </label>
+                                    <input type="hidden" name="upload_upsc_cse_mains_score_file_hidden" id="upload_upsc_cse_mains_score_file_hidden">
+                                </div>
+                                <div id="upsc_cse_mains_score_file_preview">
+                                    @if(!is_null($upscScoreData) && !empty($upscScoreData->upsc_cse_mains_score_file) && !empty($upscScoreData->upsc_cse_mains_score_filepath))
+                                    <a target="_blank" href="{{ route('users.view.files', ['pathName' => $upscScoreData->upsc_cse_mains_score_filepath, 'fileName' => $upscScoreData->upsc_cse_mains_score_file]) }}" class="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-80 report_preview_support_photo">View</a>
+                                    <a href="javascript:void(0);" class="reupload-btn bg-red-700 hover:bg-red-800 rounded-lg text-sm px-5 py-2.5"
+                                    data-input-id="upsc_cse_mains_score_file_txt" data-wrapper-id="upsc_cse_mains_score_file_preview" data-hidden-input="upload_upsc_cse_mains_score_file_hidden">
+                                    Remove
+                                    </a>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="flex items-start mt-3">
+                                <div class="flex items-center h-5 inpus_cust_cs">
+                                    <input type="hidden" name="upsc_consent" id="upsc_consent_hidden" value="0">
+                                    <input type="checkbox" class="w-4 h-4" name="upsc_consent" id="upsc_consent" data-validate="required" data-error="Please choose gate consent." {{ $upscScoreData?->upsc_consent == true ? 'checked' : '' }}>
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="upsc_consent" class="dark:text-gray-600 cursor-pointer text-sm">
+                                        I hereby undertake to submit all necessary documents regarding UPSC CSE 2024 at the time of document verification, if shortlisted. I also confirm that I have appeared for UPSC CSE 2024 interview and I do understand that selection shall be based on the percentile score obtained in the UPSC CSE 2024 and verification with UPSC Pratibha Setu portal. I do understand that my documents are liable for scrutiny/ verification and any discrepancies in the genuineness of the documents will lead to cancellation of my candidature/ offer of appointment/ appointment at any time.
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="button_flex_cust_form">
+                            <button type="button" id="upscScoreDataBtn" class="hover-effect-btn border_btn"> Save </button>
+                            <button type="button" id="upscScoreDataBtnNext" class="tablink hover-effect-btn fill_btn"> Next</button>
+                        </div>
+                    </form>
                 </div>
                 @endif
 
@@ -1728,7 +1881,7 @@
                             <label><input type="checkbox" checked disabled> I hereby undertake to submit the documents regarding education qualification at the time of document verification, if shortlisted. I do understand that my documents are liable for scrutiny/ verification and any discrepancies in the genuineness of the documents will lead to cancellation of my candidature/ offer of appointment/ appointment; at any time.</label>
                         </div>
                     </div>
-                    @if ($record?->required_gate_detail == '1')
+                    @if ($record?->required_gate_detail == '1' && $record?->post_examination == 'GATE')
                     <h4 class="applicat_cust-title mt-3">GATE Score Details</h4>
                     <div class="table_over">
                         <table class="cust_table__ table_sparated">
@@ -1772,6 +1925,58 @@
                             <label>
                                 <input type="checkbox" checked disabled>
                                 I hereby undertake to submit my GATE Score card at the time of document verification, if shortlisted and give my consent for use of my GATE login credentials for verification/re-verification of my GATE Score by NHIDCL. I do understand that my documents are liable for scrutiny/verification and any discrepancies in the genuineness of the documents will lead to cancellation of my candidature/offer of appointment/ appointment at any time.
+                            </label>
+                        </div>
+                    </div>
+                    @else
+                    <h4 class="applicat_cust-title mt-3">UPSC CSE Details</h4>
+                    <div class="table_over">
+                        <table class="cust_table__ table_sparated">
+                            <thead class=" ">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Exam Year</th>
+                                    <th>Roll Number</th>
+                                    <th>Mains Score</th>
+                                    <th>Interview Score</th>
+                                    <th>Interview Call Letter</th>
+                                    <th>Mains Score Card</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($previewData->upscscore ?? [] as $upscscoreData)
+                                    <tr>
+                                        <th>{{ $loop->iteration }}</th>
+                                        <td>{{ optional($upscscoreData->passingYear)->passing_year }}</td>
+                                        <td>{{ $upscscoreData->upsc_cse_roll_number }}</td>
+                                        <td>{{ $upscscoreData->upsc_cse_mains_marks }}</td>
+                                        <td>{{ $upscscoreData->upsc_cse_interview_marks }}</td>
+                                        <td><a href="{{ route('users.view.files', [
+                                            'pathName' => $upscscoreData->interview_call_letter_filepath,
+                                            'fileName' => $upscscoreData->interview_call_letter_file,
+                                        ]) }}"
+                                                class="btn btn-default btn-sm" target="_blank">
+                                                View Call Letter
+                                            </a></td>
+                                        <td><a href="{{ route('users.view.files', [
+                                            'pathName' => $upscscoreData->upsc_cse_mains_score_filepath,
+                                            'fileName' => $upscscoreData->upsc_cse_mains_score_file,
+                                        ]) }}"
+                                                class="btn btn-default btn-sm" target="_blank">
+                                                View Mains Score Card
+                                            </a></td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <th colspan="6">No Records found</th>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                        <div class="mt-2 text-sm">
+                            <label>
+                                <input type="checkbox" checked disabled>
+                                I hereby undertake to submit all necessary documents regarding UPSC CSE 2024 at the time of document verification, if shortlisted. I also confirm that I have appeared for UPSC CSE 2024 interview and I do understand that selection shall be based on the percentile score obtained in the UPSC CSE 2024 and verification with UPSC Pratibha Setu portal. I do understand that my documents are liable for scrutiny/ verification and any discrepancies in the genuineness of the documents will lead to cancellation of my candidature/ offer of appointment/ appointment at any time.
                             </label>
                         </div>
                     </div>
@@ -2020,6 +2225,7 @@
         getInitialGeolocation();
     </script>
     <script>
+        window.hasPostExam = "{{ $record?->post_examination == 'UPSC' ? 'UPSC' : 'GATE' }}";
         window.hasPersonalDetail = {{ $previewData?->count() > 0 ? 'true' : 'false' }};
         window.hasGateDetails = "{{ $record?->required_gate_detail == 1 ? 'Yes' : 'No' }}";
         window.hasGateCount = {{ $gateScoreData ? 'true' : 'false' }};

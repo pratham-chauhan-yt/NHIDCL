@@ -25,6 +25,7 @@ use App\Models\Recruitment\AdvertisementPost;
 use App\Http\Requests\Recruitment\AdvertisementPostRequest;
 use App\Models\RefModeOfRecruitment;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
 {
@@ -101,6 +102,78 @@ class PostController extends Controller
 
     public function store(AdvertisementPostRequest $request)
     {
+        try {
+            // Get the user or IP address to apply rate limit based on
+            $userId = Auth::id();  // Or use $request->ip() if you prefer to limit by IP
+            $rateLimitKey = 'user:' . $userId . ':ad-post-store';
+
+            // Check if the user has exceeded the rate limit
+            if (Cache::has($rateLimitKey)) {
+                return redirect()->route('recruitment-portal.post.index')
+                                ->with('error', 'You have reached the maximum limit for posting an advertisement. Please try again later.');
+            }
+
+            // Proceed with storing the advertisement post
+            $age_limit = [
+                'min_age_limit' => $request->min_age_limit,
+                'max_age_limit' => $request->max_age_limit,
+            ];
+
+            $array = [
+                'mode_of_requirement' => $request->mode_of_requirement,
+                'post_examination' => $request->post_examination,
+                'advertisement_year' => $request->advertisement_year,
+                'nhidcl_recruitment_advertisement_id' => (int) $request->recruitment_advertisement_id,
+                'post_name' => $request->post_name,
+                'is_active' => $request->is_active,
+                'total_vacancy' => $request->total_vacancy,
+                'age_limit' => json_encode($age_limit),
+                'required_experience' => $request->required_experience,
+                'required_gate_detail' => $request->required_gate_detail,
+                'last_datetime' => $request->last_datetime,
+                'created_by' => Auth::user()->id,
+                "post_payment_type" => $request->post_payment_type,
+                "amount" =>  ($request->post_payment_type === 'Paid') ? (float) $request->input('amount', 0) : null,
+            ];
+
+            $post = AdvertisementPost::create($array);
+
+            // Gate exam year and discipline logic
+            if ($request->required_gate_detail == 1) {
+                $gateYears = $request->required_gate_exam_year;
+                $gateDisciplines = $request->required_gate_discipline;
+                $yearArr = [];
+                $disciplineArr = [];
+                foreach ($gateYears as $val) {
+                    $yearArr[] = [
+                        'nhidcl_recruitment_posts_id' => $post->id,
+                        'ref_passing_year_id' => $val,
+                    ];
+                }
+                NhidclRecruitmentPostGateExam::insert($yearArr);
+
+                foreach ($gateDisciplines as $val) {
+                    $disciplineArr[] = [
+                        'nhidcl_recruitment_posts_id' => $post->id,
+                        'ref_gate_discipline_id' => $val,
+                    ];
+                }
+                NhidclRecruitmentPostGateDiscipline::insert($disciplineArr);
+            }
+
+            // Set the rate limit in cache (e.g., 1 request every minute)
+            Cache::put($rateLimitKey, true, now()->addMinutes(1));
+
+            Alert::success('Success', 'Submitted Successfully');
+            return redirect()->route('recruitment-portal.post.index');
+        } catch (\Exception $e) {
+            $msg = $e->getMessage();
+            return redirect()->route('recruitment-portal.post.index')->with('error', $msg);
+        }
+    }
+
+    public function storeOld(AdvertisementPostRequest $request)
+    {
 
         try {
             $age_limit = [
@@ -110,6 +183,7 @@ class PostController extends Controller
             
             $array = [
                 'mode_of_requirement' => $request->mode_of_requirement,
+                'post_examination' => $request->post_examination,
                 'advertisement_year' => $request->advertisement_year,
                 'nhidcl_recruitment_advertisement_id' => (int) $request->recruitment_advertisement_id,
                 'post_name' => $request->post_name,
@@ -229,7 +303,8 @@ class PostController extends Controller
     }
 
     public function update($id, AdvertisementPostRequest $request)
-    {
+    {   
+        dd($id);
         try {
             $age_limit = [
                 'min_age_limit' => $request->min_age_limit,

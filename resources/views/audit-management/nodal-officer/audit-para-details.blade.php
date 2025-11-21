@@ -7,6 +7,11 @@
     color: #000 !important;       
     background-color: #fff !important; 
 }
+.note-modal-backdrop {
+    z-index: 1 !important;       /* Keep it but far behind */
+    pointer-events: none !important; /* Cannot block clicks */
+}
+
 
 </style>
     <!-- Main content area -->

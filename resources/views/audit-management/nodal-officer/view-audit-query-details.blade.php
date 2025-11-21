@@ -50,7 +50,7 @@
                                             'fileName' => $wordFileName,
                                         ]);
                                     @endphp
-                                    <a href="{{ $wordFileUrl }}" target="_blank" data-bs-toggle="tooltip"
+                                    <a href="{{ $wordFileUrl }}" target="_self" data-bs-toggle="tooltip"
                                         title="View word file">
                                         <i class="fa fa-file-word mx-1" aria-hidden="true"></i>
                                     </a>

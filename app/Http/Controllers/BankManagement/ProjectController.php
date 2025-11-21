@@ -9,9 +9,12 @@ use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\Uploader\ProjectRequest;
+use DB;
 
 use App\Http\Controllers\Controller;
 use App\Models\NhidclProject;
+use App\Models\RefState;
+use App\Models\RefProjectType;
 use Illuminate\Support\Facades\Log;
 
 class ProjectController extends Controller
@@ -33,7 +36,10 @@ class ProjectController extends Controller
 
         $sidebar = true;
 
-        return view("bank-management.uploader.project.dashboard", compact("header", "sidebar"));
+
+        $states = RefState::where("is_deleted", "false")->get();
+
+        return view("bank-management.uploader.project.dashboard", compact("header", "sidebar", "states"));
     }
 
     public function index(Request $request)
@@ -130,7 +136,7 @@ class ProjectController extends Controller
         $header = True;
         $project = NhidclProject::findOrFail(decryptId($id));
         return view('bank-management.uploader.project.viewproject', compact('project', 'header', 'sidebar'));
-       // echo "Under development UI Pending";
+        // echo "Under development UI Pending";
     }
 
 
@@ -218,5 +224,31 @@ class ProjectController extends Controller
 
             return redirect()->route('bgms.project.index');
         }
+    }
+
+    public function list()
+    {
+        $header = true;
+        $sidebar = true;
+
+        $bgmsAssignedState = bgmsAssignedState();
+        return view("bank-management.uploader.project.list", compact("header", "sidebar", "bgmsAssignedState"));
+    }
+    public function stateSearch(Request $request)
+    {
+        if ($request->state == 'all') {
+            $data['project_data'] = NhidclProject::
+                select('ref_project_type_id', \DB::raw('COUNT(*) as total'))
+                ->groupBy('ref_project_type_id')
+                ->get();
+        } else {
+            $type = RefProjectType::pluck('project_type', 'id')->get();
+            $data['project_data'] = NhidclProject::where('ref_project_state_id', $request->state)
+                ->select($type->project_type, \DB::raw('COUNT(*) as total'))
+                ->groupBy('ref_project_type_id')
+                ->get();
+        }
+
+        return view('bank-management.uploader.project.task', $data)->render();
     }
 }

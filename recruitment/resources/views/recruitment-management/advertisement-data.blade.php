@@ -29,7 +29,11 @@
                         @foreach($postdata as $postresult)
                         @php
                             $readableModes = $postresult->moderecruitment->pluck('name')->implode(', ');
+                            $now = \Carbon\Carbon::now();
+                            $start = $record?->start_datetime ? \Carbon\Carbon::parse($record?->start_datetime) : null;
+                            $end   = $record?->expiry_datetime ? \Carbon\Carbon::parse($record?->expiry_datetime) : null;
                         @endphp
+                        @if($start && $end && $now->between($start, $end) && now()->lessThan(\Carbon\Carbon::parse($postresult->last_datetime)))
                         <div class="candidat_cust-item">
                             <div class="candidat_cust-header">
                                 <span class="candidat_cust-time">Mode of Recruitment</span>
@@ -44,11 +48,7 @@
                                 <p>Last date and time <br><span>{{ \Carbon\Carbon::parse($postresult->last_datetime)->format('d-m-Y h:i:s A') }}</span></p>
                                 @endif
                             </div>
-                            @php
-                                $now = \Carbon\Carbon::now();
-                                $start = $record?->start_datetime ? \Carbon\Carbon::parse($record?->start_datetime) : null;
-                                $end   = $record?->expiry_datetime ? \Carbon\Carbon::parse($record?->expiry_datetime) : null;
-                            @endphp
+                            
                             @if($start && $end && $now->between($start, $end) && now()->lessThan(\Carbon\Carbon::parse($postresult->last_datetime)))
                             <div class="text-right">
                                 <a href="{{ route('recruitment-portal.candidate.advertisement.post', encrypt($postresult->id)) }}" class="hover-effect-btn text-hover btn btn-primary text-white">Apply Here</a>
@@ -60,6 +60,7 @@
                             @endif
 
                         </div>
+                        @endif
                         @endforeach
                     </div>
                 </div>

@@ -9,7 +9,6 @@
                     <div class="left_side">
                         <div class="banner_heading">
                             <p>NHIDCL's Recruitment Portal is a dedicated digital platform where applicants can apply for various career opportunities. It is designed to ensure a fair, transparent, and merit-based recruitment process that attracts the best talent to serve the public interest. </p>
-                            <p class="text-yellow">IMPORTANT NOTICE: The edit option to all the applicants for the post of Deputy Manager (Tech.) will be available from 6:00 PM of 31.10.2025 to 6:00 PM of 03.11.2025 for 72 hours. <a href="https://www.nhidcl.com/sites/default/files/2025-10/notice_edit_option.pdf." target="_blank" class="hyperlink">Click here for more details.</a>​</p>
                         </div>
                     </div>
                     <div class="right_form">                  

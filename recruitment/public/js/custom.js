@@ -2657,3 +2657,135 @@ $(document).ready(function () {
 //         }
 //     });
 // })();
+
+$(document).ready(function () {
+    $(document).on("change", ".file-uploader", function () {
+        const $this = $(this);
+        const file = this.files[0];
+        const loader = document.querySelector(".loader");
+        if (!file) return;
+
+        const fileType = $this.data("type") || "pdf"; // can be 'image' or 'pdf'
+        const maxSize = parseInt($this.data("max-size")) || 2000000;
+        const inputId = $this.data("input-id");
+        const previewWrapper = $this.data("preview-wrapper");
+        const hiddenInput = $this.data("hidden-input");
+
+        let uploadUrl = $this.data("upload-url");
+        let viewUrl = $this.data("view-url");
+        let filePathUrl = $this.data("file-path");
+
+        const websiteMeta = document.querySelector('meta[name="website-url"]');
+        const websiteUrl = websiteMeta?.getAttribute("content")?.replace(/\/+$/, "");
+
+        if (websiteUrl && uploadUrl) {
+            uploadUrl = `${websiteUrl}/${uploadUrl.replace(/^\/+/, "")}`;
+        }
+        if (websiteUrl && viewUrl) {
+            viewUrl = `${websiteUrl}/${viewUrl.replace(/^\/+/, "")}`;
+        }
+
+        // Validate file type (supports images + PDFs)
+        const allowedImageTypes = ["image/jpeg", "image/jpg", "image/png"];
+        if (fileType === "image" && !allowedImageTypes.includes(file.type)) {
+            Swal.fire("Warning", "Only JPG, JPEG, and PNG images are allowed.", "warning");
+            $this.val("");
+            return;
+        } else if (fileType === "pdf" && file.type !== "application/pdf") {
+            Swal.fire("Warning", "Only PDF files are allowed.", "warning");
+            $this.val("");
+            return;
+        }
+
+        // Validate size
+        if (file.size > maxSize) {
+            Swal.fire("Warning", "File size should not exceed 2MB.", "warning");
+            $this.val("");
+            return;
+        }
+
+        // Prepare FormData
+        const formData = new FormData();
+        const csrfToken = $('meta[name="csrf-token"]').attr("content");
+        formData.append("_token", csrfToken);
+        formData.append($this.attr("name"), file);
+        loader.style.display = "block";
+        $.ajax({
+            url: uploadUrl,
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                loader.style.display = "none";
+                if (response.status) {
+                    const fileName = encodeURIComponent(response.file_name);
+                    const pathName = encodeURIComponent(filePathUrl);
+                    const fileUrl = `${viewUrl}?pathName=${pathName}&fileName=${fileName}`;
+
+                    let new_advertisement_file = $("#new_advertisement_file");
+                    new_advertisement_file.val(pathName + fileName);
+
+                    $(`#${inputId}`).val(fileUrl);
+                    $(`#${hiddenInput}`).val(response.file_name);
+
+                    // Dynamic preview for image or PDF
+                    let previewHtml = "";
+                    if (fileType === "image") {
+                        previewHtml = `
+                            <div class="uploaded-preview">
+                                <a target="_blank" href="${fileUrl}" class="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-80 report_preview_support_photo">View</a>
+                                <a href="javascript:void(0);" class="reupload-btn bg-red-700 hover:bg-red-800 rounded-lg text-sm px-5 py-2.5"
+                                   data-input-id="${inputId}" data-wrapper-id="${previewWrapper}" data-hidden-input="${hiddenInput}">
+                                   Remove
+                                </a>
+                            </div>
+                        `;
+                    } else {
+                        previewHtml = `
+                            <div class="uploaded-preview">
+                                <a target="_blank" href="${fileUrl}" class="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-80 report_preview_support_photo">View</a>
+                                <a href="javascript:void(0);" class="reupload-btn bg-red-700 hover:bg-red-800 rounded-lg text-sm px-5 py-2.5"
+                                   data-input-id="${inputId}" data-wrapper-id="${previewWrapper}" data-hidden-input="${hiddenInput}">
+                                   Remove
+                                </a>
+                            </div>
+                        `;
+                    }
+
+                    $(`#${previewWrapper}`).html(previewHtml);
+                    $this.closest(".error-message").hide();
+                    $this.closest(".hide_upload_photos").hide();
+                } else {
+                    Swal.fire("Error", response.message || "Upload failed.", "error");
+                    $this.val("");
+                }
+            },
+            error: function (xhr, status, error) {
+                loader.style.display = "none";
+                console.error("Upload failed:", error);
+                Swal.fire("Error", "Unexpected error occurred during file upload.", "error");
+                $this.val("");
+            },
+        });
+    });
+
+    // Handle re-upload button
+
+    $(document).on('click', '.reupload-btn', function () {
+        var $this = $(this);
+        const inputId = $(this).data("input-id");
+        const wrapperId = $(this).data("wrapper-id");
+        const hiddenInput = $(this).data("hidden-input");
+
+        $(this)
+            .closest(".attachment_section_advertisement")
+            .find(".hide_upload_photos")
+            .show();
+
+        $(`#${inputId}`).val("");
+        $(`#${hiddenInput}`).val("");
+        $(`#${wrapperId}`).html("");
+
+    });
+});

@@ -28,3 +28,16 @@ $(document).ready(function () {
     });
     $("#post_payment_type").trigger("change");
 });
+
+$(document).ready(function () {
+    const $postExamDetail = $('#post_examination');
+    const $gateFields = $('#required_gate_detail, #required_gate_exam_year, #required_gate_discipline');
+
+    function toggleGateFields() {
+        const isRequired = $postExamDetail.val() === 'GATE';
+        $gateFields.prop('disabled', !isRequired);
+    }
+
+    toggleGateFields(); // Initial check
+    $postExamDetail.change(toggleGateFields); // On change
+});

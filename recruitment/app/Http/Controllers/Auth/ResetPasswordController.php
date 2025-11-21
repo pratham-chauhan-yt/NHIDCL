@@ -95,7 +95,6 @@ class ResetPasswordController extends Controller
             'password_confirmation' => $decryptedPasswordConfirmation,
         ]);
         
-
         // 🔹 Step 2: Validate input (including email, token, captcha, and password rules)
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:ref_users,email',

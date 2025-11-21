@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Recruitment\CandidateProfile\RpEducationalDetailRequest;
 use App\Http\Requests\Recruitment\CandidateProfile\RpPersonalDetailRequest;
 use App\Models\Recruitment\CandidateProfile\{NhidclRpApplicantPersonalDetails,NhidclRpEducationalQualification,NhidclRpWorkExperience};
-use App\Models\Recruitment\{NhidclRpGateScoreDetails, NhidclRecruitmentApplications, Advertisement, AdvertisementPost};
+use App\Models\Recruitment\{NhidclRpGateScoreDetails, NhidclRecruitmentApplications, Advertisement, AdvertisementPost, NhidclRPUpscExam};
 use App\Models\{RefCaste,RefGateDiscipline,RefPassingYear,RefState};
 use App\Models\{User};
 use Illuminate\Http\Request;
@@ -476,6 +476,118 @@ class CandidateProfileController extends Controller
         }
     }
 
+    public function upscScoreDetails(Request $request){
+        try {
+            $userId = auth()->id();
+            
+            // Check personal details
+            $personalDetails = NhidclRpApplicantPersonalDetails::where('ref_users_id', $userId)->first();
+            if (!$personalDetails) {
+                Alert::error('Error', 'Please fill in your personal details first.');
+                return redirect($request->input('redirect_url', route('recruitment-portal.candidate.profile')));
+            }
+
+            // Check personal details
+            $educationDetails = NhidclRpEducationalQualification::where('ref_users_id', $userId)->first();
+            if (!$educationDetails) {
+                Alert::error('Error', 'Please fill in your education details first.');
+                return redirect($request->input('redirect_url', route('recruitment-portal.candidate.profile')));
+            }
+
+            // fetch existing record
+            $existing = NhidclRPUpscExam::where('ref_users_id', $userId)->first();
+            
+            // build validation rules dynamically
+            $rules = [
+                'postids' => 'nullable',
+                'upsc_exam_year' => 'required|exists:ref_passing_year,id',
+                'upsc_cse_roll_number' => [
+                    'required',
+                    'regex:/^[A-Za-z0-9\/]+$/', // alphanumeric + slash only
+                ],
+                'upsc_cse_mains_marks' => [
+                    'required',
+                    'regex:/^\d+(\.\d{1,2})?$/', // only numbers or decimal up to 2 digits
+                ],
+                'upsc_cse_interview_marks' => [
+                    'required',
+                    'regex:/^\d+(\.\d{1,2})?$/', // only numbers or decimal up to 2 digits
+                ],
+                'upsc_cse_mains_percentile' => [
+                    'required',
+                    'regex:/^\d+(\.\d{1,2})?$/', // only numbers or decimal up to 2 digits
+                ],
+                'interview_call_letter_file_txt' => 'required',
+                'upsc_cse_mains_score_file_txt' => 'required',
+                'upsc_consent' => 'accepted',
+            ];
+
+            $messages = [
+                'upsc_exam_year.required' => 'Please select UPSE CSE Exam Year.',
+                'upsc_exam_year.exists' => 'Invalid UPSC CSE Exam Year selected.',
+                'upsc_cse_roll_number.required' => 'Please enter your UPSC CSE roll number.',
+                'upsc_cse_roll_number.regex' => 'Only letters, numbers, and slash (/) are allowed in roll number.',
+                'upsc_cse_mains_marks.required' => 'Please enter your UPSC CSE mains score.',
+                'upsc_cse_mains_marks.regex' => 'Please enter a valid UPSC CSE mains score (numbers with up to 2 decimals).',
+                'upsc_cse_interview_marks.required' => 'Please enter your UPSC CSE interview score.',
+                'upsc_cse_interview_marks.regex' => 'Please enter a valid UPSC CSE interview score (numbers with up to 2 decimals).',
+                'upsc_cse_mains_percentile.required' => 'Please enter your UPSC CSE Mains Percentile Score (as per UPSC Pratibha Setu portal).',
+                'upsc_cse_mains_percentile.regex' => 'Please enter a valid UPSC CSE Mains Percentile Score (numbers with up to 2 decimals).',               
+                'interview_call_letter_file_txt.accepted' => 'Please upload interview call letter files.',
+                'upsc_cse_mains_score_file_txt.accepted' => 'Please upload mains score files.',
+                'upsc_consent.accepted' => 'You must accept the upsc consent checkbox.',
+            ];
+            
+            // only require upload if record does NOT exist
+            if (!$existing || !$existing->interview_call_letter_file) {
+                $rules['interview_call_letter_file_txt'] = 'required';
+            } else {
+                $rules['interview_call_letter_file_txt'] = 'nullable';
+            }
+
+            if (!$existing || !$existing->interview_call_letter_file) {
+                $rules['upsc_cse_mains_score_file_txt'] = 'required';
+            } else {
+                $rules['upsc_cse_mains_score_file_txt'] = 'nullable';
+            }
+            $validated = $request->validate($rules, $messages);
+            
+            // base data for update
+            $data = [
+                'nhidcl_recruitment_posts_id' => $validated['postids'],
+                'ref_passing_year_id' => $validated['upsc_exam_year'],
+                'upsc_cse_roll_number' => $validated['upsc_cse_roll_number'],
+                'upsc_cse_mains_marks' => $validated['upsc_cse_mains_marks'],
+                'upsc_cse_interview_marks' => $validated['upsc_cse_interview_marks'],
+                'upsc_cse_mains_percentile' => $validated['upsc_cse_mains_percentile'],
+                'upsc_consent' => $validated['upsc_consent'],
+                'created_by' => user_id(),
+            ];
+            // only add file fields if new file uploaded
+            if ($request->interview_call_letter_file_txt){
+                $calLetterCertificate = extractFileDetails($request->interview_call_letter_file_txt);
+                $data['interview_call_letter_file'] = $calLetterCertificate['fileName'];
+                $data['interview_call_letter_filepath'] = $calLetterCertificate['filePath'];
+            }
+
+            // only add file fields if new file uploaded
+            if ($request->upsc_cse_mains_score_file_txt){
+                $calLetterCertificate = extractFileDetails($request->upsc_cse_mains_score_file_txt);
+                $data['upsc_cse_mains_score_file'] = $calLetterCertificate['fileName'];
+                $data['upsc_cse_mains_score_filepath'] = $calLetterCertificate['filePath'];
+            }
+            NhidclRPUpscExam::updateOrCreate(
+                ['ref_users_id' => $userId, 'nhidcl_recruitment_posts_id' => $validated['postids']],
+                $data
+            );
+            Alert::success('Success', 'UPSC Score created successfully');
+            return redirect($request->input('redirect_url', route('recruitment-portal.candidate.profile')));
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return redirect($request->input('redirect_url', route('recruitment-portal.candidate.profile')))->with("error", $e->getMessage());
+        }
+    }
+
     public function candidate_details(Request $request)
     {
         $tab_id = str_replace("defaultOpen", "", $request->tab_id);
@@ -506,7 +618,7 @@ class CandidateProfileController extends Controller
                 Alert::error('Sorry', 'Please complete Educational Qualifications (Tab 2) before proceeding.');
             }
             $Data['tab_id'] = $tab_id;
-            $Data['data'] = NhidclRpWorkExperience::where("ref_users_id", $userId)
+            $Data['data'] = NhidclRPUpscExam::where("ref_users_id", $userId)
                 ->orderBy("created_at", "DESC")
                 ->get();
         }
@@ -593,7 +705,7 @@ class CandidateProfileController extends Controller
     }
 
     public function exportSelectionData(Request $request)
-    {
+    {   
         $advertisementId = $request->input('advertisement_id');
         $postId          = $request->input('post_id');
         $nameFilter      = $request->input('name');
@@ -601,10 +713,12 @@ class CandidateProfileController extends Controller
         $mobileFilter    = $request->input('mobile');
         $gateRegNo       = $request->input('gate_reg_number');
         $gateYear        = $request->input('gate_year');
-        $gateScore       = $request->input('gate_scor');
+        $gateScore       = $request->input('gate_score');
         $age             = $request->input('age');
         $category        = $request->input('category');
-        $percentile      = $request->input('percentile');
+        $gender      = $request->input('gender');
+        $marital      = $request->input('marital');
+        $pwbd      = $request->input('pwbd');
         $statusId        = $request->input('status') ?? '1';
 
         if ($advertisementId && $postId) {
@@ -653,6 +767,27 @@ class CandidateProfileController extends Controller
                 $query->whereHas('application', fn($q) => $q->where('ref_caste_id', $category));
             }
 
+            // Gender filter
+            if (!empty($gender)) {
+                $query->whereHas('application', function ($q) use ($gender) {
+                    $q->where('gender', $gender);
+                });
+            }
+
+            // Marital Status filter
+            if (!empty($marital)) {
+                $query->whereHas('application', function ($q) use ($marital) {
+                    $q->where('marital_status', $marital);
+                });
+            }
+
+            // PwBd filter
+            if (!empty($pwbd)) {
+                $query->whereHas('application', function ($q) use ($pwbd) {
+                    $q->where('pwbd', $pwbd);
+                });
+            }
+
             // --- Data Retrieval ---
             $data = $query->orderBy('applied_at')->get()->map(function ($item) {
                 if ($item->users) {
@@ -681,7 +816,7 @@ class CandidateProfileController extends Controller
                 }
             }
 
-            // --- ✅ Sanitize for CSV Injection before export ---
+            // --- Sanitize for CSV Injection before export ---
             $safeData = $data->map(function ($item) {
                 $sanitize = function ($value) {
                     $value = (string) $value;
@@ -711,7 +846,6 @@ class CandidateProfileController extends Controller
 
                 return $item;
             });
-
             // --- Final Export ---
             return Excel::download(
                 new SelectionProcessCandidateExport($safeData, $categoryCounts, $disabilityCounts),

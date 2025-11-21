@@ -1,13 +1,7 @@
 @extends('layouts.dashboard')
-
-
-
 @php
     use App\Models\{ModeOfConfirmation};
 @endphp
-
-
-
 @section('dashboard_content')
     <div class="container-fluid md:p-0">
         <div class="top_heading_dash__">

@@ -13,7 +13,7 @@
                     <table class="cust_table__ table_sparated" id="bg-table">
                         <thead class="">
                             <tr>
-                                <th>#</th>
+                                <th>S. No.</th>
                                 <th>BG Id</th>
                                 <th>Ref. No</th>
                                 <th>SAP ID</th>
@@ -27,10 +27,6 @@
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
-
-
-
-
                         </thead>
                         <tbody class=""> </tbody>
                     </table>

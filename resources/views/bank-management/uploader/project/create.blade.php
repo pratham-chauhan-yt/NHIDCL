@@ -114,6 +114,14 @@
                         </div>
 
                         <div>
+                            <label class="required-label">Tender ID</label>
+                            <input type="text" name="tender_id" value="{{ old('tender_id') }}" required placeholder="Tender ID">
+                            @error('tender_id')
+                                <div class="error-message">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div>
                             <label class="required-label">SAP ID</label>
                             <input type="text" name="sap_id" value="{{ old('sap_id') }}" required placeholder="SAP ID">
                             @error('sap_id')
@@ -140,7 +148,7 @@
                     <table class="cust_table__ table_sparated" id="project-table">
                         <thead class="">
                             <tr>
-                                <th>#</th>
+                                <th>S. No.</th>
                                 <th>Project Id</th>
                                 <th>SAP ID</th>
                                 <th>Job No</th>

@@ -14,12 +14,12 @@
                         <thead class="">
                             <tr>
                                 <th>#</th>
-                                <th>BG Id</th>
+                                <!-- <th>BG Id</th> -->
                                 <th>Ref. No</th>
                                 <th>SAP ID</th>
+                                <th>BG No</th>
                                 <th>Guarantee Type</th>
                                 <th>State</th>
-                                <th>BG No</th>
                                 <th>No. of Renew</th>
                                 <th>Expiry Date</th>
                                 <th>Track Status</th>

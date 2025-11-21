@@ -8,7 +8,7 @@ use App\Http\Controllers\UserActivityController;
 use App\Http\Controllers\Admin\{DashboardController,UserController};
 use App\Http\Controllers\Admin\HrSettings\HrSettingsController;
 use App\Http\Controllers\Notification\NotificationController;
-use App\Http\Controllers\{Controller, CaptchaController, PermissionController,RoleController,ProfileController,OtpController};
+use App\Http\Controllers\{Controller, CaptchaController, PermissionController,RoleController,ProfileController,OtpController,FilesController};
 use App\Http\Controllers\Auth\{CandidateLoginController,RegistrationController,ResetPasswordController,TwoFactorController};
 use Illuminate\Support\Facades\Artisan;
 
@@ -142,6 +142,9 @@ Route::get('captcha/{config?}', [CaptchaController::class, 'create'])
 
 // Authenticated routes
 Route::middleware(['auth', 'twofactor', 'single.device', 'no.cache', 'secure.headers'])->group(function () {
+    Route::post('/users/upload/files', [FilesController::class, 'upload'])->name('users.uploads.files');
+    Route::get('/users/view/files', [FilesController::class, 'viewFiles'])->name('users.view.files');
+
     Route::get('/notifications', [NotificationController::class, 'allNotifications'])->name('notifications.all');
     Route::get('/notification/read/{id}', [NotificationController::class, 'markAsRead'])->name('notification.read');
     Route::post('/notifications/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\TrainingManagement;
 use App\Models\TrainingManagement\TrainingSession;
 use App\Models\TrainingManagement\Trainer;
 use App\Models\TrainingManagement\TrainingMaterial;
-use App\Models\User;
+use App\Models\{User,DepartmentMaster,DesignationMaster};
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\RefStatus;
@@ -41,10 +41,13 @@ class TrainingSessionController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     // Conditionally render buttons based on user role
+                    $emplUrl = route('hr.trainer.sessions.employee', Crypt::encrypt($row->id));
+                    $editUrl = route('sessions.edit', Crypt::encrypt($row->id));
                     $deleteUrl = route('sessions.destroy', Crypt::encrypt($row->id));
                     if (auth()->user()->hasRole('HR')) {
                         return '
-                        <button class="btn btn-primary btn-sm" onclick="formContainer(true,\'' . Crypt::encrypt($row->id) . '\')">Edit</button>
+                        <a href="'.$emplUrl.'" class="btn btn-info btn-sm">Participants</button>
+                        <a href="'.$editUrl.'" class="btn btn-primary btn-sm">Edit</button>
                         <a href="javascript:void(0)" class="btn btn-danger btn-sm deletedata" data-id="' . Crypt::encrypt($row->id) . '" onclick="confirmDelete(\'' . $row->id . '\')">Delete</a>
                         <form id="delete-form-' . $row->id . '" action="' . $deleteUrl . '" method="POST" style="display: none;">' . csrf_field() . method_field('DELETE') . '</form>';
                     } else {
@@ -141,24 +144,48 @@ class TrainingSessionController extends Controller
         return view('training-management.trainer.sessions.show', compact('session', 'header', 'sidebar'));
     }
 
-    public function edit(TrainingSession $session)
-    {
-        $trainers = User::role('Trainer')->get();
-        return view('trainer.sessions.edit', compact('session', 'trainers'));
+    public function edit($id)
+    {   
+        $id = Crypt::decrypt($id);
+        $header = true;
+        $sidebar = true;
+        $session = TrainingSession::find($id);
+        $trainers = Trainer::with('user')->get();
+        $status   = RefStatus::where('status_type', 'training sessions')->get();
+        return view('training-management.trainer.sessions.edit', compact('header', 'sidebar', 'session', 'trainers', 'status'));
     }
 
-    public function update(Request $request, TrainingSession $session)
-    {
+    public function update(Request $request, $id)
+    {   
+        $id = Crypt::decrypt($id);
+        $session = TrainingSession::find($id);
+        $userId = auth()->id();
         $request->validate([
-            'title' => 'required|string|max:255',
-            'subject' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'location' => 'nullable|string|max:255',
+            'trainer' => 'required|exists:ref_users,id',
+            'name' => 'required|string|max:255',
+            'agenda' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'date' => 'required|date',
+            'duration' => 'nullable|string|max:255',
+            'type' => 'nullable|string|max:255',
+            'status' => 'required|exists:ref_status,id',
         ]);
 
-        $session->update($request->all());
+        // Map incoming request data to the database field names
+        $mappedData = [
+            'nhidcl_ems_trainers_id' => $request->trainer,  // Assuming 'trainer_id' is the actual field name in your DB
+            'name' => $request->name,    // Assuming 'session_name' is the actual field name
+            'agenda' => $request->agenda,
+            'address' => $request->address,
+            'date' => $request->date,
+            'duration' => $request->duration,
+            'type' => $request->type,
+            'ref_status_id' => $request->status,
+            'updated_by' => $userId   // Assuming 'status_id' is the actual field name
+        ];
 
+        $session->update($mappedData);
+        Alert::success('Success', 'Training session updated successfully.');
         return redirect()->route('sessions.index')->with('success', 'Training session updated successfully.');
     }
 
@@ -201,8 +228,6 @@ class TrainingSessionController extends Controller
         try {
             // Decrypt the ID
             $id = Crypt::decrypt($encryptedId);
-
-            // Find the session and delete it
             $session = TrainingSession::findOrFail($id);
             $session->delete();
             Alert::success('Success', 'Training session deleted successfully.');
@@ -212,5 +237,107 @@ class TrainingSessionController extends Controller
             Alert::error('Error', 'Invalid session ID.');
             return redirect()->route('sessions.index')->with('error', 'Invalid session ID.');
         }
+    }
+
+    public function employee($encryptedId){
+        try {
+            // Decrypt the ID
+            $id = Crypt::decrypt($encryptedId);
+            $session = TrainingSession::findOrFail($id);
+            $department = DepartmentMaster::get();
+            $designation = DesignationMaster::get();
+            $header = TRUE;
+            $sidebar = TRUE;
+            return view('training-management.trainer.sessions.employee', compact('header', 'sidebar', 'session', 'department', 'designation'));
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            // If decryption fails
+            Alert::error('Error', 'Invalid session ID.');
+            return redirect()->route('sessions.index')->with('error', 'Invalid session ID.');
+        }
+    }
+
+    public function sessionEmployee(Request $request){
+        // If the request is an AJAX call for DataTables
+        if ($request->ajax()) {
+            $users = User::where('is_deleted', '!=', '1')
+            ->whereDoesntHave('roles', function ($query) {
+                $query->whereIn('name', [
+                    'Super Admin',
+                    'Resource Pool User',
+                    'Recruitment User'
+                ]);
+            })
+            ->select([
+                'id',
+                'name',
+                'email',
+                'mobile',
+                'ref_department_id',
+                'ref_employee_type_id'
+            ])
+            ->with('roles'); // Eager loading roles to optimize queries
+            
+            if ($request->has('name') && $request->name != '') {
+                $users->whereRaw('name ILIKE ?', ['%' . trim($request->name) . '%']);
+            }
+            if ($request->has('email') && $request->email != '') {
+                $users->whereRaw('email ILIKE ?', ['%' . trim($request->email) . '%']);
+            }
+            if ($request->has('mobile') && $request->mobile != '') {
+                $users->where('mobile', 'like', '%' . $request->mobile . '%');
+            }
+            if ($request->has('designation') && $request->designation != '') {
+                $users->where('ref_designation_id', (int)$request->designation);
+            }
+            if ($request->has('department') && $request->department != '') {
+                $users->where('ref_department_id', (int)$request->department);
+            }
+
+            $users = $users->orderBy('id', 'DESC')->get();
+            
+            return DataTables::of($users)
+            ->setFilteredRecords($users->count())
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                $showUrl = route('user-config.show', Crypt::encrypt($row->id));
+                $actionBtn = '<input type="checkbox" name="userid[]" value="'.$row->id.'">';
+                return $actionBtn;
+            })
+            ->editColumn('department_master', function ($row) {
+                return $row->department->name ?? 'NA';
+                //return getDepartmentNameById($row->ref_department_id);
+            })
+            ->editColumn('roles', function ($row) {
+                return $row->roles->pluck('name')->implode(', ');
+            })
+            ->editColumn('employee_type', function ($row) {
+                return getEmployeeTypeNameById($row->ref_employee_type_id);
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+        }
+    }
+
+    public function sessionEmployeeRecord(Request $request){
+        $user = $request->userid;
+        $sessionId = Crypt::decrypt($request->sessionid);
+        $session = TrainingSession::find($sessionId);
+        foreach ($user as $userId) {
+            $user = User::find($userId); // Find the user by ID
+            if ($session->attendees()->where('ref_users_id', $user->id)->exists()) {
+                Alert::info('Info', 'You are already enrolled in this session.');
+                continue; // Skip this user if they are already enrolled
+            }
+            // Get "enrolled" status id from ref_status table
+            $statusId = RefStatus::where('type', 'Enrolled')->where('status_type', 'training sessions')->value('id');
+            
+            // Attach with ref_status_id
+            $session->attendees()->attach($user->id, [
+                'ref_status_id' => $statusId,
+                'created_by' => auth()->user()->id,
+            ]);
+        }
+        Alert::success('Success', 'Candidate successfully enrolled in training session.');
+        return redirect()->route('hr.trainer.sessions.employee', Crypt::encrypt($session->id))->with('success', 'Successfully enrolled in training session.');
     }
 }

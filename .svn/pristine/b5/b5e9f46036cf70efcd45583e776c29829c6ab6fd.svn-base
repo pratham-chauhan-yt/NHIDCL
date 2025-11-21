@@ -1,0 +1,572 @@
+<?php
+
+namespace App\Http\Controllers\AuditManagement;
+
+use App\Http\Controllers\Controller;
+use App\Models\AuditManagement\AmsAuditQuery;
+use App\Models\AuditManagement\AuditQueryPara;
+use App\Models\DepartmentMaster;
+use App\Models\RefAuditLevel;
+use App\Models\RefAuditQueryType;
+use App\Models\RefAuditType;
+use App\Models\RefOfficeType;
+use App\Models\RefParaPart;
+use App\Models\RefProjectState;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use RealRashid\SweetAlert\Facades\Alert;
+use Yajra\DataTables\Facades\DataTables;
+
+class AuditController extends Controller
+{
+
+    public function __construct()
+    {
+        $this->middleware('permission:ams-dashboard')->only(['dashboard']);
+        $this->middleware('permission:ams-view')->only(['index']);
+        $this->middleware('permission:ams-create')->only(['create', 'store']);
+        $this->middleware('permission:ams-view')->only(['show', 'view']);
+        $this->middleware('permission:ams-edit')->only(['edit', 'update']);
+        $this->middleware(['role:Super Admin', 'module.permission:ams-delete'])->only(['destroy']);
+    }
+    public $path = 'uploads/audit-management/';
+
+    public function dashboard(Request $request)
+    {
+        $header = true;
+        $sidebar = true;
+        return view('audit-management.nodal-officer.dashboard', compact('sidebar', 'header'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $header = true;
+        $sidebar = true;
+        $user = Auth::user();
+        if ($request->ajax()) {
+            if ($user->hasRole('Resource Pool User')) {
+
+                // Step 1: Get latest para ID for each audit query assigned to this user
+                $latestIds = AuditQueryPara::selectRaw('MAX(id) as id')
+                    ->where('assign_to', $user->id)
+                    ->groupBy('nhidcl_ams_audit_query_id');
+
+                // Step 2: Build main query
+                $query = AuditQueryPara::latest()
+                    ->with(['auditQuery'])
+                    ->whereIn('id', $latestIds);
+
+                // --------------------------
+                //  DROPPED / PENDING LOGIC
+                // --------------------------
+
+                // If DROPPED tab → show only dropped (status = 5)
+                if ($request->status == 5) {
+                    $query->whereHas('auditQuery', function ($q) {
+                        $q->where('ref_status_id', 5);
+                    });
+                }
+                // If PENDING tab → show all except dropped
+                else {
+                    $query->whereHas('auditQuery', function ($q) {
+                        $q->where('ref_status_id', '!=', 5);
+                    });
+                }
+
+                // Additional filter for specific statuses (1,2,3,4 etc), but not 5
+                if (
+                    $request->has('status') &&
+                    $request->status != null &&
+                    $request->status != 5
+                ) {
+                    $query->whereHas('auditQuery', function ($q) use ($request) {
+                        $q->where('ref_status_id', $request->status);
+                    });
+                }
+
+                // Get the results
+                $queryPara = $query->get();
+
+                // Return DataTable
+                return DataTables::of($queryPara)
+                    ->addIndexColumn()
+
+                    ->addColumn('audit_query', function ($row) {
+                        return $row->auditQuery->subject ?? 'N/A';
+                    })
+
+                    ->addColumn('letter_no', function ($row) {
+                        return $row->auditQuery->letter_no ?? 'N/A';
+                    })
+
+                    ->addColumn('letter_date', function ($row) {
+                        return $row->auditQuery->letter_date
+                            ? \Carbon\Carbon::parse($row->auditQuery->letter_date)->format('d-m-Y')
+                            : 'N/A';
+                    })
+
+                    ->addColumn('status', function ($row) {
+                        $status = $row->auditQuery->ref_status_text ?? 'N/A';
+
+                        $badgeClass = match ($status) {
+                            'Pending' => 'badge-warning',
+                            'Dropped' => 'badge-secondary',
+                            default => 'badge-danger',
+                        };
+
+                        return '<span class="badge p-2 ' . $badgeClass . '">' . $status . '</span>';
+                    })
+
+                    ->addColumn('pending', function ($row) {
+                        if (!$row->auditQuery || !$row->auditQuery->created_at) {
+                            return 'No';
+                        }
+
+                        $createdDate = \Carbon\Carbon::parse($row->auditQuery->created_at);
+                        $diffInDays = $createdDate->diffInDays(\Carbon\Carbon::now());
+
+                        return $diffInDays . ' Days';
+                    })
+
+                    ->addColumn('action', function ($row) {
+                        return '<a href="' . route('audit-management.view', Crypt::encrypt($row->auditQuery->id)) . '" class="btn btn-default btn-sm">View</a>';
+                    })
+
+                    ->rawColumns(['status', 'action'])
+                    ->make(true);
+            } else  {
+                // $query = AmsAuditQuery::with(['createdBy'])->orderBy('id', 'desc');
+                // if ($request->has('status') && $request->status != null) {
+                //     $query->where('ref_status_id', $request->status);
+                // }
+                $query = AmsAuditQuery::with(['createdBy'])
+                    ->orderBy('id', 'desc');
+
+                // If DROPPED tab → show only dropped
+                if ($request->status == 5) {
+                    $query->where('ref_status_id', 5);
+                }
+                // If PENDING tab → exclude dropped (5)
+                else {
+                    $query->where('ref_status_id', '!=', 5);
+                }
+
+                // Additional filter
+                if ($request->has('status') && $request->status != null && $request->status != 5) {
+                    $query->where('ref_status_id', $request->status);
+                }
+                return DataTables::of($query)
+                    ->addIndexColumn()
+                    ->addColumn('created_by', function ($row) {
+                        return $row->createdBy->name ?? 'N/A';
+                    })
+                    ->addColumn('status', function ($row) {
+                        $status = $row->ref_status_text ?? 'N/A';
+                        $badgeClass = 'danger';
+                        switch ($status) {
+                            case 'Pending':
+                                $badgeClass = 'badge-warning';
+                                break;
+                            case 'Dropped':
+                                $badgeClass = 'badge-secondary';
+                                break;
+                            default:
+                                $badgeClass = 'badge-danger';
+                                break;
+                        }
+                        return '<span class="badge p-2 ' . $badgeClass . '">' . $status . '</span>';
+                    })
+                    ->filterColumn('created_by', function ($query, $keyword) {
+                        $query->whereHas('createdBy', function ($q) use ($keyword) {
+                            $q->where('name', 'like', "%{$keyword}%");
+                        });
+                    })
+                    ->filterColumn('status', function ($query, $keyword) {
+                        $keyword = strtolower($keyword);
+
+                        $statusMap = [
+                            'pending' => 1,
+                            'dropped' => 5,
+                        ];
+                        $matchingIds = [];
+                        foreach ($statusMap as $text => $id) {
+                            if (strpos($text, $keyword) !== false) {
+                                $matchingIds[] = $id;
+                            }
+                        }
+
+                        if (count($matchingIds) > 0) {
+                            $query->whereIn('ref_status_id', $matchingIds);
+                        } else {
+                            $query->whereRaw('0=1');
+                        }
+                    })
+                    ->addColumn('action', function ($row) use ($request, $user) {
+                        $view = '';
+                        $edit = '';
+                        if ($user->can('ams-view')) {
+                            $view = '<a href="' . route('audit-management.view', Crypt::encrypt($row->id)) . '" class="btn btn-default btn-sm">View</a>';
+                        }
+                        if ($request->status == 5) {
+                            return $view;
+                        }
+                        if ($user->can('ams-edit')) {
+                            $edit = ' <a href="' . route('audit-management.edit', Crypt::encrypt($row->id)) . '" class="btn btn-primary btn-sm">Edit</a>';
+                        }
+                        return $view . $edit;
+                    })
+                    ->editColumn('letter_date', function ($row) {
+                        return $row->letter_date ?  \Carbon\Carbon::parse($row->letter_date)->format('d-m-Y')  : '';
+                    })
+                    ->rawColumns(['status', 'action'])
+                    ->make(true);
+            }
+        }
+        return view('audit-management.nodal-officer.view-audit-queries', compact('sidebar', 'header'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $header = true;
+        $sidebar = true;
+        $refAuditType = RefAuditType::get();
+        $refAuditLevel = RefAuditLevel::get();
+        $refProjectState = RefProjectState::get();
+        $refAuditQueryType = RefAuditQueryType::get();
+        $auditYear = AmsAuditQuery::select('audit_year')->distinct()->orderBy('audit_year', 'desc')->pluck('audit_year');
+        $auditQueries = AmsAuditQuery::where('is_deleted', false)->get();
+        $officeTypes = RefOfficeType::where('is_deleted', false)->get();
+        $departments = DepartmentMaster::where('is_deleted', false)->get();
+        $paraParts = RefParaPart::where('is_deleted', false)->get();
+        return view('audit-management.nodal-officer.create-audit-query', compact('sidebar', 'header', 'refAuditType', 'refAuditLevel', 'refProjectState', 'refAuditQueryType', 'auditYear', 'auditQueries', 'officeTypes', 'departments', 'paraParts'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+
+    // public function store(Request $request)
+    // {
+    //     try {
+    //         $validator = Validator::make($request->all(), [
+    //             'subject' => 'required|string|max:500',
+    //             'letter_no' =>  [
+    //                 'required',
+    //                 'max:100',
+    //                 Rule::unique('nhidcl_ams_audit_query', 'letter_no')->ignore($request->audit_id, 'id'),
+    //             ],
+    //             'letter_date' => 'required|date',
+    //             'from_date' => 'required|date',
+    //             'to_date' => 'required|date|after_or_equal:from_date',
+    //             'location' => 'required',
+    //             'audit_year' => 'required',
+    //             'audit_level' => 'required',
+    //             'audit_type' => 'required',
+    //             'pdf_file' => 'required|string',
+    //         ]);
+
+    //         if ($validator->fails()) {
+    //             return redirect()->back()->withErrors($validator->errors()->all())->withInput();
+    //         }
+
+    //         $inputs = $request->all();
+
+    //         if (isset($inputs['audit_id']) && $inputs['audit_id']) {
+    //             // Update existing record
+    //             $auditQuery = AmsAuditQuery::find($inputs['audit_id']);
+    //             if (!$auditQuery) {
+    //                 Alert::error('Error', 'Audit Query not found');
+    //                 return redirect()->back()->withInput();
+    //             }
+    //             $auditQuery->update([
+    //                 'subject' => $inputs['subject'],
+    //                 'letter_no' => $inputs['letter_no'],
+    //                 'letter_date' => $inputs['letter_date'],
+    //                 'from_date' => $inputs['from_date'],
+    //                 'to_date' => $inputs['to_date'],
+    //                 'ref_project_state_id' => $inputs['location'],
+    //                 'audit_year' => $inputs['audit_year'],
+    //                 'ref_audit_level_id' => $inputs['audit_level'],
+    //                 'ref_audit_type_id' => $inputs['audit_type'],
+    //                 'pdf_file' => $inputs['pdf_file'],
+    //                 'word_file' => $inputs['word_file'],
+    //             ]);
+    //             Alert::success('Success', 'Audit Query updated successfully');
+    //         } else {
+    //             // Create new record
+    //             AmsAuditQuery::create([
+    //                 'subject' => $inputs['subject'],
+    //                 'letter_no' => $inputs['letter_no'],
+    //                 'letter_date' => $inputs['letter_date'],
+    //                 'from_date' => $inputs['from_date'],
+    //                 'to_date' => $inputs['to_date'],
+    //                 'ref_project_state_id' => $inputs['location'],
+    //                 'audit_year' => $inputs['audit_year'],
+    //                 'ref_audit_level_id' => $inputs['audit_level'],
+    //                 'ref_audit_type_id' => $inputs['audit_type'],
+    //                 'pdf_file' => $inputs['pdf_file'],
+    //                 'word_file' => $inputs['word_file'],
+    //                 'created_by' => user_id(),
+    //                 'ref_status_id' => '1',  //  Defalut value pending-'1' => 'Pending', '5' => 'Dropped'
+    //             ]);
+    //             Alert::success('Success', 'Audit Query created successfully');
+    //         }
+    //         return redirect()->route('audit-management.index');
+    //     } catch (\Exception $e) {
+    //         Alert::error('Error', $e->getMessage());
+    //         return redirect()->back()->withInput();
+    //     }
+    // }
+    public function store(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), [
+
+                'subject' => 'required|string|max:500',
+
+                'letter_no' => [
+                    'required',
+                    'max:100',
+                    Rule::unique('nhidcl_ams_audit_query', 'letter_no')
+                        ->ignore($request->audit_id, 'id'),
+                ],
+
+                'letter_date' => 'required|date',
+
+                'from_date' => [
+                    'required',
+                    'date',
+                    'after_or_equal:letter_date',   // NEW RULE
+                ],
+
+                'to_date' => [
+                    'required',
+                    'date',
+                    'after_or_equal:letter_date',   // NEW RULE
+                    'after_or_equal:from_date',
+                ],
+
+                'location' => 'required',
+                'audit_year' => 'required',
+                'audit_level' => 'required',
+                'audit_type' => 'required',
+
+                'pdf_file' => 'required|string',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            $inputs = $request->all();
+
+            if (isset($inputs['audit_id']) && $inputs['audit_id']) {
+
+                $auditQuery = AmsAuditQuery::find($inputs['audit_id']);
+
+                if (!$auditQuery) {
+                    Alert::error('Error', 'Audit Query not found');
+                    return redirect()->back()->withInput();
+                }
+
+                $auditQuery->update([
+                    'subject' => $inputs['subject'],
+                    'letter_no' => $inputs['letter_no'],
+                    'letter_date' => $inputs['letter_date'],
+                    'from_date' => $inputs['from_date'],
+                    'to_date' => $inputs['to_date'],
+                    'ref_project_state_id' => $inputs['location'],
+                    'audit_year' => $inputs['audit_year'],
+                    'ref_audit_level_id' => $inputs['audit_level'],
+                    'ref_audit_type_id' => $inputs['audit_type'],
+                    'pdf_file' => $inputs['pdf_file'],
+                    'word_file' => $inputs['word_file'],
+                ]);
+
+                Alert::success('Success', 'Audit Query updated successfully');
+            } else {
+
+                AmsAuditQuery::create([
+                    'subject' => $inputs['subject'],
+                    'letter_no' => $inputs['letter_no'],
+                    'letter_date' => $inputs['letter_date'],
+                    'from_date' => $inputs['from_date'],
+                    'to_date' => $inputs['to_date'],
+                    'ref_project_state_id' => $inputs['location'],
+                    'audit_year' => $inputs['audit_year'],
+                    'ref_audit_level_id' => $inputs['audit_level'],
+                    'ref_audit_type_id' => $inputs['audit_type'],
+                    'pdf_file' => $inputs['pdf_file'],
+                    'word_file' => $inputs['word_file'],
+                    'created_by' => user_id(),
+                    'ref_status_id' => '1',
+                ]);
+
+                Alert::success('Success', 'Audit Query created successfully');
+            }
+
+            return redirect()->route('audit-management.index');
+        } catch (\Exception $e) {
+            Alert::error('Error', $e->getMessage());
+            return redirect()->back()->withInput();
+        }
+    }
+
+
+
+    // public function checkLetterNo(Request $request)
+    // {
+    //     $exists = AmsAuditQuery::where('letter_no', $request->letter_no)->exists();
+    //     return response()->json(!$exists);
+    // }
+    public function checkLetterNo(Request $request)
+    {
+        $exists = AmsAuditQuery::where('letter_no', $request->letter_no)
+            ->where('id', '!=', $request->audit_id)  // ignore same record
+            ->exists();
+
+        return response()->json(!$exists);
+    }
+
+    public function upload(Request $request)
+    {
+        $ext = $request->filled('ext') ? explode(',', $request->ext) : ['pdf'];
+        $inputName = $request->input('input_name', 'pdf_file');
+        try {
+            if ($request->ajax()) {
+                if ($request->hasFile($inputName)) {
+                    return storeMedia($request, $this->path, $ext, $inputName);
+                }
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Invalid Request'
+                ]);
+            }
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid Request'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'OOPS, Something went wrong, please try again later'
+            ]);
+        }
+    }
+
+    public function viewFiles(Request $request)
+    {
+        $pathName = $request->pathName;
+        $fileName = $request->fileName;
+        $file = viewFilePath($pathName) . urldecode($fileName);
+
+        if (file_exists($file)) {
+            header("Cache-Control: public");
+            header("Content-Description: File Transfer");
+            header("Content-Disposition: inline; filename=" . basename($file));
+            header("Content-Type: " . mime_content_type($file));
+            header("Content-Length: " . filesize($file));
+            header("Content-Transfer-Encoding: binary");
+            readfile($file);
+            exit;
+        } else {
+            $currentUrl = $request->fullUrl();
+            $referer = $request->headers->get('referer');
+
+            if ($referer && $referer !== $currentUrl) {
+                Alert::error('Sorry', 'File not found.');
+                return redirect($referer)->with('error', 'File not found.');
+            }
+            Alert::error('Sorry', 'File not found.');
+            return redirect()->back()->with('error', 'File not found.');
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $user = Auth::user();
+        $header = true;
+        $sidebar = true;
+        $auditId =  Crypt::decrypt($id);
+        $auditQuery = AmsAuditQuery::with(['auditLevel', 'auditType', 'projectState'])->findorFail($auditId);
+        $auditQueryPara = AuditQueryPara::with(['queryType', 'part'])
+            ->where('nhidcl_ams_audit_query_id', $auditId)
+            ->when($user->hasRole('Resource Pool User'), function ($query) use ($user) {
+                return $query->where('assign_to', $user->id);
+            })->get();
+        return view('audit-management.nodal-officer.view-audit-query-details', compact('header', 'sidebar', 'auditQuery', 'auditQueryPara'));
+    }
+
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        try {
+            $sidebar = True;
+            $header  = True;
+
+            $auditId = Crypt::decrypt($id);
+
+            // Fetch audit query
+            $auditQuery = AmsAuditQuery::findOrFail($auditId);
+
+            // FIXED: fetch para using audit query id
+            $auditPara = AuditQueryPara::where('nhidcl_ams_audit_query_id', $auditId)->first();
+
+            // Prevent null error in Blade
+            if (!$auditPara) {
+                $auditPara = new AuditQueryPara();
+            }
+
+            $refAuditType = RefAuditType::get();
+            $refAuditLevel = RefAuditLevel::get();
+            $refProjectState = RefProjectState::get();
+            $officeTypes = RefOfficeType::where('is_deleted', false)->get();
+            $departments = DepartmentMaster::where('is_deleted', false)->get();
+            $auditQueries = AmsAuditQuery::where('is_deleted', false)->get();
+            $years = AmsAuditQuery::select('audit_year')->distinct()->orderBy('audit_year', 'desc')->pluck('audit_year');
+            $parts = RefParaPart::where('is_deleted', false)->get();
+
+            return view(
+                'audit-management.nodal-officer.edit-audit-query',
+                compact(
+                    'auditQuery',
+                    'auditPara',
+                    'officeTypes',
+                    'auditQueries',
+                    'departments',
+                    'years',
+                    'parts',
+                    'header',
+                    'sidebar',
+                    'refAuditType',
+                    'refAuditLevel',
+                    'refProjectState'
+                )
+            );
+        } catch (\Exception $e) {
+            Alert::error('Error', $e->getMessage());
+            return redirect()->route('audit-management.index');
+        }
+    }
+}

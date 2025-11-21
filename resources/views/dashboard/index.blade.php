@@ -53,7 +53,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="chart_grid_custom">
                 <div class="bg_chart_card ">
                     <div class="heading_chart_">

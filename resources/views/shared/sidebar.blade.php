@@ -1,16 +1,7 @@
 <div class="sidebar">
     <ul class="nav-list ">
-        <li
-            class="menu-item {{ request()->is('dashboard') || request()->is('resource-pool-portal/hr/dashboard') || request()->is('recruitment-portal/dashboard') ? 'active' : '' }}">
-            @if (auth()->user() && auth()->user()->getRoleNames()->isEmpty())
-                <a href="{{ route('candidate.dashboard') }}">
-            @elseif(auth()->user() && auth()->user()->hasRole('HR Resource Pool'))
-                <a href="{{ route('hr.dashboard') }}">
-            @elseif(auth()->user() && auth()->user()->hasRole('Recruitment User'))
-                <a href="{{ route('recruitment-portal.recruitment.dashboard') }}">
-            @else
-                <a href="{{ route('admin.dashboard') }}">
-            @endif
+        <li class="menu-item {{ request()->is('dashboard') || request()->is('*/dashboard') ? 'active' : '' }}">
+            <a href="{{ route('admin.dashboard') }}">
             <img src="{{ asset('public/images/dashboard.svg') }}" alt="Dashboard">
             <span class="links_name">Dashboard</span>
             </a>
@@ -52,7 +43,7 @@
             <li class="menu-item dropdown {{ request()->is(['employee-management/appraisal/*']) ? 'active' : '' }}">
                 <a href="javascript:void(0);" class="menu-link">
                     <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="user">
-                    <span class="links_name">Appraisal Management System</span>
+                    <span class="links_name">Appraisal Management</span>
                 </a>
                 <ul class="dropdown-menu cust_drop">
                   @can('apms-list')
@@ -163,12 +154,17 @@
                 <span class="links_name">Bank Guarantee</span>
             </a>
             <ul class="dropdown-menu cust_drop">
+                <li><a class="dropdown-item" href="{{ route('bgms.project.dashboard') }}">Project Dashboard</a></li>
+                <li><a class="dropdown-item" href="{{ route('bgms.bg.search') }}">BG Search</a></li>
+                <li><a class="dropdown-item" href="{{ route('bgms.bg.type') }}">BG Type</a></li>
                 @can('bgms-bg-create')
                     <li><a class="dropdown-item" href="{{ route('bgms.bg.create') }}">Create BG</a></li>
-                    
                 @endcan
+                @canany(['bgms-project-view', 'bgms-project-edit', 'bgms-project-create', 'bgms-project-delete', 'bgms-project-dashboard'])
+                    <li><a class="dropdown-item" href="{{ route('bgms.project.create') }}">Project Application</a></li>
+                @endcanany
                 <li><a class="dropdown-item" href="{{ route('bgms.bg.encashment') }}">BG Encashment</a></li>
-                <li><a class="dropdown-item" href="{{ route('bgms.bg.claimlodge') }}">Claim Lodge</a></li>
+                <!-- <li><a class="dropdown-item" href="{{ route('bgms.bg.claimlodge') }}">Claim Lodge</a></li>
                 
                 @canany(['bgms-bg-view', 'bgms-bg-edit', 'bgms-bg-delete'])
                     <li><a class="dropdown-item" href="{{ route('bgms.bg.index') }}">BG List</a></li>
@@ -195,34 +191,30 @@
                 @endcanany
                 @canany(['bgms-finance-accepted'])
                     <li><a class="dropdown-item" href="{{ route('bgms.finance.accepted') }}">Accepted</a></li>
-                @endcanany
-                @canany(['bgms-project-view', 'bgms-project-edit', 'bgms-project-create', 'bgms-project-delete',
-                    'bgms-project-dashboard'])
-                    <li><a class="dropdown-item" href="{{ route('bgms.project.create') }}">Project Application</a></li>
-                @endcanany
+                @endcanany -->
             </ul>
         </li>
         @endcanModule
 
         @canModule('Audit Management System')
-            <li class="menu-item dropdown {{ request()->is('audit-management*') ? 'active' : '' }}">
-                <a href="javascript:void(0);" class="menu-link">
-                    <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="Audit Management">
-                    <span class="links_name">Audit Management</span>
-                </a>
-                <ul class="dropdown-menu cust_drop">
-                    @can('ams-dashboard')
-                        <li><a class="dropdown-item" href="{{ route('audit-management.dashboard') }}">Dashboard</a></li>
-                    @endcan
-                    @can('ams-create')
-                        <li><a class="dropdown-item" href="{{ route('audit-management.create') }}">Create Audit Query</a>
-                        </li>
-                    @endcan
-                    @canany(['ams-view', 'ams-edit', 'ams-delete', 'ams-responder'])
-                        <li><a class="dropdown-item" href="{{ route('audit-management.index') }}">View Audit Query</a></li>
-                    @endcanany
-                </ul>
-            </li>
+        <li class="menu-item dropdown {{ request()->is('audit-management') || request()->except('audit-management/dashboard') ? 'active' : '' }}">
+            <a href="javascript:void(0);" class="menu-link">
+                <img src="{{ asset('public/images/MDI-information-outline.svg') }}" alt="Audit Management">
+                <span class="links_name">Audit Management</span>
+            </a>
+            <ul class="dropdown-menu cust_drop">
+                @can('ams-dashboard')
+                    <li><a class="dropdown-item" href="{{ route('audit-management.dashboard') }}">Dashboard</a></li>
+                @endcan
+                @can('ams-create')
+                    <li><a class="dropdown-item" href="{{ route('audit-management.create') }}">Create Audit Query</a>
+                    </li>
+                @endcan
+                @canany(['ams-view', 'ams-edit', 'ams-delete', 'ams-responder'])
+                    <li><a class="dropdown-item" href="{{ route('audit-management.index') }}">View Audit Query</a></li>
+                @endcanany
+            </ul>
+        </li>
         @endcanModule
         @endunlessrole
         

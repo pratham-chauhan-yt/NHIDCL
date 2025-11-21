@@ -128,19 +128,6 @@ class AuditParaController extends Controller
                 'ref_status_id' => '8'   //  Default value Reply Pending  '8' => 'Reply Pending', '6' => 'Replied', '5' => 'Dropped',
             ]);
             $assignedUser = User::find($inputs['assign_to']); // send to assigned officer
-
-
-            // if ($assignedUser) {
-            //      $auditId = $auditPara->nhidcl_ams_audit_query_id;
-            //     $message = '📝 A new Audit Query Para has been assigned to you.';
-            //     $link = route('audit-management.view', $auditId);
-
-            //     // Option 1 (simplest and recommended)
-            //     $assignedUser->notify(new UserNotification($message,$link));
-
-            //     // OR Option 2 (works the same)
-            //     // Notification::send($assignedUser, new UserNotification($message, $link));
-            // }
             if ($assignedUser) {
                 $message = '📝' . $auditPara->title . ' query has been assigned.';
                 $auditId = $auditPara->nhidcl_ams_audit_query_id;
@@ -158,11 +145,11 @@ class AuditParaController extends Controller
             // }
 
             // 3️⃣ Notify Auditor (Informational)
-            $auditors = User::role('AMS Candidate')->get();
-            foreach ($auditors as $auditor) {
-                $message = 'ℹ️ Info: ' . $auditPara->title . ' query has been created.';
-                $auditor->notify(new UserNotification($message, $link));
-            }
+            // $auditors = User::role('auditor')->get();
+            // foreach ($auditors as $auditor) {
+            //     $message = 'ℹ️ Info: ' . $auditPara->title . ' query has been created.';
+            //     $auditor->notify(new UserNotification($message, $link));
+            // }
             // 3️⃣ Success message
             Alert::success('Success', 'Audit Query para created successfully .');
             return redirect()->back();

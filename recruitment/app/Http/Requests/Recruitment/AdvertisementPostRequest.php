@@ -23,32 +23,21 @@ class AdvertisementPostRequest extends FormRequest
     public function rules(): array
     {   
         $rules = [
-            'mode_of_requirement'   => 'required', // max:3 means max 3 checkboxes can be selected
+            'mode_of_requirement'   => 'required', 
             'mode_of_requirement.*' => 'numeric|min:1|max:5',
             'advertisement_year' => 'required',
+            'post_examination' => 'required',
             'recruitment_advertisement_id' => 'required',
             'post_name' => 'required|min:10|max:250|unique:nhidcl_recruitment_posts,post_name',
             'is_active' => 'required|in:0,1,2',
             'total_vacancy' => 'required|numeric|min:1',
-            //'is_location_preference' => 'required|in:1,0',
-            //'no_of_location_prefered' => 'sometimes|required|numeric|min:1|max:5',
-            //'require_location_prefered' => 'sometimes|required',
-            'last_datetime' => 'required|date|after_or_equal:now',
-            //'required_5_month_salary_slip' => 'required',
-            //'required_10_year_share_capital' => 'required',
-            //'required_bar_councel_registration_certificate' => 'required',
+            'last_datetime' => 'sometimes|required|date|after_or_equal:now',
             'min_age_limit' => 'required',
             'max_age_limit' => 'required',
-            //'required_education' => 'required',
             'required_experience' => 'required',
-            //'required_experience_detail' => 'required',
             'required_gate_exam_year' => ['required_if:required_gate_detail,1', 'array'],
             'required_gate_discipline' => ['required_if:required_gate_detail,1', 'array'],
-            'required_gate_detail' => 'required',
-            //'desire_education' => 'required',
-            //'desire_experience' => 'required',
-            //'desire_experience_detail' => 'required',
-            //'eligibility_criteria' => 'required',
+            'required_gate_detail' => ['sometimes', 'required_if:post_examination,GATE', 'array'],
         ];
         return $rules;
     }

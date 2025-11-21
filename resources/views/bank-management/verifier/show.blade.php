@@ -1,6 +1,5 @@
 @extends('layouts.dashboard')
 
-
 @section('dashboard_contents')
     <div class="container-fluid md:p-0">
         <div class="top_heading_dash__">
@@ -18,11 +17,8 @@
                     </svg>
                     BG Details
                 </button>
-
             </div>
-
             <div id="Home" class="bg-gray-100 p-6">
-
                 <div class="bg-white rounded-md shadow-md p-6">
                     <div>
                         <h4 class="text-lg font-semibold mt-4 mb-2 text-gray-700">General Information</h4>

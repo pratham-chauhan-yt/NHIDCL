@@ -1,0 +1,52 @@
+<?php
+
+use App\Http\Controllers\TrainingManagement\AttendeeController;
+use App\Http\Controllers\TrainingManagement\{TrainerController,TrainingHrController};
+use App\Http\Controllers\TrainingManagement\TrainingSessionController;
+use App\Http\Controllers\TrainingManagement\TrainingEnrollmentController;
+use App\Http\Controllers\TrainingManagement\TrainingRequestController;
+use App\Http\Controllers\TrainingManagement\TrainingBudgetController;
+use Illuminate\Support\Facades\Route;
+
+Route::prefix('training-management')->middleware(['auth', 'single.device', 'no.cache', 'secure.headers', 'block.xss'])->group(function () {
+    // Route::resource('attendee', AttendeeController::class)->names("attendee");
+    // Route::resource('trainer', TrainerController::class)->names('trainer');
+
+    // Common routes for all roles
+    Route::get('/training/dashboard', [AttendeeController::class, 'dashboard'])->name('training.dashboard');
+
+    // ================= TRAINER =================
+    Route::middleware('role:Trainer|HR')->group(function () {
+        Route::get('/trainer/dashboard', [TrainerController::class, 'index'])->name('trainer.dashboard');
+        Route::get('/trainer/profile', [TrainerController::class, 'profile'])->name('trainer.profile');
+        Route::put('/trainer/profile/update', [TrainerController::class, 'updateProfile'])->name('trainer.profile.update');
+        Route::resource('trainer/sessions', TrainingSessionController::class);
+        Route::post('/trainer/sessions/materials', [TrainingSessionController::class, 'uploadMaterial'])->name('sessions.material.upload');
+        Route::post('/trainer/budget/submit', [TrainingBudgetController::class, 'store'])->name('trainer.budget.submit');
+    });
+
+    // ================= ATTENDEE =================
+    Route::middleware('role:Employee|HR')->group(function () {
+        Route::get('/employee/dashboard', [AttendeeController::class, 'dashboard'])->name('training.employee.dashboard');
+        Route::get('/employee/training/sessions', [TrainingEnrollmentController::class, 'session'])->name('training.employee.sessions');
+        Route::get('/employee/training/enrolled', [TrainingEnrollmentController::class, 'enrolledSession'])->name('training.employee.enrolled');
+        Route::post('/employee/enroll/{session}', [TrainingEnrollmentController::class, 'enroll'])->name('attendee.enroll');
+        Route::post('/employee/withdraw/{session}', [TrainingEnrollmentController::class, 'withdraw'])->name('attendee.withdraw');
+        Route::resource('employee/request/training', TrainingRequestController::class);
+        Route::post('/employee/request-training', [TrainingRequestController::class, 'store'])->name('training.employee.request');
+        Route::get('/employee/history', [AttendeeController::class, 'history'])->name('training.employee.history');
+    });
+
+    // ================= HR ADMIN =================
+    Route::middleware('role:HR')->group(function () {
+        Route::get('/hr/dashboard', [TrainingHrController::class, 'index'])->name('training.hr.dashboard');
+        Route::get('/hr/training/requests', [TrainingRequestController::class, 'index'])->name('hr.training.requests');
+        Route::post('/hr/training/requests/update', [TrainingRequestController::class, 'requestApprove'])->name('hr.training.approve');
+        Route::get('/hr/training/budget', [TrainingBudgetController::class, 'index'])->name('hr.training.budget');
+        Route::post('/hr/training/budget/update', [TrainingBudgetController::class, 'budgetApprove'])->name('hr.training.budget.approve');
+        Route::get('/hr/trainer/sessions/employee/{id}', [TrainingSessionController::class, 'employee'])->name('hr.trainer.sessions.employee');
+        Route::get('/hr/training/participants/employee', [TrainingSessionController::class, 'sessionEmployee'])->name('hr.training.participants.employee');
+        Route::post('/hr/training/participants/employee/save', [TrainingSessionController::class, 'sessionEmployeeRecord'])->name('hr.training.participants.employee.save');
+        Route::get('/hr/training/attendance', [TrainingHrController::class, 'attendance'])->name('hr.training.attendance');
+    });
+});

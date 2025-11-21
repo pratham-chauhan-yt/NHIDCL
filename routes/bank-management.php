@@ -24,6 +24,12 @@ Route::prefix('bank-guarantee-management-system')->name('bgms.')->middleware('au
     Route::get('/bg/encashment', [BgController::class, 'encashmentList'])->name('bg.encashment');//new
     Route::get('/bg/claimlodge', [BgController::class, 'claimlodgeList'])->name('bg.claimlodge');//new
 
+    Route::get('bg/type', [BgController::class, 'type'])->name('bg.type'); //New Pratham
+
+    Route::get('project/list', [ProjectController::class, 'list'])->name('project.list'); //New Pratham
+    Route::get('project/dashboard', [ProjectController::class, 'dashboard'])->name('project.dashboard'); // New Pratham
+    Route::post('project/state_search', [ProjectController::class, 'stateSearch'])->name('project.stateSearch'); //New Pratham
+    
 
     Route::resource('project', ProjectController::class)->names('project');
     Route::resource('bg', BgController::class)->names('bg');
