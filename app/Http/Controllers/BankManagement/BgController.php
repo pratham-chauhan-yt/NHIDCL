@@ -14,6 +14,8 @@ use App\Models\NhidclBankGuarantee;
 use App\Models\NhidclReceiveing;
 use App\Models\NhidclReceiving;
 use App\Models\NhidclRenewBg;
+use App\Models\NhidclProject;
+use App\Models\RefProjectType;
 use Illuminate\Support\Facades\Log;
 
 class BgController extends Controller
@@ -1245,5 +1247,23 @@ public function upload(Request $request)
 
             return redirect()->route("bgms.finance.receive.refer")->with("error", $e->getMessage());
         }
+    }
+
+    public function encashmentSearch(Request $request)
+    {
+        if ($request->state == 'all') {
+            $data['project_data'] = NhidclProject::
+                select('ref_project_type_id', \DB::raw('COUNT(*) as total'))
+                ->groupBy('ref_project_type_id')
+                ->get();
+        } else {
+            $type = RefProjectType::pluck('project_type', 'id')->get();
+            $data['project_data'] = NhidclProject::where('ref_project_state_id', $request->state)
+                ->select($type->project_type, \DB::raw('COUNT(*) as total'))
+                ->groupBy('ref_project_type_id')
+                ->get();
+        }
+
+        return view('bank-management.uploader.project.task', $data)->render();
     }
 }

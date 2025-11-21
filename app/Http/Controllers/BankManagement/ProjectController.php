@@ -234,6 +234,7 @@ class ProjectController extends Controller
         $bgmsAssignedState = bgmsAssignedState();
         return view("bank-management.uploader.project.list", compact("header", "sidebar", "bgmsAssignedState"));
     }
+    
     public function stateSearch(Request $request)
     {
         if ($request->state == 'all') {
